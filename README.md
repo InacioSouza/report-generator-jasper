@@ -20,5 +20,10 @@ Microsserviço destinado a criação de relatórios Jasper (PDF)
       </li>
     </ul>
   </li>
-  
 </ol>
+
+### Outras funcionalidades interessantes
+<ul>
+    <li>Versionamento de templates (Usuário pode cadastrar várias versões para um mesmo template)</li>
+    <li>Adição de sub-relatórios (envio de template por pacote '.zip')</li>
+</ul>
