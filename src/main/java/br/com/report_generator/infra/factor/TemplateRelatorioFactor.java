@@ -1,14 +1,14 @@
-package br.com.report_generator.model.factor;
+package br.com.report_generator.infra.factor;
 
 import br.com.report_generator.model.Sistema;
 import br.com.report_generator.model.Template;
 import br.com.report_generator.model.dto.template.TemplateUploadDto;
 
-public class TemplateFactor {
+public class TemplateRelatorioFactor {
 
     private Template template;
 
-    public TemplateFactor constroiTemplateUtilizandoDto(TemplateUploadDto dto) {
+    public TemplateRelatorioFactor constroiTemplateUtilizandoDto(TemplateUploadDto dto) {
         Template template = new Template();
         template.setTitulo(dto.titulo());
         template.setSubtitulo(dto.subtitulo());
@@ -18,21 +18,21 @@ public class TemplateFactor {
         return this;
     }
 
-    public TemplateFactor addSistema(Sistema sistema) {
+    public TemplateRelatorioFactor addSistema(Sistema sistema) {
         if (this.template != null) {
             this.template.setSistema(sistema);
         }
         return this;
     }
 
-    public TemplateFactor addArquivoOriginal(byte[] arquivoOriginal) {
+    public TemplateRelatorioFactor addArquivoOriginal(byte[] arquivoOriginal) {
         if (this.template != null) {
             this.template.setArquivoOriginal(arquivoOriginal);
         }
         return this;
     }
 
-    public TemplateFactor addArquivoCompilado(byte[] arquivoCompilado) {
+    public TemplateRelatorioFactor addArquivoCompilado(byte[] arquivoCompilado) {
         if (this.template != null) {
             this.template.setArquivoCompilado(arquivoCompilado);
         }

@@ -1,4 +1,4 @@
-package br.com.report_generator.model.dto.sistema;
+package br.com.report_generator.dto.sistema;
 
 import jakarta.validation.constraints.NotNull;
 

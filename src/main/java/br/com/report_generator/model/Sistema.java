@@ -6,10 +6,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
-@Table(name="sistemas")
+@Table(name="sistema")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -23,6 +24,5 @@ public class Sistema {
     private String descricao;
 
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "sistema")
-    List<Template> templates;
-
+    List<TemplateRelatorio> templates;
 }

@@ -2,12 +2,15 @@ package br.com.report_generator.service;
 
 import br.com.report_generator.infra.exception.FalhaAoSalvarTemplateException;
 import br.com.report_generator.infra.exception.FormatoArquivoInvalidoException;
+import br.com.report_generator.infra.exception.RegistroNaoEncontradoException;
 import br.com.report_generator.model.Sistema;
 import br.com.report_generator.model.Template;
 import br.com.report_generator.model.dto.template.TemplateUploadDto;
-import br.com.report_generator.model.factor.TemplateFactor;
-import br.com.report_generator.repository.TemplateRepository;
+import br.com.report_generator.infra.factor.TemplateRelatorioFactor;
+import br.com.report_generator.repository.TemplateRelatorioRepository;
+import br.com.report_generator.service.api.SistemaService;
 import br.com.report_generator.service.api.TemplateService;
+import br.com.report_generator.service.generic.GenericServiceImpl;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperReport;
@@ -19,16 +22,41 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.UUID;
 
 @Service("br.com.report_generator.service.TemplateServiceImpl")
-public class TemplateServiceImpl implements TemplateService {
+public class TemplateRelatorioServiceImpl extends GenericServiceImpl<Template, UUID> implements TemplateService  {
 
     @Autowired
-    private TemplateRepository repository;
+    private final TemplateRelatorioRepository repository;
+
+    @Autowired
+    private SistemaService sistemaService;
+
+    TemplateRelatorioServiceImpl(TemplateRelatorioRepository repository) {
+        super(repository);
+        this.repository = repository;
+    }
 
     @Override
     public Template uploadTemplate(TemplateUploadDto templateUploadDto) {
 
+        Sistema sistemaEncontrado = this.sistemaService.findById(templateUploadDto.sistema());
+        if (sistemaEncontrado == null){
+            throw new RegistroNaoEncontradoException("Não foi encontrado sistema parao id : " + templateUploadDto.sistema().id());
+        }
+
+        Template template = new TemplateRelatorioFactor()
+                .constroiTemplateUtilizandoDto(templateUploadDto)
+                .addSistema(sistemaEncontrado)
+                .build();
+
+        this.trataBytesDoRelatorio(templateUploadDto, template);
+
+        return repository.save(template);
+    }
+
+    private void trataBytesDoRelatorio(TemplateUploadDto templateUploadDto, Template templateRelatorio) {
         MultipartFile arquivo = templateUploadDto.arquivoOriginal();
         byte[] bytesOriginal = {};
         byte[] bytesCompilado = {};
@@ -55,15 +83,7 @@ public class TemplateServiceImpl implements TemplateService {
             throw new FalhaAoSalvarTemplateException();
         }
 
-        Sistema sistema = new Sistema();
-
-        Template template = new TemplateFactor()
-                .constroiTemplateUtilizandoDto(templateUploadDto)
-                .addArquivoOriginal(bytesOriginal)
-                .addArquivoCompilado(bytesCompilado)
-                .addSistema(sistema)
-                .build();
-
-        return repository.save(template);
+        templateRelatorio.setArquivoOriginal(bytesOriginal);
+        templateRelatorio.setArquivoCompilado(bytesCompilado);
     }
 }

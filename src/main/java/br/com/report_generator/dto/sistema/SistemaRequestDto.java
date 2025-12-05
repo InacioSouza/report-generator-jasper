@@ -1,4 +1,4 @@
-package br.com.report_generator.model.dto.sistema;
+package br.com.report_generator.dto.sistema;
 
 public record SistemaRequestDto(
         String nome,

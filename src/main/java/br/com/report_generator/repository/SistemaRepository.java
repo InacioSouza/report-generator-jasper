@@ -1,7 +1,7 @@
 package br.com.report_generator.repository;
 
 import br.com.report_generator.model.Sistema;
-import org.springframework.data.jpa.repository.JpaRepository;
+import br.com.report_generator.repository.generic.GenericRepository;
 
-public interface SistemaRepository extends JpaRepository<Sistema, Long> {
+public interface SistemaRepository extends GenericRepository<Sistema, Long> {
 }

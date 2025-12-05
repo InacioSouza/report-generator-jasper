@@ -2,7 +2,7 @@ package br.com.report_generator.service;
 
 import br.com.report_generator.infra.exception.RegistroNaoEncontradoException;
 import br.com.report_generator.model.Template;
-import br.com.report_generator.model.dto.report.GenerateReportRequestDto;
+import br.com.report_generator.dto.report.GenerateReportRequestDto;
 import br.com.report_generator.service.api.GeneratorReportService;
 import br.com.report_generator.service.api.TemplateService;
 import net.sf.jasperreports.engine.*;

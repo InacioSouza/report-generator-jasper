@@ -10,35 +10,33 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
-@Table(name = "templates")
+@Table(name = "versao_template")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Template {
+public class VersaoTemplateRelatorio {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    private String titulo;
-
-    private String subtitulo;
-
     @Column(name = "nome_arquivo")
     private String nomeArquivo;
 
-    @Column(name = "nome_template")
-    private String nomeTemplate;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "template_id")
+    private TemplateRelatorio templateRelatorio;
 
-    @Column(name = "informacao_relatorio")
-    private String informacaoRelatorio;
-
-    @Column(name = "descricao_template")
-    private String descricaoTemplate;
+    @Column(name = "descricao_versao")
+    private String descricaoVersao;
 
     @Enumerated(EnumType.STRING)
     private TipoArquivoEnum tipoArquivo;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_final_relatorio")
+    private TipoArquivoEnum tipoFinalRelatorio;
 
     @Lob
     @Column(name = "arquivo_digital")
@@ -47,9 +45,6 @@ public class Template {
     @Lob
     @Column(name = "arquivo_original")
     private byte[] arquivoOriginal;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Sistema sistema;
 
     @Column(name = "data_criacao")
     private LocalDate dataCriacao;
