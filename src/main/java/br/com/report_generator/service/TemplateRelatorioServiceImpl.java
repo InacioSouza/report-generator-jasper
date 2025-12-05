@@ -1,12 +1,12 @@
 package br.com.report_generator.service;
 
+import br.com.report_generator.dto.CadastraTemplateDto;
 import br.com.report_generator.infra.exception.FalhaAoSalvarTemplateException;
 import br.com.report_generator.infra.exception.FormatoArquivoInvalidoException;
 import br.com.report_generator.infra.exception.RegistroNaoEncontradoException;
-import br.com.report_generator.model.Sistema;
-import br.com.report_generator.model.Template;
-import br.com.report_generator.model.dto.template.TemplateUploadDto;
 import br.com.report_generator.infra.factor.TemplateRelatorioFactor;
+import br.com.report_generator.model.Sistema;
+import br.com.report_generator.model.TemplateRelatorio;
 import br.com.report_generator.repository.TemplateRelatorioRepository;
 import br.com.report_generator.service.api.SistemaService;
 import br.com.report_generator.service.api.TemplateService;
@@ -25,9 +25,8 @@ import java.io.IOException;
 import java.util.UUID;
 
 @Service("br.com.report_generator.service.TemplateServiceImpl")
-public class TemplateRelatorioServiceImpl extends GenericServiceImpl<Template, UUID> implements TemplateService  {
+public class TemplateRelatorioServiceImpl extends GenericServiceImpl<TemplateRelatorio, UUID> implements TemplateService  {
 
-    @Autowired
     private final TemplateRelatorioRepository repository;
 
     @Autowired
@@ -39,14 +38,14 @@ public class TemplateRelatorioServiceImpl extends GenericServiceImpl<Template, U
     }
 
     @Override
-    public Template uploadTemplate(TemplateUploadDto templateUploadDto) {
+    public TemplateRelatorio uploadTemplate(CadastraTemplateDto templateUploadDto) {
 
         Sistema sistemaEncontrado = this.sistemaService.findById(templateUploadDto.sistema());
         if (sistemaEncontrado == null){
             throw new RegistroNaoEncontradoException("Não foi encontrado sistema parao id : " + templateUploadDto.sistema().id());
         }
 
-        Template template = new TemplateRelatorioFactor()
+        TemplateRelatorio template = new TemplateRelatorioFactor()
                 .constroiTemplateUtilizandoDto(templateUploadDto)
                 .addSistema(sistemaEncontrado)
                 .build();
@@ -56,7 +55,7 @@ public class TemplateRelatorioServiceImpl extends GenericServiceImpl<Template, U
         return repository.save(template);
     }
 
-    private void trataBytesDoRelatorio(TemplateUploadDto templateUploadDto, Template templateRelatorio) {
+    private void trataBytesDoRelatorio(CadastraTemplateDto templateUploadDto, TemplateRelatorio templateRelatorio) {
         MultipartFile arquivo = templateUploadDto.arquivoOriginal();
         byte[] bytesOriginal = {};
         byte[] bytesCompilado = {};
@@ -82,8 +81,5 @@ public class TemplateRelatorioServiceImpl extends GenericServiceImpl<Template, U
         } catch (IOException | JRException e) {
             throw new FalhaAoSalvarTemplateException();
         }
-
-        templateRelatorio.setArquivoOriginal(bytesOriginal);
-        templateRelatorio.setArquivoCompilado(bytesCompilado);
     }
 }
