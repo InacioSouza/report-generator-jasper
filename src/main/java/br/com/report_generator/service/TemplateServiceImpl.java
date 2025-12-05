@@ -20,7 +20,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-@Service("TemplateServiceImpl")
+@Service("br.com.report_generator.service.TemplateServiceImpl")
 public class TemplateServiceImpl implements TemplateService {
 
     @Autowired

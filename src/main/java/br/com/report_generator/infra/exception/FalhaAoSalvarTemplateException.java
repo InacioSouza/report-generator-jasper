@@ -5,4 +5,8 @@ public class FalhaAoSalvarTemplateException extends RuntimeException {
     public FalhaAoSalvarTemplateException() {
         super("Ocorreu uma falha ao tentar tratar os bytes do template");
     }
+
+    public FalhaAoSalvarTemplateException(String message) {
+        super(message);
+    }
 }
