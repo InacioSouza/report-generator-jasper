@@ -14,9 +14,6 @@ public record CadastraRelatorioDto(
         String descricaoTecnica,
         String descricaoVersao,
         @NotNull
-        @NotEmpty
-        MultipartFile arquivoOriginal,
-        @NotNull
         SistemaDto sistema
 ) {
 }

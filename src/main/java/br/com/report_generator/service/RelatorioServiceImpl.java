@@ -5,11 +5,11 @@ import br.com.report_generator.infra.exception.FalhaAoSalvarRelatorioException;
 import br.com.report_generator.infra.exception.FormatoArquivoInvalidoException;
 import br.com.report_generator.infra.exception.RegistroNaoEncontradoException;
 import br.com.report_generator.infra.factor.RelatorioFactor;
-import br.com.report_generator.model.Sistema;
 import br.com.report_generator.model.Relatorio;
+import br.com.report_generator.model.Sistema;
 import br.com.report_generator.repository.RelatorioRepository;
-import br.com.report_generator.service.api.SistemaService;
 import br.com.report_generator.service.api.RelatorioService;
+import br.com.report_generator.service.api.SistemaService;
 import br.com.report_generator.service.generic.GenericServiceImpl;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -38,7 +38,7 @@ public class RelatorioServiceImpl extends GenericServiceImpl<Relatorio, UUID> im
     }
 
     @Override
-    public Relatorio uploadRelatorio(CadastraRelatorioDto relatorioUploadDto) {
+    public Relatorio uploadRelatorio(MultipartFile arquivo, CadastraRelatorioDto relatorioUploadDto) {
 
         Sistema sistemaEncontrado = this.sistemaService.findById(relatorioUploadDto.sistema());
         if (sistemaEncontrado == null){
@@ -56,7 +56,7 @@ public class RelatorioServiceImpl extends GenericServiceImpl<Relatorio, UUID> im
     }
 
     private void trataBytesDoRelatorio(CadastraRelatorioDto relatorioUploadDto, Relatorio relatorio) {
-        MultipartFile arquivo = relatorioUploadDto.arquivoOriginal();
+        MultipartFile arquivo = null;
         byte[] bytesOriginal = {};
         byte[] bytesCompilado = {};
 
