@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.UUID;
-
 @Entity
 @Table(name = "arquivo_subreport")
 @AllArgsConstructor
@@ -19,8 +17,11 @@ public class ArquivoSubreport {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "versao_relatorio_id")
-    private UUID versaoRelatorio;
+    private VersaoRelatorio versaoRelatorio;
     private byte[] arquivoCompilado;
     private byte[] arquivoOriginal;
+    private Integer versao;
 }

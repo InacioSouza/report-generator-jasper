@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.UUID;
 
 @Entity
@@ -39,7 +39,7 @@ public class Relatorio {
     private Sistema sistema;
 
     @Column(name = "data_criacao")
-    private LocalDate dataCriacao;
+    private Date dataCriacao;
 
     private Integer versao;
 }

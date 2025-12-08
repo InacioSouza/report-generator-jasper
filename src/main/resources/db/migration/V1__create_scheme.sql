@@ -3,7 +3,8 @@ CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 CREATE TABLE sistema (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     nome VARCHAR(250) NOT NULL,
-    descricao TEXT
+    descricao TEXT,
+    versao BIGINT NOT NULL
 );
 
 CREATE TABLE relatorio (
@@ -15,6 +16,7 @@ CREATE TABLE relatorio (
     informacao TEXT,
     sistema_id BIGINT NOT NULL,
     data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    versao BIGINT NOT NULL,
 
     FOREIGN KEY (sistema_id) REFERENCES sistema(id)
 );
@@ -36,9 +38,10 @@ CREATE TABLE versao_relatorio(
 
 CREATE TABLE arquivo_subreport(
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    versao_relatorio_id BIGINT NOT NULL,
+    versao_relatorio_id UUID NOT NULL,
     arquivo_compilado BYTEA,
     arquivo_original BYTEA NOT NULL,
+    versao BIGINT NOT NULL,
 
-    FOREIGN KEY versao_relatorio_id REFERENCES versao_relatorio(id)
+    FOREIGN KEY (versao_relatorio_id) REFERENCES versao_relatorio(id)
 );

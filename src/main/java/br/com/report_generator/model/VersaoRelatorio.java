@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.UUID;
 
 @Entity
@@ -38,16 +39,14 @@ public class VersaoRelatorio {
     @Column(name = "tipo_final_relatorio")
     private TipoArquivoEnum tipoFinalRelatorio;
 
-    @Lob
-    @Column(name = "arquivo_digital")
+    @Column(name = "arquivo_compilado")
     private byte[] arquivoCompilado;
 
-    @Lob
     @Column(name = "arquivo_original")
     private byte[] arquivoOriginal;
 
     @Column(name = "data_criacao")
-    private LocalDate dataCriacao;
+    private Date dataCriacao;
 
     private Integer versao;
 }

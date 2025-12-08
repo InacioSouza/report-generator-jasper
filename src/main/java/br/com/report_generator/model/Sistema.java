@@ -21,6 +21,7 @@ public class Sistema {
     private Long id;
     private String nome;
     private String descricao;
+    private Integer versao;
 
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "sistema")
     List<Relatorio> relatorios;
