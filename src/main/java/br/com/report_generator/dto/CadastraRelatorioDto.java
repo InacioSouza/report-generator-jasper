@@ -5,13 +5,13 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.web.multipart.MultipartFile;
 
-public record CadastraTemplateDto(
+public record CadastraRelatorioDto(
         @NotNull
         String titulo,
         String subtitulo,
-        String nomeTemplate,
-        String informacaoRelatorio,
-        String descricaoTemplate,
+        String nome,
+        String informacao,
+        String descricaoTecnica,
         String descricaoVersao,
         @NotNull
         @NotEmpty

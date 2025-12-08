@@ -1,15 +1,15 @@
 package br.com.report_generator.service;
 
-import br.com.report_generator.dto.CadastraTemplateDto;
-import br.com.report_generator.infra.exception.FalhaAoSalvarTemplateException;
+import br.com.report_generator.dto.CadastraRelatorioDto;
+import br.com.report_generator.infra.exception.FalhaAoSalvarRelatorioException;
 import br.com.report_generator.infra.exception.FormatoArquivoInvalidoException;
 import br.com.report_generator.infra.exception.RegistroNaoEncontradoException;
-import br.com.report_generator.infra.factor.TemplateRelatorioFactor;
+import br.com.report_generator.infra.factor.RelatorioFactor;
 import br.com.report_generator.model.Sistema;
-import br.com.report_generator.model.TemplateRelatorio;
-import br.com.report_generator.repository.TemplateRelatorioRepository;
+import br.com.report_generator.model.Relatorio;
+import br.com.report_generator.repository.RelatorioRepository;
 import br.com.report_generator.service.api.SistemaService;
-import br.com.report_generator.service.api.TemplateService;
+import br.com.report_generator.service.api.RelatorioService;
 import br.com.report_generator.service.generic.GenericServiceImpl;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -24,39 +24,39 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
-@Service("br.com.report_generator.service.TemplateServiceImpl")
-public class TemplateRelatorioServiceImpl extends GenericServiceImpl<TemplateRelatorio, UUID> implements TemplateService  {
+@Service("br.com.report_generator.service.RelatorioServiceImpl")
+public class RelatorioServiceImpl extends GenericServiceImpl<Relatorio, UUID> implements RelatorioService {
 
-    private final TemplateRelatorioRepository repository;
+    private final RelatorioRepository repository;
 
     @Autowired
     private SistemaService sistemaService;
 
-    TemplateRelatorioServiceImpl(TemplateRelatorioRepository repository) {
+    RelatorioServiceImpl(RelatorioRepository repository) {
         super(repository);
         this.repository = repository;
     }
 
     @Override
-    public TemplateRelatorio uploadTemplate(CadastraTemplateDto templateUploadDto) {
+    public Relatorio uploadRelatorio(CadastraRelatorioDto relatorioUploadDto) {
 
-        Sistema sistemaEncontrado = this.sistemaService.findById(templateUploadDto.sistema());
+        Sistema sistemaEncontrado = this.sistemaService.findById(relatorioUploadDto.sistema());
         if (sistemaEncontrado == null){
-            throw new RegistroNaoEncontradoException("Não foi encontrado sistema parao id : " + templateUploadDto.sistema().id());
+            throw new RegistroNaoEncontradoException("Não foi encontrado sistema parao id : " + relatorioUploadDto.sistema().id());
         }
 
-        TemplateRelatorio template = new TemplateRelatorioFactor()
-                .constroiTemplateUtilizandoDto(templateUploadDto)
+        Relatorio relatorio = new RelatorioFactor()
+                .constroiRelatorioUtilizandoDto(relatorioUploadDto)
                 .addSistema(sistemaEncontrado)
                 .build();
 
-        this.trataBytesDoRelatorio(templateUploadDto, template);
+        this.trataBytesDoRelatorio(relatorioUploadDto, relatorio);
 
-        return repository.save(template);
+        return repository.save(relatorio);
     }
 
-    private void trataBytesDoRelatorio(CadastraTemplateDto templateUploadDto, TemplateRelatorio templateRelatorio) {
-        MultipartFile arquivo = templateUploadDto.arquivoOriginal();
+    private void trataBytesDoRelatorio(CadastraRelatorioDto relatorioUploadDto, Relatorio relatorio) {
+        MultipartFile arquivo = relatorioUploadDto.arquivoOriginal();
         byte[] bytesOriginal = {};
         byte[] bytesCompilado = {};
 
@@ -79,7 +79,7 @@ public class TemplateRelatorioServiceImpl extends GenericServiceImpl<TemplateRel
             }
 
         } catch (IOException | JRException e) {
-            throw new FalhaAoSalvarTemplateException();
+            throw new FalhaAoSalvarRelatorioException();
         }
     }
 }

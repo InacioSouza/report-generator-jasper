@@ -10,12 +10,12 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
-@Table(name = "versao_template")
+@Table(name = "versao_relatorio")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class VersaoTemplateRelatorio {
+public class VersaoRelatorio {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,8 +25,8 @@ public class VersaoTemplateRelatorio {
     private String nomeArquivo;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "template_id")
-    private TemplateRelatorio templateRelatorio;
+    @JoinColumn(name = "relatorio_id")
+    private Relatorio relatorio;
 
     @Column(name = "descricao_versao")
     private String descricaoVersao;

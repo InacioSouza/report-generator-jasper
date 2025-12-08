@@ -8,7 +8,7 @@ import java.util.Map;
 
 public record GenerateReportRequestDto(
         @NotNull
-        String templateId,
+        String relatorioId,
         Map<String, Object> parameters,
         @NotNull
         @NotEmpty

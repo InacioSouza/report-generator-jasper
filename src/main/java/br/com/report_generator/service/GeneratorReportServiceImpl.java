@@ -1,9 +1,9 @@
 package br.com.report_generator.service;
 
 import br.com.report_generator.dto.report.GenerateReportRequestDto;
-import br.com.report_generator.model.TemplateRelatorio;
+import br.com.report_generator.model.Relatorio;
 import br.com.report_generator.service.api.GeneratorReportService;
-import br.com.report_generator.service.api.TemplateService;
+import br.com.report_generator.service.api.RelatorioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +13,7 @@ import java.util.UUID;
 public class GeneratorReportServiceImpl implements GeneratorReportService {
 
     @Autowired
-    private TemplateService templateService;
+    private RelatorioService relatorioService;
 
     @Override
     public byte[] generateReport(GenerateReportRequestDto reportRequestDto) throws Exception {
@@ -46,8 +46,8 @@ public class GeneratorReportServiceImpl implements GeneratorReportService {
         return null;
     }
 
-    private TemplateRelatorio buscaTemplate(UUID id) {
-        TemplateRelatorio template  = this.templateService.findById(id);
+    private Relatorio buscaTemplate(UUID id) {
+        Relatorio template  = this.relatorioService.findById(id);
         return template;
     }
 }

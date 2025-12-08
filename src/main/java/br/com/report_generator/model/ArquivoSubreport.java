@@ -6,22 +6,21 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
+import java.util.UUID;
 
 @Entity
-@Table(name="sistema")
-@Getter
-@Setter
+@Table(name = "arquivo_subreport")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Sistema {
+@Getter
+@Setter
+public class ArquivoSubreport {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String nome;
-    private String descricao;
-
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "sistema")
-    List<Relatorio> relatorios;
+    @JoinColumn(name = "versao_relatorio_id")
+    private UUID versaoRelatorio;
+    private byte[] arquivoCompilado;
+    private byte[] arquivoOriginal;
 }

@@ -10,12 +10,12 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
-@Table(name = "template_relatorio")
+@Table(name = "relatorio")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class TemplateRelatorio {
+public class Relatorio {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,14 +25,14 @@ public class TemplateRelatorio {
 
     private String subtitulo;
 
-    @Column(name = "nome_template")
-    private String nomeTemplate;
+    @Column(name = "nome")
+    private String nome;
 
-    @Column(name = "informacao_relatorio")
-    private String informacaoRelatorio;
+    @Column(name = "informacao")
+    private String informacao;
 
-    @Column(name = "descricao_template")
-    private String descricaoTemplate;
+    @Column(name = "descricao_tecnica")
+    private String descricaoTecnica;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sistema_id")

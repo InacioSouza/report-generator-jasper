@@ -1,6 +1,6 @@
 package br.com.report_generator.infra;
 
-import br.com.report_generator.infra.exception.FalhaAoSalvarTemplateException;
+import br.com.report_generator.infra.exception.FalhaAoSalvarRelatorioException;
 import br.com.report_generator.infra.exception.FormatoArquivoInvalidoException;
 import br.com.report_generator.infra.exception.RegistroCorrompidoException;
 import br.com.report_generator.infra.exception.RegistroNaoEncontradoException;
@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GerenciadorException {
 
-    @ExceptionHandler(FalhaAoSalvarTemplateException.class)
-    public ResponseEntity<?> falhaAoSalvarTemplate(FalhaAoSalvarTemplateException exception) {
+    @ExceptionHandler(FalhaAoSalvarRelatorioException.class)
+    public ResponseEntity<?> falhaAoSalvarRelatorio(FalhaAoSalvarRelatorioException exception) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exception.getMessage());
     }
 
