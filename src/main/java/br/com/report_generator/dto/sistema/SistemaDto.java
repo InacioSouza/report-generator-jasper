@@ -1,11 +1,15 @@
 package br.com.report_generator.dto.sistema;
 
-import jakarta.validation.constraints.NotNull;
+import br.com.report_generator.model.Sistema;
 
 public record SistemaDto(
-        @NotNull
-        Integer id,
+        Long id,
         String nome,
         String descricao
 ) {
+
+    public SistemaDto(Sistema sistema) {
+        this(sistema.getId(), sistema.getNome(), sistema.getDescricao());
+    }
+
 }
