@@ -1,6 +1,7 @@
 package br.com.report_generator.controller;
 
 import br.com.report_generator.dto.sistema.SistemaDto;
+import br.com.report_generator.dto.sistema.SistemaRequestDto;
 import br.com.report_generator.model.Sistema;
 import br.com.report_generator.service.api.SistemaService;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,11 @@ public class SistemaController {
     }
 
     @PostMapping
-    public ResponseEntity<SistemaDto> cadastra(@RequestBody Sistema sistema) {
+    public ResponseEntity<SistemaDto> cadastra(@RequestBody SistemaRequestDto sistemaRequest) {
+        Sistema sistema = new Sistema();
+        sistema.setNome(sistemaRequest.nome());
+        sistema.setDescricao(sistemaRequest.descricao());
+        sistema.setVersao(1);
         return ResponseEntity.ok(new SistemaDto(this.service.save(sistema)));
     }
 }

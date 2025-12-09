@@ -19,7 +19,7 @@ public class RelatorioController {
         this.relatorioService = relatorioService;
     }
 
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping
     public ResponseEntity<?> cadastraRelatorio(
             @RequestPart("relatorioZip")
             @NotNull
