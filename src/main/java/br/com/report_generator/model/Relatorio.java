@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -42,4 +43,7 @@ public class Relatorio {
     private Date dataCriacao;
 
     private Integer versao;
+
+    @OneToMany(mappedBy = "relatorio", cascade = CascadeType.PERSIST)
+    private List<VersaoRelatorio> listVersoes;
 }
