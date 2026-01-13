@@ -1,6 +1,6 @@
 package br.com.report_generator.service;
 
-import br.com.report_generator.dto.report.GenerateReportRequestDto;
+import br.com.report_generator.dto.GenerateReportRequestDto;
 import br.com.report_generator.model.Relatorio;
 import br.com.report_generator.service.api.GeneratorReportService;
 import br.com.report_generator.service.api.RelatorioService;

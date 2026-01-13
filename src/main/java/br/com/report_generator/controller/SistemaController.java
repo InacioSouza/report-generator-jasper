@@ -1,7 +1,7 @@
 package br.com.report_generator.controller;
 
-import br.com.report_generator.dto.sistema.SistemaDto;
-import br.com.report_generator.dto.sistema.SistemaRequestDto;
+import br.com.report_generator.dto.SistemaDto;
+import br.com.report_generator.dto.SistemaRequestDto;
 import br.com.report_generator.model.Sistema;
 import br.com.report_generator.service.api.SistemaService;
 import org.springframework.http.ResponseEntity;

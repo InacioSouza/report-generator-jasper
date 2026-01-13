@@ -4,6 +4,7 @@ import br.com.report_generator.repository.generic.GenericRepository;
 import br.com.report_generator.service.api.generic.GenericService;
 
 import java.util.List;
+import java.util.Optional;
 
 public class GenericServiceImpl<E, I> implements GenericService<E, I> {
 
@@ -30,7 +31,8 @@ public class GenericServiceImpl<E, I> implements GenericService<E, I> {
 
     @Override
     public E findById(Object id) {
-        return (E) this.repository.findById((I) id);
+        Optional<E> objeto = this.repository.findById((I) id);
+        return objeto.orElse(null);
     }
 
     @Override

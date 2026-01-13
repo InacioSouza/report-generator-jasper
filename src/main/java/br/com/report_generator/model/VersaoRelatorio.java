@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -29,6 +30,8 @@ public class VersaoRelatorio {
     @JoinColumn(name = "relatorio_id")
     private Relatorio relatorio;
 
+    private Integer numeroVersao;
+
     @Column(name = "descricao_versao")
     private String descricaoVersao;
 
@@ -49,4 +52,10 @@ public class VersaoRelatorio {
     private Date dataCriacao;
 
     private Integer versao;
+
+    @OneToMany(mappedBy = "versaoRelatorio",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.PERSIST,
+            orphanRemoval = true)
+    private List<ArquivoSubreport> listSubreport;
 }

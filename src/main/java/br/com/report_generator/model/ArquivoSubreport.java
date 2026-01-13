@@ -18,6 +18,8 @@ public class ArquivoSubreport {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String nomeParametro;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "versao_relatorio_id")
     private VersaoRelatorio versaoRelatorio;

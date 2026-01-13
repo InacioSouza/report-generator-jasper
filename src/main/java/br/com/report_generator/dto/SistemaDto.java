@@ -1,4 +1,4 @@
-package br.com.report_generator.dto.sistema;
+package br.com.report_generator.dto;
 
 import br.com.report_generator.model.Sistema;
 
