@@ -30,6 +30,7 @@ public class VersaoRelatorio {
     @JoinColumn(name = "relatorio_id")
     private Relatorio relatorio;
 
+    @Column(name = "numero_versao")
     private Integer numeroVersao;
 
     @Column(name = "descricao_versao")

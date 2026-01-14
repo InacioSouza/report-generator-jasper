@@ -25,6 +25,7 @@ CREATE TABLE versao_relatorio(
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     nome_arquivo VARCHAR(250) NOT NULL,
     relatorio_id UUID NOT NULL,
+    numero_versao BIGINT NOT NULL,
     descricao_versao TEXT,
     tipo_arquivo VARCHAR(10) NOT NULL,
     tipo_final_relatorio VARCHAR(10) NOT NULL,
@@ -38,6 +39,7 @@ CREATE TABLE versao_relatorio(
 
 CREATE TABLE arquivo_subreport(
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    nome_parametro VARCHAR(250) NOT NULL,
     versao_relatorio_id UUID NOT NULL,
     arquivo_compilado BYTEA,
     arquivo_original BYTEA NOT NULL,
