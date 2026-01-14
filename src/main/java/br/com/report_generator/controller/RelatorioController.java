@@ -1,9 +1,8 @@
 package br.com.report_generator.controller;
 
-import br.com.report_generator.dto.CadastraRelatorioDto;
-import br.com.report_generator.dto.PdfGerado;
-import br.com.report_generator.dto.PedidoRelatorioDTO;
+import br.com.report_generator.dto.*;
 import br.com.report_generator.service.api.RelatorioService;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpHeaders;
@@ -12,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/relatorio")
@@ -33,6 +32,12 @@ public class RelatorioController {
             @Valid
             CadastraRelatorioDto infos) {
         return ResponseEntity.ok(this.relatorioService.uploadRelatorio(relatorioZip, infos));
+    }
+
+    @GetMapping("/download")
+    public void baixarRelatorio(BaixarRelatorioRequestDto dto,
+                                HttpServletResponse response) {
+        this.relatorioService.baixarRelatorio(dto, response);
     }
 
     @PostMapping(value = "/pedido", produces = MediaType.APPLICATION_PDF_VALUE)

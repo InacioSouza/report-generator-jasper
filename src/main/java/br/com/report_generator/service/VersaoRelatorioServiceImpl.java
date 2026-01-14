@@ -6,6 +6,7 @@ import br.com.report_generator.service.api.VersaoRelatorioService;
 import br.com.report_generator.service.generic.GenericServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service("br.com.report_generator.service.VersaoRelatorioServiceImpl")
@@ -17,4 +18,17 @@ public class VersaoRelatorioServiceImpl extends GenericServiceImpl<VersaoRelator
         super(repository);
         this.repository = repository;
     }
+
+    @Override
+    public VersaoRelatorio buscaVersaoRelatorioPorIdRelatorio(UUID idRelatorio, Integer numeroVersao) {
+        Optional<VersaoRelatorio> versaoRelatorioOptional = this.repository.buscaVersaoRelatorioPorIdRelatorio(idRelatorio, numeroVersao);
+        return versaoRelatorioOptional.orElse(null);
+    }
+
+    @Override
+    public VersaoRelatorio buscaVersaoRelatorioMaisRecentePara(UUID idRelatorio) {
+        Optional<VersaoRelatorio> versaoRelatorioOptional = this.repository.buscaVersaoRelatorioMaisRecentePara(idRelatorio);
+        return versaoRelatorioOptional.orElse(null);
+    }
+
 }

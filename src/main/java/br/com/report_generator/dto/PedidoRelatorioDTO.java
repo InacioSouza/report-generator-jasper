@@ -16,5 +16,5 @@ public record PedidoRelatorioDTO (String titulo,
                                   @NotNull
                                   List<Map<String, Object>> dataSource,
                                   @NotNull
-                                  ExibicaoRelatorioEnum exibicaoRelatorio) {
+                                  ObtencaoArquivoEnum exibicaoRelatorio) {
 }

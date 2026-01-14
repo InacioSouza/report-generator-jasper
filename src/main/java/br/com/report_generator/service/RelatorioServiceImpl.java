@@ -1,9 +1,6 @@
 package br.com.report_generator.service;
 
-import br.com.report_generator.dto.CadastraRelatorioDto;
-import br.com.report_generator.dto.IdentificadorArquivoPrincipalEnum;
-import br.com.report_generator.dto.PdfGerado;
-import br.com.report_generator.dto.PedidoRelatorioDTO;
+import br.com.report_generator.dto.*;
 import br.com.report_generator.infra.exception.*;
 import br.com.report_generator.infra.factor.RelatorioFactor;
 import br.com.report_generator.infra.factor.VersaoRelatorioFactor;
@@ -16,6 +13,7 @@ import br.com.report_generator.service.api.VersaoRelatorioService;
 import br.com.report_generator.service.generic.GenericServiceImpl;
 import br.com.report_generator.service.utils.JasperUtil;
 import br.com.report_generator.service.utils.ZipUtil;
+import jakarta.servlet.http.HttpServletResponse;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
@@ -140,7 +139,7 @@ public class RelatorioServiceImpl extends GenericServiceImpl<Relatorio, UUID> im
 
         relatorio.getListVersoes().add(versaoRelatorio);
 
-        return this.repository.save(relatorio);
+        return this.save(relatorio);
     }
 
     @Override
@@ -204,4 +203,44 @@ public class RelatorioServiceImpl extends GenericServiceImpl<Relatorio, UUID> im
         return new PdfGerado(nomeRelatorio, out.toByteArray());
     }
 
+    @Override
+    public void baixarRelatorio(
+            BaixarRelatorioRequestDto dto,
+            HttpServletResponse httpResponse
+    ) {
+
+        Relatorio relatorio = this.findById(dto.idRelatorio());
+        if (relatorio == null) throw new RegistroNaoEncontradoException("Não foi encontrado relatório para o id: " + dto.idRelatorio());
+
+        VersaoRelatorio versaoRelatorio;
+        if(dto.numeroVersao() == null) {
+            versaoRelatorio = this.versaoRelatorioService.buscaVersaoRelatorioMaisRecentePara(dto.idRelatorio());
+        } else {
+            versaoRelatorio = this.versaoRelatorioService.buscaVersaoRelatorioPorIdRelatorio(dto.idRelatorio(), dto.numeroVersao());
+        }
+
+        if (versaoRelatorio == null) throw new RegistroNaoEncontradoException("Não foi encontrado versão de relatório para o número: " + dto.numeroVersao());
+
+        Map<String, byte[]> mapArquivos = new HashMap<>();
+        mapArquivos.put(versaoRelatorio.getNomeArquivo(), versaoRelatorio.getArquivoOriginal());
+
+        List<ArquivoSubreport> listSubreports = this.arquivoSubreportService.buscarSubreportsPorVersao(versaoRelatorio.getId());
+        for(ArquivoSubreport arquivoSubreport : listSubreports) {
+            mapArquivos.put(arquivoSubreport.getNomeParametro(), arquivoSubreport.getArquivoOriginal());
+        }
+
+        byte[] zipArquivos = ZipUtil.gerarZip(mapArquivos);
+
+        try {
+            httpResponse.getOutputStream().write(zipArquivos);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        String nomeZip = relatorio.getNome() + ".zip";
+
+        httpResponse.setStatus(HttpServletResponse.SC_OK);
+        httpResponse.setContentType("application/zip");
+        httpResponse.setHeader("Content-Disposition", dto.exibicao().getExibicao() + "; filename=\"" + nomeZip + "\"");
+    }
 }
