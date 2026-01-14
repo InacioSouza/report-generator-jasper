@@ -11,8 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.UUID;
-
 @RestController
 @RequestMapping("/relatorio")
 public class RelatorioController {
@@ -34,8 +32,8 @@ public class RelatorioController {
         return ResponseEntity.ok(this.relatorioService.uploadRelatorio(relatorioZip, infos));
     }
 
-    @GetMapping("/download")
-    public void baixarRelatorio(BaixarRelatorioRequestDto dto,
+    @PostMapping("/download")
+    public void baixarRelatorio(@RequestBody BaixarRelatorioRequestDto dto,
                                 HttpServletResponse response) {
         this.relatorioService.baixarRelatorio(dto, response);
     }
@@ -43,7 +41,7 @@ public class RelatorioController {
     @PostMapping(value = "/pedido", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<byte[]> gerarRelatorio(@RequestBody PedidoRelatorioDTO pedidoDTO) {
 
-        PdfGerado pdfGerado = this.relatorioService.gerarRelatorio(pedidoDTO);
+        PdfGeradoDto pdfGerado = this.relatorioService.gerarRelatorio(pedidoDTO);
         String headers = pedidoDTO.exibicaoRelatorio() + pdfGerado.nome();
 
         return ResponseEntity.ok()

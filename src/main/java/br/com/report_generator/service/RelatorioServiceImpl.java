@@ -143,7 +143,7 @@ public class RelatorioServiceImpl extends GenericServiceImpl<Relatorio, UUID> im
     }
 
     @Override
-    public PdfGerado gerarRelatorio(PedidoRelatorioDTO pedidoDTO) {
+    public PdfGeradoDto gerarRelatorio(PedidoRelatorioDTO pedidoDTO) {
 
         Relatorio relatorio = this.findById(pedidoDTO.idRelatorio());
 
@@ -200,11 +200,11 @@ public class RelatorioServiceImpl extends GenericServiceImpl<Relatorio, UUID> im
 
         String nomeRelatorio = relatorio.getNome() + "-v-" + versaoRelatorio.getNumeroVersao() + ".pdf";
 
-        return new PdfGerado(nomeRelatorio, out.toByteArray());
+        return new PdfGeradoDto(nomeRelatorio, out.toByteArray());
     }
 
     @Override
-    public void baixarRelatorio(
+    public void baixarRelatorio (
             BaixarRelatorioRequestDto dto,
             HttpServletResponse httpResponse
     ) {

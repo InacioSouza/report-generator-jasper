@@ -1,15 +1,17 @@
 package br.com.report_generator.service;
 
+import br.com.report_generator.dto.CadastraVersaoRelatorioDto;
 import br.com.report_generator.model.VersaoRelatorio;
 import br.com.report_generator.repository.VersaoRelatorioRepository;
 import br.com.report_generator.service.api.VersaoRelatorioService;
 import br.com.report_generator.service.generic.GenericServiceImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 import java.util.UUID;
 
-@Service("br.com.report_generator.service.VersaoRelatorioServiceImpl")
+@Service("br.com.report_generator.service.1 VersaoRelatorioServiceImpl")
 public class VersaoRelatorioServiceImpl extends GenericServiceImpl<VersaoRelatorio, UUID> implements VersaoRelatorioService {
 
     private final VersaoRelatorioRepository repository;
@@ -29,6 +31,14 @@ public class VersaoRelatorioServiceImpl extends GenericServiceImpl<VersaoRelator
     public VersaoRelatorio buscaVersaoRelatorioMaisRecentePara(UUID idRelatorio) {
         Optional<VersaoRelatorio> versaoRelatorioOptional = this.repository.buscaVersaoRelatorioMaisRecentePara(idRelatorio);
         return versaoRelatorioOptional.orElse(null);
+    }
+
+    @Override
+    public VersaoRelatorio cadastraVersaoRelatorio(MultipartFile arquivoZip, CadastraVersaoRelatorioDto dto) {
+
+
+
+        return null;
     }
 
 }

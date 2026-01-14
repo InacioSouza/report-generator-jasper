@@ -1,6 +1,6 @@
 package br.com.report_generator.dto;
 
-public record PdfGerado(
+public record PdfGeradoDto(
         String nome,
         byte[] pdf
 ) {

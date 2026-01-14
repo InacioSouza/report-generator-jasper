@@ -11,6 +11,6 @@ import java.util.UUID;
 public interface RelatorioService extends GenericService<Relatorio, UUID> {
 
     Relatorio uploadRelatorio(MultipartFile arquivo, CadastraRelatorioDto relatorioUploadDto);
-    PdfGerado gerarRelatorio(PedidoRelatorioDTO pedidoDTO);
+    PdfGeradoDto gerarRelatorio(PedidoRelatorioDTO pedidoDTO);
     void baixarRelatorio(BaixarRelatorioRequestDto dto, HttpServletResponse response);
 }
