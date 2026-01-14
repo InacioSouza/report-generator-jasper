@@ -9,8 +9,8 @@ CREATE TABLE sistema (
 
 CREATE TABLE relatorio (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    titulo VARCHAR(250) NOT NULL,
-    subtitulo VARCHAR(250),
+    titulo_padrao VARCHAR(250) NOT NULL,
+    subtitulo_padrao VARCHAR(250),
     nome VARCHAR(250),
     descricao_tecnica TEXT,
     informacao TEXT,

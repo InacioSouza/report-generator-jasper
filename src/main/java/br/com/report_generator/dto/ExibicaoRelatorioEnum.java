@@ -4,13 +4,13 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 
 @Getter
-public enum ExibicaoRelatorio {
+public enum ExibicaoRelatorioEnum {
     INLINE("inline"),
     ATTACHMENT("attachment");
 
     private String exibicao;
 
-    ExibicaoRelatorio(String exibicao) {
+    ExibicaoRelatorioEnum(String exibicao) {
         this.exibicao = exibicao;
     }
 

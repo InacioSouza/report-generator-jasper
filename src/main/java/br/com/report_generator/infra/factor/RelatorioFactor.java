@@ -12,8 +12,8 @@ public class RelatorioFactor {
 
     public RelatorioFactor constroiRelatorioUtilizandoDto(CadastraRelatorioDto dto) {
         this.relatorio = new Relatorio();
-        this.relatorio.setTitulo(dto.titulo());
-        this.relatorio.setSubtitulo(dto.subtitulo());
+        this.relatorio.setTituloPadrao(dto.titulo());
+        this.relatorio.setSubtituloPadrao(dto.subtitulo());
         this.relatorio.setNome(dto.nome());
         this.relatorio.setInformacao(dto.informacao());
         this.relatorio.setDescricaoTecnica(dto.descricaoTecnica());

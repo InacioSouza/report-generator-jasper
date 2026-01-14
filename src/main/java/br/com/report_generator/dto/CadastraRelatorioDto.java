@@ -6,11 +6,12 @@ public record CadastraRelatorioDto(
         @NotNull
         String titulo,
         String subtitulo,
+        @NotNull
         String nome,
         String informacao,
         String descricaoTecnica,
         String descricaoVersao,
         @NotNull
-        SistemaDto sistema
+        Integer idSistema
 ) {
 }

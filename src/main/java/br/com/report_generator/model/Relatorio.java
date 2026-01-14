@@ -22,9 +22,11 @@ public class Relatorio {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    private String titulo;
+    @Column(name = "titulo_padrao")
+    private String tituloPadrao;
 
-    private String subtitulo;
+    @Column(name = "subtitulo_padrao")
+    private String subtituloPadrao;
 
     @Column(name = "nome")
     private String nome;
@@ -44,6 +46,8 @@ public class Relatorio {
 
     private Integer versao;
 
-    @OneToMany(mappedBy = "relatorio", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "relatorio",
+            cascade = CascadeType.PERSIST,
+            orphanRemoval = true)
     private List<VersaoRelatorio> listVersoes;
 }

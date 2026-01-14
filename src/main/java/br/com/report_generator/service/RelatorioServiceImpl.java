@@ -1,13 +1,12 @@
 package br.com.report_generator.service;
 
 import br.com.report_generator.dto.CadastraRelatorioDto;
+import br.com.report_generator.dto.IdentificadorArquivoPrincipalEnum;
 import br.com.report_generator.dto.PdfGerado;
 import br.com.report_generator.dto.PedidoRelatorioDTO;
-import br.com.report_generator.infra.exception.FalhaAoGerarRelatorioException;
-import br.com.report_generator.infra.exception.FalhaAoSalvarRelatorioException;
-import br.com.report_generator.infra.exception.FormatoArquivoInvalidoException;
-import br.com.report_generator.infra.exception.RegistroNaoEncontradoException;
+import br.com.report_generator.infra.exception.*;
 import br.com.report_generator.infra.factor.RelatorioFactor;
+import br.com.report_generator.infra.factor.VersaoRelatorioFactor;
 import br.com.report_generator.model.*;
 import br.com.report_generator.repository.RelatorioRepository;
 import br.com.report_generator.service.api.ArquivoSubreportService;
@@ -49,17 +48,18 @@ public class RelatorioServiceImpl extends GenericServiceImpl<Relatorio, UUID> im
 
     private void validaArquivoRecebido(MultipartFile arquivo) {
 
-        if(!ZipUtil.assinaturaDoArquivoCorrespondeZIP(arquivo)) {
-            throw new FormatoArquivoInvalidoException("O arquivo deve ter extensão '.zip' !");
+        if(arquivo.isEmpty()) {
+            throw new FormatoArquivoInvalidoException("O arquivo enviado está vazio!");
         }
 
         if(arquivo.getOriginalFilename() == null || arquivo.getOriginalFilename().isEmpty()) {
             throw new FormatoArquivoInvalidoException("O arquivo enviado não possui nome!");
         }
 
-        if(arquivo.isEmpty()) {
-            throw new FormatoArquivoInvalidoException("O arquivo enviado está vazio!");
+        if(!ZipUtil.assinaturaDoArquivoCorrespondeZIP(arquivo)) {
+            throw new FormatoArquivoInvalidoException("O arquivo deve ser do tipo zip !");
         }
+
     }
 
     private Map<String, byte[]> extraiArquivosDoZip(MultipartFile arquivo) {
@@ -69,14 +69,23 @@ public class RelatorioServiceImpl extends GenericServiceImpl<Relatorio, UUID> im
 
         int qtdArquivosMAIN = 0;
         for(String nomeArquivo : mapArquivos.keySet().stream().toList()) {
-            if (nomeArquivo.contains("MAIN")) {
+
+            if (nomeArquivo == null || nomeArquivo.isEmpty()) {
+                throw new IllegalArgumentException("Um arquivo presente no zip não possui nome!");
+            }
+
+            if (nomeArquivo.contains(IdentificadorArquivoPrincipalEnum.MAIN.toString())) {
                 qtdArquivosMAIN++;
             }
         }
 
         if (qtdArquivosMAIN > 1) {
-            throw new IllegalArgumentException("Não deve haver mais de 1 arquivo com o trecho 'MAIN' no nome!");
+            throw new IdentificadorArquivoPrincipalInvalidoException(
+                    "Não deve haver mais de 1 arquivo com o trecho " + IdentificadorArquivoPrincipalEnum.MAIN + " no nome!"
+            );
         }
+
+        if(mapArquivos.size() > 1 && qtdArquivosMAIN == 0) throw new IdentificadorArquivoPrincipalInvalidoException();
 
         return mapArquivos;
     }
@@ -86,9 +95,9 @@ public class RelatorioServiceImpl extends GenericServiceImpl<Relatorio, UUID> im
 
         this.validaArquivoRecebido(arquivo);
 
-        Sistema sistemaEncontrado = this.sistemaService.findById(relatorioUploadDto.sistema());
+        Sistema sistemaEncontrado = this.sistemaService.findById(relatorioUploadDto.idSistema());
         if (sistemaEncontrado == null){
-            throw new RegistroNaoEncontradoException("Não foi encontrado sistema para o id : " + relatorioUploadDto.sistema().id());
+            throw new RegistroNaoEncontradoException("Não foi encontrado sistema para o id : " + relatorioUploadDto.idSistema());
         }
 
         Relatorio relatorio = new RelatorioFactor()
@@ -98,12 +107,9 @@ public class RelatorioServiceImpl extends GenericServiceImpl<Relatorio, UUID> im
 
         Map<String, byte[]> mapArquivos = this.extraiArquivosDoZip(arquivo);
 
-        VersaoRelatorio versaoRelatorio = new VersaoRelatorio();
-        versaoRelatorio.setDescricaoVersao(relatorioUploadDto.descricaoVersao());
-        versaoRelatorio.setDataCriacao(new Date());
-        versaoRelatorio.setTipoArquivo(TipoArquivoEnum.JRXML);
-        versaoRelatorio.setTipoFinalRelatorio(TipoArquivoEnum.PDF);
-        versaoRelatorio.setListSubreport(new ArrayList<>());
+        VersaoRelatorio versaoRelatorio = new VersaoRelatorioFactor()
+                .constroiPadraoComDescricaoViaDTO(relatorioUploadDto)
+                .build();
 
         if (mapArquivos.size() == 1) {
             versaoRelatorio.setNomeArquivo(mapArquivos.keySet().stream().findFirst().get());
@@ -116,10 +122,11 @@ public class RelatorioServiceImpl extends GenericServiceImpl<Relatorio, UUID> im
 
             for(Map.Entry<String, byte[]> arquivoEntry : mapArquivos.entrySet()) {
 
-                if (arquivoEntry.getKey().contains("MAIN")) {
+                if (arquivoEntry.getKey().contains(IdentificadorArquivoPrincipalEnum.MAIN.toString())) {
                     versaoRelatorio.setNomeArquivo(arquivoEntry.getKey());
                     versaoRelatorio.setArquivoOriginal(arquivoEntry.getValue());
                     versaoRelatorio.setArquivoCompilado(JasperUtil.compilaJRXML(arquivoEntry.getValue()));
+                    continue;
                 }
 
                 ArquivoSubreport arquivoSubreport = new ArquivoSubreport();

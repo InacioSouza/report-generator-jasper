@@ -11,7 +11,7 @@ public class VersaoRelatorioFactor {
 
     private VersaoRelatorio versaoRelatorio;
 
-    public VersaoRelatorioFactor constroiBaseComDescricaoViaDTO(CadastraRelatorioDto dto) {
+    public VersaoRelatorioFactor constroiPadraoComDescricaoViaDTO(CadastraRelatorioDto dto) {
         this.versaoRelatorio = new VersaoRelatorio();
         this.versaoRelatorio.setDescricaoVersao(dto.descricaoVersao());
         versaoRelatorio.setDataCriacao(new Date());
