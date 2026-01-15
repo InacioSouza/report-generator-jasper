@@ -140,6 +140,8 @@ public class RelatorioServiceImpl extends GenericServiceImpl<Relatorio, UUID> im
         }
 
         versaoRelatorio.setRelatorio(relatorio);
+        // Ao cadastrar um relatório o registro de VersaoRelatorio corresponde a primeira versão
+        versaoRelatorio.setNumeroVersao(1);
 
         relatorio.getListVersoes().add(versaoRelatorio);
 

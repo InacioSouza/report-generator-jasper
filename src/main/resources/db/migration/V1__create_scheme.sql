@@ -21,13 +21,11 @@ CREATE TABLE relatorio (
     FOREIGN KEY (sistema_id) REFERENCES sistema(id)
 );
 
-CREATE SEQUENCE seq_numero_versao_relatorio START WITH 1 INCREMENT BY 1;
-
 CREATE TABLE versao_relatorio(
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     nome_arquivo VARCHAR(250) NOT NULL,
     relatorio_id UUID NOT NULL,
-    numero_versao BIGINT DEFAULT nextval('seq_numero_versao_relatorio'),
+    numero_versao BIGINT NOT NULL,
     descricao_versao TEXT,
     tipo_arquivo VARCHAR(10) NOT NULL,
     tipo_final_relatorio VARCHAR(10) NOT NULL,

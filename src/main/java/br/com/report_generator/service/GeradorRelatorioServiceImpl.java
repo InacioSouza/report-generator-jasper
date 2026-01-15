@@ -1,7 +1,7 @@
 package br.com.report_generator.service;
 
 import br.com.report_generator.dto.PdfGeradoDto;
-import br.com.report_generator.dto.relatorio.GeraRelatorioRequestDTO;
+import br.com.report_generator.dto.relatorio.GeraRelatorioRequestDto;
 import br.com.report_generator.infra.exception.FalhaAoGerarRelatorioException;
 import br.com.report_generator.infra.exception.RegistroNaoEncontradoException;
 import br.com.report_generator.model.ArquivoSubreport;
@@ -14,6 +14,7 @@ import br.com.report_generator.service.api.VersaoRelatorioService;
 import br.com.report_generator.service.utils.JasperUtil;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.util.JRLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +38,7 @@ public class GeradorRelatorioServiceImpl implements GeradorRelatorioService {
     private ArquivoSubreportService arquivoSubreportService;
 
     @Override
-    public PdfGeradoDto gerarRelatorio(GeraRelatorioRequestDTO pedidoDTO) {
+    public PdfGeradoDto gerarRelatorio(GeraRelatorioRequestDto pedidoDTO) {
 
         Relatorio relatorio = this.relatorioService.findById(pedidoDTO.idRelatorio());
 
@@ -71,19 +72,17 @@ public class GeradorRelatorioServiceImpl implements GeradorRelatorioService {
 
         List<ArquivoSubreport> listSubreports = this.arquivoSubreportService.buscarSubreportsPorVersao(pedidoDTO.idVersao());
 
-        for(ArquivoSubreport arquivoSubreport : listSubreports) {
-            // Como vou vincular o subreport ao relatorio principal se os registros não salvam nome do parâmetro?
-            // Pelo nome do arquivo
-
-            byte[] templateSubrelatorioCompilado = arquivoSubreport.getArquivoCompilado() != null ?
-                    arquivoSubreport.getArquivoCompilado() : JasperUtil.compilaJRXML(arquivoSubreport.getArquivoOriginal());
-
-            parametros.put(arquivoSubreport.getNomeParametro(), new ByteArrayInputStream(templateSubrelatorioCompilado));
-        }
-
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
         try {
+
+            for(ArquivoSubreport arquivoSubreport : listSubreports) {
+                byte[] templateSubrelatorioCompilado = arquivoSubreport.getArquivoCompilado() != null ?
+                        arquivoSubreport.getArquivoCompilado() : JasperUtil.compilaJRXML(arquivoSubreport.getArquivoOriginal());
+
+                parametros.put(arquivoSubreport.getNomeParametro(), JRLoader.loadObject(new ByteArrayInputStream(templateSubrelatorioCompilado)));
+            }
+
             JasperPrint jasperPrint = JasperFillManager.fillReport(inputStreamRelatorio, parametros, dataSource);
             JasperExportManager.exportReportToPdfStream(jasperPrint, out);
 

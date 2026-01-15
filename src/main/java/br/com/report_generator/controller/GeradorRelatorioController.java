@@ -1,7 +1,7 @@
 package br.com.report_generator.controller;
 
 import br.com.report_generator.dto.PdfGeradoDto;
-import br.com.report_generator.dto.relatorio.GeraRelatorioRequestDTO;
+import br.com.report_generator.dto.relatorio.GeraRelatorioRequestDto;
 import br.com.report_generator.service.api.GeradorRelatorioService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -25,10 +25,10 @@ public class GeradorRelatorioController {
             value = "/pedido",
             produces = MediaType.APPLICATION_PDF_VALUE
     )
-    public ResponseEntity<byte[]> gerarRelatorio(@RequestBody GeraRelatorioRequestDTO pedidoDTO) {
+    public ResponseEntity<byte[]> gerarRelatorio(@RequestBody GeraRelatorioRequestDto pedidoDTO) {
 
         PdfGeradoDto pdfGerado = this.geradorRelatorioService.gerarRelatorio(pedidoDTO);
-        String headers = pedidoDTO.exibicaoRelatorio() + pdfGerado.nome();
+        String headers = pedidoDTO.exibicaoRelatorio() + "; filename=\"" + pdfGerado.nome() + "\"";
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, headers)
