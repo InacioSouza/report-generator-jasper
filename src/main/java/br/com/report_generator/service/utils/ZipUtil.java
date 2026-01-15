@@ -4,7 +4,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -33,9 +35,14 @@ public class ZipUtil {
             ZipEntry entry;
 
             while((entry = zis.getNextEntry()) != null ) {
+                if (entry.isDirectory()) continue;
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 zis.transferTo(baos);
-                map.put(entry.getName(), baos.toByteArray());
+
+                String[] partesNomeArquivo =  entry.getName().split("/");
+                String nomeArquivo = partesNomeArquivo.length > 1 ? partesNomeArquivo[1] : partesNomeArquivo[0];
+
+                map.put(nomeArquivo, baos.toByteArray());
             }
         } catch (Exception e) {
             throw new RuntimeException("Erro ao extrair .zip", e);
