@@ -1,8 +1,8 @@
-package br.com.report_generator.dto;
+package br.com.report_generator.dto.relatorio;
 
 import jakarta.validation.constraints.NotNull;
 
-public record CadastraRelatorioDto(
+public record CadastraRelatorioRequestDto(
         @NotNull
         String titulo,
         String subtitulo,

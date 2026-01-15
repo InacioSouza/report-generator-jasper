@@ -1,5 +1,6 @@
-package br.com.report_generator.dto;
+package br.com.report_generator.dto.relatorio;
 
+import br.com.report_generator.dto.ObtencaoArquivoEnum;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.UUID;

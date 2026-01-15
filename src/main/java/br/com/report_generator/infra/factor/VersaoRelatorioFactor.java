@@ -1,6 +1,6 @@
 package br.com.report_generator.infra.factor;
 
-import br.com.report_generator.dto.CadastraRelatorioDto;
+import br.com.report_generator.dto.relatorio.CadastraRelatorioRequestDto;
 import br.com.report_generator.model.TipoArquivoEnum;
 import br.com.report_generator.model.VersaoRelatorio;
 
@@ -11,7 +11,7 @@ public class VersaoRelatorioFactor {
 
     private VersaoRelatorio versaoRelatorio;
 
-    public VersaoRelatorioFactor constroiPadraoComDescricaoViaDTO(CadastraRelatorioDto dto) {
+    public VersaoRelatorioFactor constroiPadraoComDescricaoViaDTO(CadastraRelatorioRequestDto dto) {
         this.versaoRelatorio = new VersaoRelatorio();
         this.versaoRelatorio.setDescricaoVersao(dto.descricaoVersao());
         versaoRelatorio.setDataCriacao(new Date());

@@ -1,4 +1,4 @@
-package br.com.report_generator.dto;
+package br.com.report_generator.dto.relatorio;
 
 import br.com.report_generator.model.Relatorio;
 import br.com.report_generator.model.VersaoRelatorio;

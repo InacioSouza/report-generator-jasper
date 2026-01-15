@@ -8,6 +8,5 @@ public record CadastraVersaoRelatorioDto (
         @NotNull
         UUID idRelatorio,
         String descricaoVersao
-
 ) {
 }

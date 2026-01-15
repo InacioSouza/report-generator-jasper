@@ -1,13 +1,14 @@
 package br.com.report_generator.controller;
 
-import br.com.report_generator.dto.*;
+import br.com.report_generator.dto.relatorio.BaixarRelatorioRequestDto;
+import br.com.report_generator.dto.relatorio.CadastraRelatorioRequestDto;
+import br.com.report_generator.dto.relatorio.RelatorioCadastradoResponseDto;
 import br.com.report_generator.service.api.RelatorioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,7 +42,7 @@ public class RelatorioController {
             MultipartFile file,
             @RequestPart("infos")
             @Valid
-            CadastraRelatorioDto infos) {
+            CadastraRelatorioRequestDto infos) {
         return ResponseEntity.ok(this.relatorioService.uploadRelatorio(file, infos));
     }
 
@@ -51,18 +52,4 @@ public class RelatorioController {
         this.relatorioService.baixarRelatorio(dto, response);
     }
 
-    @PostMapping(
-            value = "/pedido",
-            produces = MediaType.APPLICATION_PDF_VALUE
-    )
-    public ResponseEntity<byte[]> gerarRelatorio(@RequestBody PedidoRelatorioDTO pedidoDTO) {
-
-        PdfGeradoDto pdfGerado = this.relatorioService.gerarRelatorio(pedidoDTO);
-        String headers = pedidoDTO.exibicaoRelatorio() + pdfGerado.nome();
-
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, headers)
-                .contentType(MediaType.APPLICATION_PDF)
-                .body(pdfGerado.pdf());
-    }
 }

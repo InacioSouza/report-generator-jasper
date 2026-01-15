@@ -1,6 +1,6 @@
 package br.com.report_generator.infra.factor;
 
-import br.com.report_generator.dto.CadastraRelatorioDto;
+import br.com.report_generator.dto.relatorio.CadastraRelatorioRequestDto;
 import br.com.report_generator.model.Sistema;
 import br.com.report_generator.model.Relatorio;
 
@@ -11,7 +11,7 @@ public class RelatorioFactor {
 
     private Relatorio relatorio;
 
-    public RelatorioFactor constroiRelatorioUtilizandoDto(CadastraRelatorioDto dto) {
+    public RelatorioFactor constroiRelatorioUtilizandoDto(CadastraRelatorioRequestDto dto) {
         this.relatorio = new Relatorio();
         this.relatorio.setTituloPadrao(dto.titulo());
         this.relatorio.setSubtituloPadrao(dto.subtitulo());
