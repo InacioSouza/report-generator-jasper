@@ -1,5 +1,6 @@
 package br.com.report_generator.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,6 +22,8 @@ public class Sistema {
     private Long id;
     private String nome;
     private String descricao;
+
+    @Version
     private Integer versao;
 
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "sistema")

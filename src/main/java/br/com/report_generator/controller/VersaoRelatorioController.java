@@ -1,14 +1,12 @@
 package br.com.report_generator.controller;
 
 import br.com.report_generator.dto.CadastraVersaoRelatorioDto;
+import br.com.report_generator.dto.VersaoRelatorioRequestDto;
 import br.com.report_generator.service.api.VersaoRelatorioService;
 import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
@@ -29,6 +27,11 @@ public class VersaoRelatorioController {
                                                           @RequestPart("inf,os") @Valid
                                                           CadastraVersaoRelatorioDto dto) {
         return ResponseEntity.ok(this.versaoRelatorioService.cadastraVersaoRelatorio(versaoZip, dto));
+    }
+
+    @GetMapping
+    public ResponseEntity<?> listarVersaoRelatorio() {
+        return ResponseEntity.ok(this.versaoRelatorioService.findAll().stream().map(VersaoRelatorioRequestDto::new).toList());
     }
 
 }

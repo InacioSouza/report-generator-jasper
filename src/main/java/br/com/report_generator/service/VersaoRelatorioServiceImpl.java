@@ -41,4 +41,9 @@ public class VersaoRelatorioServiceImpl extends GenericServiceImpl<VersaoRelator
         return null;
     }
 
+    @Override
+    public Integer buscaNumeroVersao(UUID idVersao) {
+        return this.repository.buscaNumeroVersao(idVersao);
+    }
+
 }

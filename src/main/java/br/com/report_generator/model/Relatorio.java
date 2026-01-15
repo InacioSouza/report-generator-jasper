@@ -1,5 +1,6 @@
 package br.com.report_generator.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -44,6 +45,7 @@ public class Relatorio {
     @Column(name = "data_criacao")
     private Date dataCriacao;
 
+    @Version
     private Integer versao;
 
     @OneToMany(mappedBy = "relatorio",

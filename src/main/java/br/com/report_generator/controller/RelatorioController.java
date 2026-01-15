@@ -35,7 +35,7 @@ public class RelatorioController {
             value = "/cadastrar",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE
     )
-    public ResponseEntity<?> cadastraRelatorio(
+    public ResponseEntity<RelatorioCadastradoResponseDto> cadastraRelatorio(
             @RequestPart("file")
             @NotNull
             MultipartFile file,

@@ -30,4 +30,13 @@ public interface VersaoRelatorioRepository extends GenericRepository<VersaoRelat
     )
     Optional<VersaoRelatorio> buscaVersaoRelatorioMaisRecentePara(UUID idRelatorio);
 
+    @Query(
+            """
+            SELECT v.numeroVersao
+            FROM VersaoRelatorio v
+            WHERE v.id = :idVersao
+            """
+    )
+    Integer buscaNumeroVersao(UUID idVersao);
+
 }

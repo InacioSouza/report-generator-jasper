@@ -90,7 +90,7 @@ public class RelatorioServiceImpl extends GenericServiceImpl<Relatorio, UUID> im
     }
 
     @Override
-    public Relatorio uploadRelatorio(MultipartFile arquivo, CadastraRelatorioDto relatorioUploadDto) {
+    public RelatorioCadastradoResponseDto uploadRelatorio(MultipartFile arquivo, CadastraRelatorioDto relatorioUploadDto) {
 
         this.validaArquivoRecebido(arquivo);
 
@@ -132,14 +132,20 @@ public class RelatorioServiceImpl extends GenericServiceImpl<Relatorio, UUID> im
                 arquivoSubreport.setNomeParametro(arquivoEntry.getKey());
                 arquivoSubreport.setArquivoOriginal(arquivoEntry.getValue());
                 arquivoSubreport.setArquivoCompilado(JasperUtil.compilaJRXML(arquivoEntry.getValue()));
+                arquivoSubreport.setVersaoRelatorio(versaoRelatorio);
 
                 versaoRelatorio.getListSubreport().add(arquivoSubreport);
             }
         }
 
+        versaoRelatorio.setRelatorio(relatorio);
+
         relatorio.getListVersoes().add(versaoRelatorio);
 
-        return this.save(relatorio);
+        Relatorio relatorioSalvo = this.save(relatorio);
+        versaoRelatorio.setNumeroVersao(this.versaoRelatorioService.buscaNumeroVersao(versaoRelatorio.getId()));
+
+        return new RelatorioCadastradoResponseDto(relatorioSalvo, versaoRelatorio);
     }
 
     @Override

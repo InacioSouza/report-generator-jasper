@@ -5,6 +5,7 @@ import br.com.report_generator.model.Sistema;
 import br.com.report_generator.model.Relatorio;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class RelatorioFactor {
 
@@ -15,6 +16,7 @@ public class RelatorioFactor {
         this.relatorio.setTituloPadrao(dto.titulo());
         this.relatorio.setSubtituloPadrao(dto.subtitulo());
         this.relatorio.setNome(dto.nome());
+        this.relatorio.setDataCriacao(new Date());
         this.relatorio.setInformacao(dto.informacao());
         this.relatorio.setDescricaoTecnica(dto.descricaoTecnica());
         this.relatorio.setListVersoes(new ArrayList<>());

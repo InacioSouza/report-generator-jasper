@@ -25,5 +25,7 @@ public class ArquivoSubreport {
     private VersaoRelatorio versaoRelatorio;
     private byte[] arquivoCompilado;
     private byte[] arquivoOriginal;
+
+    @Version
     private Integer versao;
 }

@@ -11,4 +11,5 @@ public interface VersaoRelatorioService extends GenericService<VersaoRelatorio, 
     VersaoRelatorio buscaVersaoRelatorioPorIdRelatorio(UUID idRelatorio, Integer numeroVersao);
     VersaoRelatorio buscaVersaoRelatorioMaisRecentePara(UUID idRelatorio);
     VersaoRelatorio cadastraVersaoRelatorio(MultipartFile arquivoZip, CadastraVersaoRelatorioDto dto);
+    Integer buscaNumeroVersao(UUID idVersao);
 }
