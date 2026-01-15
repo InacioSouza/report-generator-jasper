@@ -2,6 +2,8 @@ package br.com.report_generator.controller;
 
 import br.com.report_generator.dto.*;
 import br.com.report_generator.service.api.RelatorioService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -21,15 +23,26 @@ public class RelatorioController {
         this.relatorioService = relatorioService;
     }
 
-    @PostMapping
+    @Operation(
+            summary = "End-point para realizar o cadastro de relatórios",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    content = @Content(
+                            mediaType = MediaType.MULTIPART_FORM_DATA_VALUE
+                    )
+            )
+    )
+    @PostMapping(
+            value = "/cadastrar",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+    )
     public ResponseEntity<?> cadastraRelatorio(
-            @RequestPart("relatorioZip")
+            @RequestPart("file")
             @NotNull
-            MultipartFile relatorioZip,
+            MultipartFile file,
             @RequestPart("infos")
             @Valid
             CadastraRelatorioDto infos) {
-        return ResponseEntity.ok(this.relatorioService.uploadRelatorio(relatorioZip, infos));
+        return ResponseEntity.ok(this.relatorioService.uploadRelatorio(file, infos));
     }
 
     @PostMapping("/download")
@@ -38,7 +51,10 @@ public class RelatorioController {
         this.relatorioService.baixarRelatorio(dto, response);
     }
 
-    @PostMapping(value = "/pedido", produces = MediaType.APPLICATION_PDF_VALUE)
+    @PostMapping(
+            value = "/pedido",
+            produces = MediaType.APPLICATION_PDF_VALUE
+    )
     public ResponseEntity<byte[]> gerarRelatorio(@RequestBody PedidoRelatorioDTO pedidoDTO) {
 
         PdfGeradoDto pdfGerado = this.relatorioService.gerarRelatorio(pedidoDTO);

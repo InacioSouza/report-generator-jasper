@@ -3,6 +3,7 @@ package br.com.report_generator.controller;
 import br.com.report_generator.dto.CadastraVersaoRelatorioDto;
 import br.com.report_generator.service.api.VersaoRelatorioService;
 import jakarta.validation.Valid;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,9 +21,12 @@ public class VersaoRelatorioController {
         this.versaoRelatorioService = versaoRelatorioService;
     }
 
-    @PostMapping("/nova-versao")
+    @PostMapping(
+            path = "/nova-versao",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+    )
     public ResponseEntity<?> cadastrarNovaVersaoRelatorio(@RequestPart("versaoZip") MultipartFile versaoZip,
-                                                          @RequestPart("infos") @Valid
+                                                          @RequestPart("inf,os") @Valid
                                                           CadastraVersaoRelatorioDto dto) {
         return ResponseEntity.ok(this.versaoRelatorioService.cadastraVersaoRelatorio(versaoZip, dto));
     }
