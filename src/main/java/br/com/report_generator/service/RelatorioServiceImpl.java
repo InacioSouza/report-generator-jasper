@@ -1,10 +1,7 @@
 package br.com.report_generator.service;
 
 import br.com.report_generator.dto.*;
-import br.com.report_generator.dto.relatorio.BaixarRelatorioRequestDto;
-import br.com.report_generator.dto.relatorio.CadastraRelatorioRequestDto;
-import br.com.report_generator.dto.relatorio.GeraRelatorioRequestDTO;
-import br.com.report_generator.dto.relatorio.RelatorioCadastradoResponseDto;
+import br.com.report_generator.dto.relatorio.*;
 import br.com.report_generator.infra.exception.*;
 import br.com.report_generator.infra.factor.RelatorioFactor;
 import br.com.report_generator.infra.factor.VersaoRelatorioFactor;
@@ -191,5 +188,15 @@ public class RelatorioServiceImpl extends GenericServiceImpl<Relatorio, UUID> im
         httpResponse.setStatus(HttpServletResponse.SC_OK);
         httpResponse.setContentType("application/zip");
         httpResponse.setHeader("Content-Disposition", dto.exibicao().getExibicao() + "; filename=\"" + nomeZip + "\"");
+    }
+
+    @Override
+    public List<InfoRelatorioResponseDto> buscaInformacaoDeTodosRelatorios() {
+
+        return this.findAll()
+                .stream()
+                .map(InfoRelatorioResponseDto::new)
+                .toList();
+
     }
 }

@@ -1,7 +1,7 @@
 package br.com.report_generator.controller;
 
-import br.com.report_generator.dto.CadastraVersaoRelatorioDto;
-import br.com.report_generator.dto.VersaoRelatorioRequestDto;
+import br.com.report_generator.dto.versaorelatorio.CadastraVersaoRelatorioRequestDto;
+import br.com.report_generator.dto.versaorelatorio.VersaoRelatorioRequestDto;
 import br.com.report_generator.service.api.VersaoRelatorioService;
 import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
@@ -25,7 +25,7 @@ public class VersaoRelatorioController {
     )
     public ResponseEntity<?> cadastrarNovaVersaoRelatorio(@RequestPart("versaoZip") MultipartFile versaoZip,
                                                           @RequestPart("inf,os") @Valid
-                                                          CadastraVersaoRelatorioDto dto) {
+                                                          CadastraVersaoRelatorioRequestDto dto) {
         return ResponseEntity.ok(this.versaoRelatorioService.cadastraVersaoRelatorio(versaoZip, dto));
     }
 

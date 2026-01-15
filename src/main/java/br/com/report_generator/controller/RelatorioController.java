@@ -2,6 +2,7 @@ package br.com.report_generator.controller;
 
 import br.com.report_generator.dto.relatorio.BaixarRelatorioRequestDto;
 import br.com.report_generator.dto.relatorio.CadastraRelatorioRequestDto;
+import br.com.report_generator.dto.relatorio.InfoRelatorioResponseDto;
 import br.com.report_generator.dto.relatorio.RelatorioCadastradoResponseDto;
 import br.com.report_generator.service.api.RelatorioService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,6 +14,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/relatorio")
@@ -50,6 +53,11 @@ public class RelatorioController {
     public void baixarRelatorio(@RequestBody BaixarRelatorioRequestDto dto,
                                 HttpServletResponse response) {
         this.relatorioService.baixarRelatorio(dto, response);
+    }
+
+    @GetMapping("/informacao-completa")
+    public ResponseEntity<List<InfoRelatorioResponseDto>> buscaInformacoesDeTodosRelatorios() {
+        return ResponseEntity.ok(this.relatorioService.buscaInformacaoDeTodosRelatorios());
     }
 
 }

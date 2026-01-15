@@ -1,6 +1,6 @@
 package br.com.report_generator.service;
 
-import br.com.report_generator.dto.CadastraVersaoRelatorioDto;
+import br.com.report_generator.dto.versaorelatorio.CadastraVersaoRelatorioRequestDto;
 import br.com.report_generator.model.VersaoRelatorio;
 import br.com.report_generator.repository.VersaoRelatorioRepository;
 import br.com.report_generator.service.api.VersaoRelatorioService;
@@ -34,7 +34,7 @@ public class VersaoRelatorioServiceImpl extends GenericServiceImpl<VersaoRelator
     }
 
     @Override
-    public VersaoRelatorio cadastraVersaoRelatorio(MultipartFile arquivoZip, CadastraVersaoRelatorioDto dto) {
+    public VersaoRelatorio cadastraVersaoRelatorio(MultipartFile arquivoZip, CadastraVersaoRelatorioRequestDto dto) {
 
 
 
