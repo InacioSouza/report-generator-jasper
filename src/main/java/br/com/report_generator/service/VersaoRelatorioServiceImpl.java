@@ -21,11 +21,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 
-@Service("br.com.report_generator.service.1 VersaoRelatorioServiceImpl")
+@Service("br.com.report_generator.service.VersaoRelatorioServiceImpl")
 public class VersaoRelatorioServiceImpl extends GenericServiceImpl<VersaoRelatorio, UUID> implements VersaoRelatorioService {
-
-    @Autowired
-    private RelatorioService relatorioService;
 
     private final VersaoRelatorioRepository repository;
 
@@ -114,12 +111,9 @@ public class VersaoRelatorioServiceImpl extends GenericServiceImpl<VersaoRelator
     }
 
     @Override
-    public VersaoRelatorio cadastraVersaoRelatorio(MultipartFile arquivoZip, CadastraVersaoRelatorioRequestDto dto) {
-
-        Relatorio relatorio = this.relatorioService.findById(dto.idRelatorio());
-        if (relatorio == null) throw new RegistroNaoEncontradoException(
-                "Não foi encontrado relatório para o id: " + dto.idRelatorio()
-        );
+    public VersaoRelatorio cadastraVersaoRelatorio(MultipartFile arquivoZip,
+                                                   CadastraVersaoRelatorioRequestDto dto,
+                                                   Relatorio relatorio) {
 
         VersaoRelatorio novaVersaoRelatorio = new VersaoRelatorio();
         novaVersaoRelatorio.setDescricaoVersao(dto.descricaoVersao());
