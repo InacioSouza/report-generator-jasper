@@ -45,6 +45,9 @@ public class Relatorio {
     @Column(name = "data_criacao")
     private Date dataCriacao;
 
+    @Column(name = "numero_ultima_versao")
+    private Integer numeroUltimaVersao;
+
     @Version
     private Integer versao;
 

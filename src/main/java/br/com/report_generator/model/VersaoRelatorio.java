@@ -27,7 +27,9 @@ public class VersaoRelatorio {
     @Column(name = "nome_arquivo")
     private String nomeArquivo;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToOne(
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "relatorio_id")
     private Relatorio relatorio;
 

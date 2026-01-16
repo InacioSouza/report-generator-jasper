@@ -93,6 +93,7 @@ public class RelatorioServiceImpl extends GenericServiceImpl<Relatorio, UUID> im
 
         versaoRelatorio.setRelatorio(relatorio);
         versaoRelatorio.setNumeroVersao(1);
+        relatorio.setNumeroUltimaVersao(1);
 
         relatorio.getListVersoes().add(versaoRelatorio);
 

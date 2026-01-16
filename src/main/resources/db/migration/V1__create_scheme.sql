@@ -15,6 +15,7 @@ CREATE TABLE relatorio (
     descricao_tecnica TEXT,
     informacao TEXT,
     sistema_id BIGINT NOT NULL,
+    numero_ultima_versao BIGINT NOT NULL,
     data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     versao BIGINT NOT NULL,
 
