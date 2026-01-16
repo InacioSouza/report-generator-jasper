@@ -74,6 +74,16 @@ public class RelatorioServiceImpl extends GenericServiceImpl<Relatorio, UUID> im
                 throw new IllegalArgumentException("Um arquivo presente no zip não possui nome!");
             }
 
+            int qtdPontosNoNomeArquivo = 0;
+            for(char c : nomeArquivo.toCharArray()) {
+                if (c == '.') {
+                    qtdPontosNoNomeArquivo ++;
+                }
+            }
+            if (qtdPontosNoNomeArquivo > 1) throw new IllegalArgumentException(
+                    "Nome de arquivo inválido ( " + nomeArquivo + " )" + " possui mais de um caractere '.'"
+            );
+
             if (nomeArquivo.contains(IdentificadorArquivoPrincipalEnum.MAIN.toString())) {
                 qtdArquivosMAIN++;
             }
@@ -130,7 +140,10 @@ public class RelatorioServiceImpl extends GenericServiceImpl<Relatorio, UUID> im
                 }
 
                 ArquivoSubreport arquivoSubreport = new ArquivoSubreport();
-                arquivoSubreport.setNomeParametro(arquivoEntry.getKey());
+
+                //TODO: Retira a extensão do arquivo para manter apenas o nome, o qual é equivalente ao parâmetro esperado pelo Jasper
+                String nomeParametro = arquivoEntry.getKey().split(".")[0];
+                arquivoSubreport.setNomeParametro(nomeParametro);
                 arquivoSubreport.setArquivoOriginal(arquivoEntry.getValue());
                 arquivoSubreport.setArquivoCompilado(JasperUtil.compilaJRXML(arquivoEntry.getValue()));
                 arquivoSubreport.setVersaoRelatorio(versaoRelatorio);
@@ -140,7 +153,7 @@ public class RelatorioServiceImpl extends GenericServiceImpl<Relatorio, UUID> im
         }
 
         versaoRelatorio.setRelatorio(relatorio);
-        // Ao cadastrar um relatório o registro de VersaoRelatorio corresponde a primeira versão
+        //TODO: Ao cadastrar um relatório o registro de VersaoRelatorio corresponde a primeira versão
         versaoRelatorio.setNumeroVersao(1);
 
         relatorio.getListVersoes().add(versaoRelatorio);
