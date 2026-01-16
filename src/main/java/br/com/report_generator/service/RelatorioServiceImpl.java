@@ -141,7 +141,7 @@ public class RelatorioServiceImpl extends GenericServiceImpl<Relatorio, UUID> im
 
                 ArquivoSubreport arquivoSubreport = new ArquivoSubreport();
 
-                //TODO: Retira a extensão do arquivo para manter apenas o nome, o qual é equivalente ao parâmetro esperado pelo Jasper
+                //NOTE: Retira a extensão do arquivo para manter apenas o nome, o qual é equivalente ao parâmetro esperado pelo Jasper
                 String nomeParametro = arquivoEntry.getKey().split(".")[0];
                 arquivoSubreport.setNomeParametro(nomeParametro);
                 arquivoSubreport.setArquivoOriginal(arquivoEntry.getValue());
@@ -153,7 +153,6 @@ public class RelatorioServiceImpl extends GenericServiceImpl<Relatorio, UUID> im
         }
 
         versaoRelatorio.setRelatorio(relatorio);
-        //TODO: Ao cadastrar um relatório o registro de VersaoRelatorio corresponde a primeira versão
         versaoRelatorio.setNumeroVersao(1);
 
         relatorio.getListVersoes().add(versaoRelatorio);
