@@ -39,7 +39,7 @@ public interface RelatorioService extends GenericService<Relatorio, UUID> {
     /**
      * Busca todas as informações relacionadas ao Relatorio,
      * traz lista de VersaoRelatorio e para estas a respectiva lista de ArquivoSubreport.
-     * Não inclui os bytes dos templates.
+     * Não inclui os bytes dos templates (arquivos JRXML).
      * @return InfoRelatorioResponseDto
      */
     List<InfoRelatorioResponseDto> buscaInformacaoDeTodosRelatorios();

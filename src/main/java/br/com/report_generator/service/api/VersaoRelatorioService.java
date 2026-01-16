@@ -5,6 +5,7 @@ import br.com.report_generator.model.VersaoRelatorio;
 import br.com.report_generator.service.api.generic.GenericService;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Map;
 import java.util.UUID;
 
 public interface VersaoRelatorioService extends GenericService<VersaoRelatorio, UUID> {
@@ -12,4 +13,13 @@ public interface VersaoRelatorioService extends GenericService<VersaoRelatorio, 
     VersaoRelatorio buscaVersaoRelatorioMaisRecentePara(UUID idRelatorio);
     VersaoRelatorio cadastraVersaoRelatorio(MultipartFile arquivoZip, CadastraVersaoRelatorioRequestDto dto);
     Integer buscaNumeroVersao(UUID idVersao);
+
+    /**
+     * Verifica se o arquivo dentro do MultipartFile é um zip,
+     * faz validações nos arquivos do zip para garantir o padrão de nomenclatura e conteúdo desejado
+     * e retorna arquivos extraídos.
+     * @param arquivo MultipartFile
+     * @return Map
+     */
+    Map<String, byte[]> validaEDevolveArquivosDoZip(MultipartFile arquivo);
 }
