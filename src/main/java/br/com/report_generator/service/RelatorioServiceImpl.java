@@ -13,6 +13,7 @@ import br.com.report_generator.service.api.SistemaService;
 import br.com.report_generator.service.api.VersaoRelatorioService;
 import br.com.report_generator.service.generic.GenericServiceImpl;
 import br.com.report_generator.service.utils.JasperUtil;
+import br.com.report_generator.service.utils.TrataArquivoService;
 import br.com.report_generator.service.utils.ZipUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ import java.util.*;
 public class RelatorioServiceImpl extends GenericServiceImpl<Relatorio, UUID> implements RelatorioService {
 
     private final RelatorioRepository repository;
+    private final TrataArquivoService trataArquivoService;
 
     @Autowired
     private SistemaService sistemaService;
@@ -36,9 +38,13 @@ public class RelatorioServiceImpl extends GenericServiceImpl<Relatorio, UUID> im
     @Autowired
     private ArquivoSubreportService arquivoSubreportService;
 
-    RelatorioServiceImpl(RelatorioRepository repository) {
+    RelatorioServiceImpl(
+            RelatorioRepository repository,
+            TrataArquivoService trataArquivoService
+    ) {
         super(repository);
         this.repository = repository;
+        this.trataArquivoService = trataArquivoService;
     }
 
     @Override
@@ -51,7 +57,7 @@ public class RelatorioServiceImpl extends GenericServiceImpl<Relatorio, UUID> im
             );
         }
 
-        Map<String, byte[]> mapArquivos = this.versaoRelatorioService.validaEDevolveArquivosDoZip(arquivo);
+        Map<String, byte[]> mapArquivos = this.trataArquivoService.validaEDevolveArquivosDoZip(arquivo);
 
         Relatorio relatorio = new RelatorioFactor()
                 .constroiRelatorioUtilizandoDto(relatorioUploadDto)

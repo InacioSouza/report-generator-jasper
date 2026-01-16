@@ -22,13 +22,4 @@ public interface VersaoRelatorioService extends GenericService<VersaoRelatorio, 
     );
 
     Integer buscaNumeroVersao(UUID idVersao);
-
-    /**
-     * Verifica se o arquivo dentro do MultipartFile é um zip,
-     * faz validações nos arquivos do zip para garantir o padrão de nomenclatura e conteúdo desejado
-     * e retorna arquivos extraídos.
-     * @param arquivo MultipartFile
-     * @return Map
-     */
-    Map<String, byte[]> validaEDevolveArquivosDoZip(MultipartFile arquivo);
 }
