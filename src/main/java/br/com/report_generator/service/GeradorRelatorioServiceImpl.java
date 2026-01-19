@@ -36,8 +36,9 @@ public class GeradorRelatorioServiceImpl implements GeradorRelatorioService {
         JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(pedidoDTO.dataSource());
 
         Map<String, Object> parametros = new HashMap<>();
-        parametros.put("TITULO_PADRAO", pedidoDTO.titulo());
-        parametros.put("SUBTITULO_PADRAO", pedidoDTO.subtitulo());
+        pedidoDTO.parametros().forEach(parametroInformado -> {
+            parametros.put(parametroInformado.nome(), parametroInformado.valor());
+        });
 
         // Parâmetro padrão exigido quando não há SQL
         parametros.putIfAbsent(JRParameter.REPORT_DATA_SOURCE, dataSource);

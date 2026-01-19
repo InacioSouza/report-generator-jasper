@@ -9,8 +9,6 @@ import java.util.Map;
 import java.util.UUID;
 
 public record GeraRelatorioRequestDto(
-        String titulo,
-        String subtitulo,
         @NotNull @NotBlank
         UUID idRelatorio,
         @NotNull @NotBlank

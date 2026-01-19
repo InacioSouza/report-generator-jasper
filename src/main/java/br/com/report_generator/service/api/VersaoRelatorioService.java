@@ -14,6 +14,15 @@ public interface VersaoRelatorioService extends GenericService<VersaoRelatorio, 
 
     VersaoRelatorio buscaVersaoRelatorioMaisRecentePara(UUID idRelatorio);
 
+    /**
+     * Cadastra uma nova versão para um relatório existente,
+     * atualiza o atributo numeroUltimaVersao de Relatorio
+     * para o número da versão cadastrada.
+     * @param arquivoZip MultipartFile
+     * @param dto CadastraVersaoRelatorioRequestDto
+     * @param relatorio Relatorio
+     * @return VersaoRelatorio
+     */
     VersaoRelatorio cadastraVersaoRelatorio(
             MultipartFile arquivoZip,
             CadastraVersaoRelatorioRequestDto dto,
