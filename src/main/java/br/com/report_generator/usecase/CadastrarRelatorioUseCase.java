@@ -6,14 +6,10 @@ import br.com.report_generator.infra.exception.RegistroNaoEncontradoException;
 import br.com.report_generator.model.Sistema;
 import br.com.report_generator.service.api.RelatorioService;
 import br.com.report_generator.service.api.SistemaService;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 @Component
-@Getter
-@Setter
 public class CadastrarRelatorioUseCase {
 
     private final SistemaService sistemaService;

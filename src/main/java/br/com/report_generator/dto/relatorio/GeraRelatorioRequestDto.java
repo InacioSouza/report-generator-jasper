@@ -17,6 +17,7 @@ public record GeraRelatorioRequestDto(
         UUID idVersao,
         @NotNull
         List<Map<String, Object>> dataSource,
+        List<ParametroRelatorioDTO> parametros,
         @NotNull
         ObtencaoArquivoEnum exibicaoRelatorio) {
 }

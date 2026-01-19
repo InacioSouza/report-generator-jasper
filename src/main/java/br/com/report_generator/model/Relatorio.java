@@ -51,7 +51,9 @@ public class Relatorio {
     @Version
     private Integer versao;
 
-    @OneToMany(mappedBy = "relatorio",
+    @OneToMany(
+            mappedBy = "relatorio",
+            fetch = FetchType.LAZY,
             cascade = CascadeType.PERSIST,
             orphanRemoval = true)
     private List<VersaoRelatorio> listVersoes;

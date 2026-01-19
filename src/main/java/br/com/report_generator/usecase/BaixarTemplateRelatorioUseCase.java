@@ -10,12 +10,14 @@ import br.com.report_generator.model.VersaoRelatorio;
 import br.com.report_generator.service.api.RelatorioService;
 import br.com.report_generator.service.api.VersaoRelatorioService;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Component
 public class BaixarTemplateRelatorioUseCase {
 
     private final RelatorioService relatorioService;

@@ -34,27 +34,12 @@ public class GeradorRelatorioServiceImpl implements GeradorRelatorioService {
     @Autowired
     private VersaoRelatorioService versaoRelatorioService;
 
-    @Autowired
-    private ArquivoSubreportService arquivoSubreportService;
-
     @Override
-    public PdfGeradoDto gerarRelatorio(GeraRelatorioRequestDto pedidoDTO) {
-
-        Relatorio relatorio = this.relatorioService.findById(pedidoDTO.idRelatorio());
-
-        if(pedidoDTO.dataSource().isEmpty()) {
-            throw new IllegalArgumentException("O dataSource não pode estar vazio!");
-        }
-
-        if(relatorio == null) {
-            throw new RegistroNaoEncontradoException("Não existe relatório para o id : " + pedidoDTO.idRelatorio());
-        }
-
-        VersaoRelatorio versaoRelatorio =  this.versaoRelatorioService.findById(pedidoDTO.idVersao());
-
-        if(versaoRelatorio == null) {
-            throw new RegistroNaoEncontradoException("Não existe versão de relatório para o id : " + pedidoDTO.idVersao());
-        }
+    public PdfGeradoDto gerarRelatorio(
+            GeraRelatorioRequestDto pedidoDTO,
+            VersaoRelatorio versaoRelatorio,
+            String nomeFinalPDF
+    ) {
 
         byte[] templateCompilado = versaoRelatorio.getArquivoCompilado() != null ?
                 versaoRelatorio.getArquivoCompilado() : JasperUtil.compilaJRXML(versaoRelatorio.getArquivoOriginal());
@@ -70,13 +55,11 @@ public class GeradorRelatorioServiceImpl implements GeradorRelatorioService {
         // Parâmetro padrão exigido quando não há SQL
         parametros.putIfAbsent(JRParameter.REPORT_DATA_SOURCE, dataSource);
 
-        List<ArquivoSubreport> listSubreports = this.arquivoSubreportService.buscarSubreportsPorVersao(pedidoDTO.idVersao());
-
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
         try {
 
-            for(ArquivoSubreport arquivoSubreport : listSubreports) {
+            for(ArquivoSubreport arquivoSubreport : versaoRelatorio.getListSubreport()) {
                 byte[] templateSubrelatorioCompilado = arquivoSubreport.getArquivoCompilado() != null ?
                         arquivoSubreport.getArquivoCompilado() : JasperUtil.compilaJRXML(arquivoSubreport.getArquivoOriginal());
 
@@ -91,8 +74,7 @@ public class GeradorRelatorioServiceImpl implements GeradorRelatorioService {
             throw new FalhaAoGerarRelatorioException();
         }
 
-        String nomeRelatorio = relatorio.getNome() + "-v-" + versaoRelatorio.getNumeroVersao() + ".pdf";
 
-        return new PdfGeradoDto(nomeRelatorio, out.toByteArray());
+        return new PdfGeradoDto(nomeFinalPDF, out.toByteArray());
     }
 }
