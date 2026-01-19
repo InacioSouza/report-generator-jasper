@@ -1,6 +1,6 @@
 package br.com.report_generator.controller;
 
-import br.com.report_generator.dto.SistemaDto;
+import br.com.report_generator.dto.SistemaResponseDto;
 import br.com.report_generator.dto.SistemaRequestDto;
 import br.com.report_generator.model.Sistema;
 import br.com.report_generator.service.api.SistemaService;
@@ -20,21 +20,28 @@ public class SistemaController {
     }
 
     @GetMapping
-    public ResponseEntity<List<SistemaDto>> buscaTodos() {
-        return ResponseEntity.ok(this.service.findAll().stream().map(SistemaDto::new).toList());
+    public ResponseEntity<List<SistemaResponseDto>> buscaTodos() {
+        return ResponseEntity.ok(this.service.findAll().stream().map(SistemaResponseDto::new).toList());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SistemaDto> buscaPorId(@PathVariable Long id) {
-        return ResponseEntity.ok(new SistemaDto(this.service.findById(id)));
+    public ResponseEntity<SistemaResponseDto> buscaPorId(@PathVariable Long id) {
+        return ResponseEntity.ok(new SistemaResponseDto(this.service.findById(id)));
     }
 
     @PostMapping
-    public ResponseEntity<SistemaDto> cadastra(@RequestBody SistemaRequestDto sistemaRequest) {
+    public ResponseEntity<SistemaResponseDto> cadastra(@RequestBody SistemaRequestDto sistemaRequest) {
         Sistema sistema = new Sistema();
         sistema.setNome(sistemaRequest.nome());
         sistema.setDescricao(sistemaRequest.descricao());
-        sistema.setVersao(1);
-        return ResponseEntity.ok(new SistemaDto(this.service.save(sistema)));
+        return ResponseEntity.ok(new SistemaResponseDto(this.service.save(sistema)));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<SistemaResponseDto> atualiza(
+            @PathVariable Long id,
+            @RequestBody SistemaRequestDto dto
+    ) {
+        return ResponseEntity.ok(this.service.atualiza(id, dto));
     }
 }
