@@ -6,7 +6,6 @@ import br.com.report_generator.model.VersaoRelatorio;
 import br.com.report_generator.service.api.generic.GenericService;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Map;
 import java.util.UUID;
 
 public interface VersaoRelatorioService extends GenericService<VersaoRelatorio, UUID> {
@@ -20,6 +19,4 @@ public interface VersaoRelatorioService extends GenericService<VersaoRelatorio, 
             CadastraVersaoRelatorioRequestDto dto,
             Relatorio relatorio
     );
-
-    Integer buscaNumeroVersao(UUID idVersao);
 }

@@ -1,10 +1,15 @@
 package br.com.report_generator.controller;
 
+import br.com.report_generator.service.api.ArquivoSubreportService;
+import br.com.report_generator.service.api.VersaoRelatorioService;
 import br.com.report_generator.dto.relatorio.BaixarRelatorioRequestDto;
 import br.com.report_generator.dto.relatorio.CadastraRelatorioRequestDto;
 import br.com.report_generator.dto.relatorio.InfoRelatorioResponseDto;
 import br.com.report_generator.dto.relatorio.RelatorioCadastradoResponseDto;
 import br.com.report_generator.service.api.RelatorioService;
+import br.com.report_generator.service.api.SistemaService;
+import br.com.report_generator.usecase.BaixarTemplateRelatorioUseCase;
+import br.com.report_generator.usecase.CadastrarRelatorioUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,9 +27,20 @@ import java.util.List;
 public class RelatorioController {
 
     private final RelatorioService relatorioService;
+    private final VersaoRelatorioService versaoRelatorioService;
+    private final ArquivoSubreportService arquivoSubreportService;
+    private final SistemaService sistemaService;
 
-    public RelatorioController(RelatorioService relatorioService) {
+    public RelatorioController(
+            RelatorioService relatorioService,
+            VersaoRelatorioService versaoRelatorioService,
+            ArquivoSubreportService arquivoSubreportService,
+            SistemaService sistemaService
+    ) {
         this.relatorioService = relatorioService;
+        this.versaoRelatorioService = versaoRelatorioService;
+        this.arquivoSubreportService = arquivoSubreportService;
+        this.sistemaService = sistemaService;
     }
 
     @Operation(
@@ -46,13 +62,22 @@ public class RelatorioController {
             @RequestPart("infos")
             @Valid
             CadastraRelatorioRequestDto infos) {
-        return ResponseEntity.ok(this.relatorioService.uploadRelatorio(file, infos));
+
+        return ResponseEntity.ok(
+                new CadastrarRelatorioUseCase(sistemaService, relatorioService)
+                        .executar(file, infos)
+        );
     }
 
     @PostMapping("/download")
     public void baixarRelatorio(@RequestBody BaixarRelatorioRequestDto dto,
                                 HttpServletResponse response) {
-        this.relatorioService.baixarRelatorio(dto, response);
+
+        new BaixarTemplateRelatorioUseCase(
+                this.relatorioService,
+                this.versaoRelatorioService,
+                this.arquivoSubreportService
+        ).executar(dto, response);
     }
 
     @GetMapping("/informacao-completa")

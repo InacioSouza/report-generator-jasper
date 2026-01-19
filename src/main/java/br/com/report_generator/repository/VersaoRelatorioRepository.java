@@ -2,9 +2,11 @@ package br.com.report_generator.repository;
 
 import br.com.report_generator.model.VersaoRelatorio;
 import br.com.report_generator.repository.generic.GenericRepository;
+import br.com.report_generator.shared.Teste;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -29,14 +31,4 @@ public interface VersaoRelatorioRepository extends GenericRepository<VersaoRelat
                     """
     )
     Optional<VersaoRelatorio> buscaVersaoRelatorioMaisRecentePara(UUID idRelatorio);
-
-    @Query(
-            """
-            SELECT v.numeroVersao
-            FROM VersaoRelatorio v
-            WHERE v.id = :idVersao
-            """
-    )
-    Integer buscaNumeroVersao(UUID idVersao);
-
 }

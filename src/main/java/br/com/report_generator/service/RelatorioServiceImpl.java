@@ -1,26 +1,22 @@
 package br.com.report_generator.service;
 
-import br.com.report_generator.dto.*;
-import br.com.report_generator.dto.relatorio.*;
-import br.com.report_generator.infra.exception.*;
 import br.com.report_generator.infra.factor.RelatorioFactor;
 import br.com.report_generator.infra.factor.VersaoRelatorioFactor;
 import br.com.report_generator.model.*;
 import br.com.report_generator.repository.RelatorioRepository;
 import br.com.report_generator.service.api.ArquivoSubreportService;
 import br.com.report_generator.service.api.RelatorioService;
-import br.com.report_generator.service.api.SistemaService;
-import br.com.report_generator.service.api.VersaoRelatorioService;
+import br.com.report_generator.dto.IdentificadorArquivoPrincipalEnum;
+import br.com.report_generator.dto.relatorio.CadastraRelatorioRequestDto;
+import br.com.report_generator.dto.relatorio.InfoRelatorioResponseDto;
+import br.com.report_generator.dto.relatorio.RelatorioCadastradoResponseDto;
 import br.com.report_generator.service.generic.GenericServiceImpl;
 import br.com.report_generator.service.utils.JasperUtil;
 import br.com.report_generator.service.utils.TrataArquivoService;
-import br.com.report_generator.service.utils.ZipUtil;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.*;
 
 @Service("br.com.report_generator.service.RelatorioServiceImpl")
@@ -28,12 +24,6 @@ public class RelatorioServiceImpl extends GenericServiceImpl<Relatorio, UUID> im
 
     private final RelatorioRepository repository;
     private final TrataArquivoService trataArquivoService;
-
-    @Autowired
-    private SistemaService sistemaService;
-
-    @Autowired
-    private VersaoRelatorioService versaoRelatorioService;
 
     @Autowired
     private ArquivoSubreportService arquivoSubreportService;
@@ -48,20 +38,17 @@ public class RelatorioServiceImpl extends GenericServiceImpl<Relatorio, UUID> im
     }
 
     @Override
-    public RelatorioCadastradoResponseDto uploadRelatorio(MultipartFile arquivo, CadastraRelatorioRequestDto relatorioUploadDto) {
-
-        Sistema sistemaEncontrado = this.sistemaService.findById(relatorioUploadDto.idSistema());
-        if (sistemaEncontrado == null){
-            throw new RegistroNaoEncontradoException(
-                    "Não foi encontrado sistema para o id : " + relatorioUploadDto.idSistema()
-            );
-        }
+    public RelatorioCadastradoResponseDto uploadRelatorio(
+            MultipartFile arquivo,
+            CadastraRelatorioRequestDto relatorioUploadDto,
+            Sistema sistemaDoRelatorio
+    ) {
 
         Map<String, byte[]> mapArquivos = this.trataArquivoService.validaEDevolveArquivosDoZip(arquivo);
 
         Relatorio relatorio = new RelatorioFactor()
                 .constroiRelatorioUtilizandoDto(relatorioUploadDto)
-                .addSistema(sistemaEncontrado)
+                .addSistema(sistemaDoRelatorio)
                 .build();
 
         VersaoRelatorio versaoRelatorio = new VersaoRelatorioFactor()
@@ -104,50 +91,8 @@ public class RelatorioServiceImpl extends GenericServiceImpl<Relatorio, UUID> im
         relatorio.getListVersoes().add(versaoRelatorio);
 
         Relatorio relatorioSalvo = this.save(relatorio);
-        versaoRelatorio.setNumeroVersao(this.versaoRelatorioService.buscaNumeroVersao(versaoRelatorio.getId()));
 
         return new RelatorioCadastradoResponseDto(relatorioSalvo, versaoRelatorio);
-    }
-
-    @Override
-    public void baixarRelatorio (
-            BaixarRelatorioRequestDto dto,
-            HttpServletResponse httpResponse
-    ) {
-
-        Relatorio relatorio = this.findById(dto.idRelatorio());
-        if (relatorio == null) throw new RegistroNaoEncontradoException("Não foi encontrado relatório para o id: " + dto.idRelatorio());
-
-        VersaoRelatorio versaoRelatorio;
-        if(dto.numeroVersao() == null) {
-            versaoRelatorio = this.versaoRelatorioService.buscaVersaoRelatorioMaisRecentePara(dto.idRelatorio());
-        } else {
-            versaoRelatorio = this.versaoRelatorioService.buscaVersaoRelatorioPorIdRelatorio(dto.idRelatorio(), dto.numeroVersao());
-        }
-
-        if (versaoRelatorio == null) throw new RegistroNaoEncontradoException("Não foi encontrado versão de relatório para o número: " + dto.numeroVersao());
-
-        Map<String, byte[]> mapArquivos = new HashMap<>();
-        mapArquivos.put(versaoRelatorio.getNomeArquivo(), versaoRelatorio.getArquivoOriginal());
-
-        List<ArquivoSubreport> listSubreports = this.arquivoSubreportService.buscarSubreportsPorVersao(versaoRelatorio.getId());
-        for(ArquivoSubreport arquivoSubreport : listSubreports) {
-            mapArquivos.put(arquivoSubreport.getNomeParametro(), arquivoSubreport.getArquivoOriginal());
-        }
-
-        byte[] zipArquivos = ZipUtil.gerarZip(mapArquivos);
-
-        try {
-            httpResponse.getOutputStream().write(zipArquivos);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        String nomeZip = relatorio.getNome() + ".zip";
-
-        httpResponse.setStatus(HttpServletResponse.SC_OK);
-        httpResponse.setContentType("application/zip");
-        httpResponse.setHeader("Content-Disposition", dto.exibicao().getExibicao() + "; filename=\"" + nomeZip + "\"");
     }
 
     @Override
