@@ -1,32 +1,33 @@
 package br.com.report_generator.service;
 
-import br.com.report_generator.infra.factor.RelatorioFactor;
-import br.com.report_generator.infra.factor.VersaoRelatorioFactor;
-import br.com.report_generator.model.*;
-import br.com.report_generator.repository.RelatorioRepository;
-import br.com.report_generator.service.api.ArquivoSubreportService;
-import br.com.report_generator.service.api.RelatorioService;
 import br.com.report_generator.dto.IdentificadorArquivoPrincipalEnum;
 import br.com.report_generator.dto.relatorio.CadastraRelatorioRequestDto;
 import br.com.report_generator.dto.relatorio.InfoRelatorioResponseDto;
 import br.com.report_generator.dto.relatorio.RelatorioCadastradoResponseDto;
+import br.com.report_generator.infra.factor.RelatorioFactor;
+import br.com.report_generator.infra.factor.VersaoRelatorioFactor;
+import br.com.report_generator.model.ArquivoSubreport;
+import br.com.report_generator.model.Relatorio;
+import br.com.report_generator.model.Sistema;
+import br.com.report_generator.model.VersaoRelatorio;
+import br.com.report_generator.repository.RelatorioRepository;
+import br.com.report_generator.service.api.RelatorioService;
 import br.com.report_generator.service.generic.GenericServiceImpl;
 import br.com.report_generator.service.utils.JasperUtil;
 import br.com.report_generator.service.utils.TrataArquivoService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service("br.com.report_generator.service.RelatorioServiceImpl")
 public class RelatorioServiceImpl extends GenericServiceImpl<Relatorio, UUID> implements RelatorioService {
 
     private final RelatorioRepository repository;
     private final TrataArquivoService trataArquivoService;
-
-    @Autowired
-    private ArquivoSubreportService arquivoSubreportService;
 
     RelatorioServiceImpl(
             RelatorioRepository repository,

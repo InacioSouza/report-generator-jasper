@@ -3,36 +3,23 @@ package br.com.report_generator.service;
 import br.com.report_generator.dto.PdfGeradoDto;
 import br.com.report_generator.dto.relatorio.GeraRelatorioRequestDto;
 import br.com.report_generator.infra.exception.FalhaAoGerarRelatorioException;
-import br.com.report_generator.infra.exception.RegistroNaoEncontradoException;
 import br.com.report_generator.model.ArquivoSubreport;
-import br.com.report_generator.model.Relatorio;
 import br.com.report_generator.model.VersaoRelatorio;
-import br.com.report_generator.service.api.ArquivoSubreportService;
 import br.com.report_generator.service.api.GeradorRelatorioService;
-import br.com.report_generator.service.api.RelatorioService;
-import br.com.report_generator.service.api.VersaoRelatorioService;
 import br.com.report_generator.service.utils.JasperUtil;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.util.JRLoader;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Service("br.com.report_generator.service.GeneratorReportServiceImpl")
 public class GeradorRelatorioServiceImpl implements GeradorRelatorioService {
-
-    @Autowired
-    private RelatorioService relatorioService;
-
-    @Autowired
-    private VersaoRelatorioService versaoRelatorioService;
 
     @Override
     public PdfGeradoDto gerarRelatorio(
