@@ -8,4 +8,5 @@ public interface GenericService <E, I> {
     public void delete(E entity);
     public E findById(Object id);
     public List<E> findAll();
+    public boolean existeRegistroParaId(Object id);
 }

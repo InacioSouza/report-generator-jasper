@@ -39,4 +39,9 @@ public class GenericServiceImpl<E, I> implements GenericService<E, I> {
     public List<E> findAll() {
         return this.repository.findAll();
     }
+
+    @Override
+    public boolean existeRegistroParaId(Object id) {
+        return this.repository.existsById((I) id);
+    }
 }

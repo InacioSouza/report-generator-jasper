@@ -2,6 +2,8 @@ package br.com.report_generator.service;
 
 import br.com.report_generator.dto.IdentificadorArquivoPrincipalEnum;
 import br.com.report_generator.dto.versaorelatorio.CadastraVersaoRelatorioRequestDto;
+import br.com.report_generator.dto.versaorelatorio.VersaoRelatorioResponseDto;
+import br.com.report_generator.infra.factor.VersaoRelatorioFactor;
 import br.com.report_generator.model.ArquivoSubreport;
 import br.com.report_generator.model.Relatorio;
 import br.com.report_generator.model.VersaoRelatorio;
@@ -42,14 +44,14 @@ public class VersaoRelatorioServiceImpl extends GenericServiceImpl<VersaoRelator
     }
 
     @Override
-    public VersaoRelatorio cadastraVersaoRelatorio(MultipartFile arquivoZip,
-                                                   CadastraVersaoRelatorioRequestDto dto,
-                                                   Relatorio relatorio) {
+    public VersaoRelatorioResponseDto cadastraVersaoRelatorio(MultipartFile arquivoZip,
+                                                              CadastraVersaoRelatorioRequestDto dto,
+                                                              Relatorio relatorio) {
 
-        VersaoRelatorio novaVersaoRelatorio = new VersaoRelatorio();
-        novaVersaoRelatorio.setDescricaoVersao(dto.descricaoVersao());
-        novaVersaoRelatorio.setRelatorio(relatorio);
-        novaVersaoRelatorio.setListSubreport(new ArrayList<>());
+        VersaoRelatorio novaVersaoRelatorio = new VersaoRelatorioFactor()
+                .constroiComCadastraVersaoRelatorioRequestDto(dto)
+                .addRelatorio(relatorio)
+                .build();
 
         Map<String, byte[]> mapArquivos = this.trataArquivoService.validaEDevolveArquivosDoZip(arquivoZip);
 
@@ -81,6 +83,6 @@ public class VersaoRelatorioServiceImpl extends GenericServiceImpl<VersaoRelator
         }
 
         relatorio.setNumeroUltimaVersao(novaVersaoRelatorio.getNumeroVersao());
-        return this.save(novaVersaoRelatorio);
+        return new VersaoRelatorioResponseDto(this.save(novaVersaoRelatorio));
     }
 }

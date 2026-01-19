@@ -26,6 +26,7 @@ public interface VersaoRelatorioRepository extends GenericRepository<VersaoRelat
                     FROM VersaoRelatorio v
                     WHERE v.relatorio.id = :idRelatorio
                     ORDER BY v.dataCriacao DESC
+                    LIMIT 1
                     """
     )
     Optional<VersaoRelatorio> buscaVersaoRelatorioMaisRecentePara(UUID idRelatorio);

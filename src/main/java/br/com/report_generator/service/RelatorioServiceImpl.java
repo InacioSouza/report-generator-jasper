@@ -105,4 +105,9 @@ public class RelatorioServiceImpl extends GenericServiceImpl<Relatorio, UUID> im
                 .toList();
 
     }
+
+    @Override
+    public Integer qtdVersoesParaORelatorio(UUID idRelatorio) {
+        return this.repository.qtdVersoesParaORelatorio(idRelatorio);
+    }
 }

@@ -1,6 +1,7 @@
 package br.com.report_generator.service.api;
 
 import br.com.report_generator.dto.versaorelatorio.CadastraVersaoRelatorioRequestDto;
+import br.com.report_generator.dto.versaorelatorio.VersaoRelatorioResponseDto;
 import br.com.report_generator.model.Relatorio;
 import br.com.report_generator.model.VersaoRelatorio;
 import br.com.report_generator.service.api.generic.GenericService;
@@ -21,9 +22,9 @@ public interface VersaoRelatorioService extends GenericService<VersaoRelatorio, 
      * @param arquivoZip MultipartFile
      * @param dto CadastraVersaoRelatorioRequestDto
      * @param relatorio Relatorio
-     * @return VersaoRelatorio
+     * @return VersaoRelatorioResponseDto
      */
-    VersaoRelatorio cadastraVersaoRelatorio(
+    VersaoRelatorioResponseDto cadastraVersaoRelatorio(
             MultipartFile arquivoZip,
             CadastraVersaoRelatorioRequestDto dto,
             Relatorio relatorio

@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.HashMap;
 import java.util.Map;
 
-@Service
+@Service("br.com.report_generator.service.utils.TrataArquivoService")
 public class TrataArquivoService {
 
     /**

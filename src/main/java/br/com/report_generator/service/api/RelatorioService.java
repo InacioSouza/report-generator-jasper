@@ -36,4 +36,7 @@ public interface RelatorioService extends GenericService<Relatorio, UUID> {
      * @return InfoRelatorioResponseDto
      */
     List<InfoRelatorioResponseDto> buscaInformacaoDeTodosRelatorios();
+
+    Integer qtdVersoesParaORelatorio(UUID idRelatorio);
+
 }
