@@ -1,5 +1,6 @@
 package br.com.report_generator.service.api;
 
+import br.com.report_generator.dto.filtros.RelatorioFiltroDto;
 import br.com.report_generator.dto.relatorio.CadastraRelatorioRequestDto;
 import br.com.report_generator.dto.relatorio.InfoRelatorioResponseDto;
 import br.com.report_generator.dto.relatorio.RelatorioCadastradoResponseDto;
@@ -30,12 +31,13 @@ public interface RelatorioService extends GenericService<Relatorio, UUID> {
             Sistema sistemaDoRelatorio);
 
     /**
-     * Busca todas as informações relacionadas ao Relatorio,
-     * traz lista de VersaoRelatorio e para estas a respectiva lista de ArquivoSubreport.
-     * Não inclui os bytes dos templates (arquivos JRXML).
+     * Busca registros de Relatorio de acordo com os campos preenchidos no filtro,
+     * caso não haja nenhum campo preenchido busca todos os registros.
+     * Retorna uma lista com as informações dos relatórios,
+     * não inclui os bytes dos templates (arquivos JRXML).
      * @return InfoRelatorioResponseDto
      */
-    List<InfoRelatorioResponseDto> buscaInformacaoDeTodosRelatorios();
+    List<InfoRelatorioResponseDto> buscaRelatorios(RelatorioFiltroDto filtro);
 
     Integer qtdVersoesParaORelatorio(UUID idRelatorio);
 

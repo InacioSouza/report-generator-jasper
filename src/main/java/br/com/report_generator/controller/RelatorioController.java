@@ -1,5 +1,6 @@
 package br.com.report_generator.controller;
 
+import br.com.report_generator.dto.filtros.RelatorioFiltroDto;
 import br.com.report_generator.service.api.ArquivoSubreportService;
 import br.com.report_generator.service.api.VersaoRelatorioService;
 import br.com.report_generator.dto.relatorio.BaixarRelatorioRequestDto;
@@ -80,9 +81,10 @@ public class RelatorioController {
         ).executar(dto, response);
     }
 
-    @GetMapping("/informacao-completa")
-    public ResponseEntity<List<InfoRelatorioResponseDto>> buscaInformacoesDeTodosRelatorios() {
-        return ResponseEntity.ok(this.relatorioService.buscaInformacaoDeTodosRelatorios());
+    @PostMapping("/informacoes-relatorio")
+    public ResponseEntity<List<InfoRelatorioResponseDto>> buscaInformacoesDosRelatorios(
+            @RequestBody RelatorioFiltroDto filtro) {
+        return ResponseEntity.ok(this.relatorioService.buscaRelatorios(filtro));
     }
 
 }

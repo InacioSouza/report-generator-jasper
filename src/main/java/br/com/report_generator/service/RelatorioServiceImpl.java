@@ -1,6 +1,7 @@
 package br.com.report_generator.service;
 
 import br.com.report_generator.dto.IdentificadorArquivoPrincipalEnum;
+import br.com.report_generator.dto.filtros.RelatorioFiltroDto;
 import br.com.report_generator.dto.relatorio.CadastraRelatorioRequestDto;
 import br.com.report_generator.dto.relatorio.InfoRelatorioResponseDto;
 import br.com.report_generator.dto.relatorio.RelatorioCadastradoResponseDto;
@@ -15,6 +16,8 @@ import br.com.report_generator.service.api.RelatorioService;
 import br.com.report_generator.service.generic.GenericServiceImpl;
 import br.com.report_generator.service.utils.JasperUtil;
 import br.com.report_generator.service.utils.TrataArquivoService;
+import br.com.report_generator.repository.specification.RelatorioSpecification;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -97,12 +100,11 @@ public class RelatorioServiceImpl extends GenericServiceImpl<Relatorio, UUID> im
     }
 
     @Override
-    public List<InfoRelatorioResponseDto> buscaInformacaoDeTodosRelatorios() {
+    public List<InfoRelatorioResponseDto> buscaRelatorios(RelatorioFiltroDto filtro) {
 
-        return this.findAll()
-                .stream()
-                .map(InfoRelatorioResponseDto::new)
-                .toList();
+        Specification<Relatorio> spec = RelatorioSpecification.filtro(filtro);
+        List<Relatorio> listRelatorio = this.repository.findAll(spec);
+        return listRelatorio.stream().map(InfoRelatorioResponseDto::new).toList();
 
     }
 
