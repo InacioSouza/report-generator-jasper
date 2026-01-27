@@ -9,6 +9,7 @@ import br.com.report_generator.service.api.SistemaService;
 import br.com.report_generator.usecase.AtualizaRelatorioUseCase;
 import br.com.report_generator.usecase.BaixarTemplateRelatorioUseCase;
 import br.com.report_generator.usecase.CadastrarRelatorioUseCase;
+import br.com.report_generator.usecase.DeletaRelatorioUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import jakarta.servlet.http.HttpServletResponse;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/relatorio")
@@ -91,5 +93,10 @@ public class RelatorioController {
         return ResponseEntity.ok(
                 new AtualizaRelatorioUseCase(sistemaService, relatorioService).executar(dto)
         );
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<UUID> deletaRelatorio(@PathVariable UUID id) {
+        return ResponseEntity.ok(new DeletaRelatorioUseCase(this.relatorioService).executar(id));
     }
 }

@@ -132,4 +132,10 @@ public class RelatorioServiceImpl extends GenericServiceImpl<Relatorio, UUID> im
 
         return new InfoRelatorioResponseDto(this.repository.save(relatorio));
     }
+
+    @Override
+    public UUID deletarPorId(UUID idRelatorio) {
+        this.repository.deleteById(idRelatorio);
+        return idRelatorio;
+    }
 }
