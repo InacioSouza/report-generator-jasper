@@ -29,14 +29,6 @@ public class SistemaController {
         return ResponseEntity.ok(new SistemaResponseDto(this.service.findById(id)));
     }
 
-    @PostMapping
-    public ResponseEntity<SistemaResponseDto> cadastra(@RequestBody SistemaRequestDto sistemaRequest) {
-        Sistema sistema = new Sistema();
-        sistema.setNome(sistemaRequest.nome());
-        sistema.setDescricao(sistemaRequest.descricao());
-        return ResponseEntity.ok(new SistemaResponseDto(this.service.save(sistema)));
-    }
-
     @PutMapping("/{id}")
     public ResponseEntity<SistemaResponseDto> atualiza(
             @PathVariable Long id,

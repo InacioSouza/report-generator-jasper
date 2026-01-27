@@ -51,3 +51,20 @@ CREATE TABLE arquivo_subreport(
 
     FOREIGN KEY (versao_relatorio_id) REFERENCES versao_relatorio(id)
 );
+
+CREATE TABLE usuario_app(
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    nome VARCHAR(250) NOT NULL,
+    senha VARCHAR(350) not null,
+    permisao VARCHAR(100) not null
+);
+
+CREATE TABLE api_key(
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    hash VARCHAR(450) NOT NULL,
+    ativa BOOLEAN NOT NULL,
+    sistema_id BIGINT NOT NULL,
+    criada_em TIMESTAMP NOT NULL,
+
+    FOREIGN KEY (sistema_id) REFERENCES sistema(id)
+);
