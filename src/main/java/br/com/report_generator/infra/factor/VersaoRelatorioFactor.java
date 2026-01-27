@@ -16,6 +16,7 @@ public class VersaoRelatorioFactor {
     public VersaoRelatorioFactor constriBasico() {
         this.versaoRelatorio = new VersaoRelatorio();
         versaoRelatorio.setDataCriacao(new Date());
+        versaoRelatorio.setUltimaAtualizacao(new Date());
         versaoRelatorio.setTipoArquivo(TipoArquivoEnum.JRXML);
         versaoRelatorio.setTipoFinalRelatorio(TipoArquivoEnum.PDF);
         versaoRelatorio.setListSubreport(new ArrayList<>());

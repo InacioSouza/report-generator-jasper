@@ -1,12 +1,14 @@
 package br.com.report_generator.service.api;
 
 import br.com.report_generator.dto.filtros.RelatorioFiltroDto;
+import br.com.report_generator.dto.relatorio.AtualizaRelatorioRequestDto;
 import br.com.report_generator.dto.relatorio.CadastraRelatorioRequestDto;
 import br.com.report_generator.dto.relatorio.InfoRelatorioResponseDto;
 import br.com.report_generator.dto.relatorio.RelatorioCadastradoResponseDto;
 import br.com.report_generator.model.Relatorio;
 import br.com.report_generator.model.Sistema;
 import br.com.report_generator.service.api.generic.GenericService;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -41,4 +43,5 @@ public interface RelatorioService extends GenericService<Relatorio, UUID> {
 
     Integer qtdVersoesParaORelatorio(UUID idRelatorio);
 
+    InfoRelatorioResponseDto atualizarRelatorio(AtualizaRelatorioRequestDto dto,Sistema sistema);
 }

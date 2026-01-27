@@ -1,14 +1,12 @@
 package br.com.report_generator.controller;
 
 import br.com.report_generator.dto.filtros.RelatorioFiltroDto;
+import br.com.report_generator.dto.relatorio.*;
 import br.com.report_generator.service.api.ArquivoSubreportService;
 import br.com.report_generator.service.api.VersaoRelatorioService;
-import br.com.report_generator.dto.relatorio.BaixarRelatorioRequestDto;
-import br.com.report_generator.dto.relatorio.CadastraRelatorioRequestDto;
-import br.com.report_generator.dto.relatorio.InfoRelatorioResponseDto;
-import br.com.report_generator.dto.relatorio.RelatorioCadastradoResponseDto;
 import br.com.report_generator.service.api.RelatorioService;
 import br.com.report_generator.service.api.SistemaService;
+import br.com.report_generator.usecase.AtualizaRelatorioUseCase;
 import br.com.report_generator.usecase.BaixarTemplateRelatorioUseCase;
 import br.com.report_generator.usecase.CadastrarRelatorioUseCase;
 import io.swagger.v3.oas.annotations.Operation;
@@ -87,4 +85,11 @@ public class RelatorioController {
         return ResponseEntity.ok(this.relatorioService.buscaRelatorios(filtro));
     }
 
+    @PutMapping
+    public ResponseEntity<InfoRelatorioResponseDto> atualizarRelatorio(
+            @RequestBody AtualizaRelatorioRequestDto dto) {
+        return ResponseEntity.ok(
+                new AtualizaRelatorioUseCase(sistemaService, relatorioService).executar(dto)
+        );
+    }
 }

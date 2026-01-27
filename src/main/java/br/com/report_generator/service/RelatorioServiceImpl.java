@@ -2,9 +2,11 @@ package br.com.report_generator.service;
 
 import br.com.report_generator.dto.IdentificadorArquivoPrincipalEnum;
 import br.com.report_generator.dto.filtros.RelatorioFiltroDto;
+import br.com.report_generator.dto.relatorio.AtualizaRelatorioRequestDto;
 import br.com.report_generator.dto.relatorio.CadastraRelatorioRequestDto;
 import br.com.report_generator.dto.relatorio.InfoRelatorioResponseDto;
 import br.com.report_generator.dto.relatorio.RelatorioCadastradoResponseDto;
+import br.com.report_generator.infra.exception.RegistroNaoEncontradoException;
 import br.com.report_generator.infra.factor.RelatorioFactor;
 import br.com.report_generator.infra.factor.VersaoRelatorioFactor;
 import br.com.report_generator.model.ArquivoSubreport;
@@ -21,10 +23,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service("br.com.report_generator.service.RelatorioServiceImpl")
 public class RelatorioServiceImpl extends GenericServiceImpl<Relatorio, UUID> implements RelatorioService {
@@ -111,5 +110,26 @@ public class RelatorioServiceImpl extends GenericServiceImpl<Relatorio, UUID> im
     @Override
     public Integer qtdVersoesParaORelatorio(UUID idRelatorio) {
         return this.repository.qtdVersoesParaORelatorio(idRelatorio);
+    }
+
+    @Override
+    public InfoRelatorioResponseDto atualizarRelatorio(
+            AtualizaRelatorioRequestDto dto,
+            Sistema sistema
+    ) {
+
+        if(!this.repository.existsById(dto.idRelatorio())) throw new RegistroNaoEncontradoException(
+                "Não foi encontrado relatório para o id " + dto.idRelatorio());
+
+        Relatorio relatorio = this.repository.findById(dto.idRelatorio()).get();
+        relatorio.setTituloPadrao(dto.tituloPadrao());
+        relatorio.setSubtituloPadrao(dto.subtituloPadrao());
+        relatorio.setNome(dto.nome());
+        relatorio.setInformacao(dto.informacao());
+        relatorio.setDescricaoTecnica(dto.descricaoTecnica());
+        relatorio.setSistema(sistema);
+        relatorio.setUltimaAtualizacao(new Date());
+
+        return new InfoRelatorioResponseDto(this.repository.save(relatorio));
     }
 }

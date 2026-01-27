@@ -14,9 +14,10 @@ CREATE TABLE relatorio (
     nome VARCHAR(250),
     descricao_tecnica TEXT,
     informacao TEXT,
-    sistema_id BIGINT NOT NULL,
+    sistema_id BIGINT,
     numero_ultima_versao BIGINT NOT NULL,
     data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    ultima_atualizacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     versao BIGINT NOT NULL,
 
     FOREIGN KEY (sistema_id) REFERENCES sistema(id)
@@ -24,6 +25,7 @@ CREATE TABLE relatorio (
 
 CREATE TABLE versao_relatorio(
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    nome VARCHAR(250),
     nome_arquivo VARCHAR(250) NOT NULL,
     relatorio_id UUID NOT NULL,
     numero_versao BIGINT NOT NULL,
@@ -33,6 +35,7 @@ CREATE TABLE versao_relatorio(
     arquivo_compilado BYTEA,
     arquivo_original BYTEA NOT NULL,
     data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    ultima_atualizacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     versao BIGINT NOT NULL,
 
     FOREIGN KEY (relatorio_id) REFERENCES relatorio(id)

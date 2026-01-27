@@ -24,6 +24,8 @@ public class VersaoRelatorio {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
+    private String nome;
+
     @Column(name = "nome_arquivo")
     private String nomeArquivo;
 
@@ -54,6 +56,9 @@ public class VersaoRelatorio {
 
     @Column(name = "data_criacao")
     private Date dataCriacao;
+
+    @Column(name = "ultima_atualizacao")
+    private Date ultimaAtualizacao;
 
     @Version
     private Integer versao;
