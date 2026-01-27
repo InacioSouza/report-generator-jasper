@@ -1,6 +1,8 @@
 package br.com.report_generator.service.api;
 
+import br.com.report_generator.dto.versaorelatorio.AtualizaVersaoRelatorioRequestDto;
 import br.com.report_generator.dto.versaorelatorio.CadastraVersaoRelatorioRequestDto;
+import br.com.report_generator.dto.versaorelatorio.InfoVersaoRelatorioResponseDto;
 import br.com.report_generator.dto.versaorelatorio.VersaoRelatorioResponseDto;
 import br.com.report_generator.model.Relatorio;
 import br.com.report_generator.model.VersaoRelatorio;
@@ -29,4 +31,6 @@ public interface VersaoRelatorioService extends GenericService<VersaoRelatorio, 
             CadastraVersaoRelatorioRequestDto dto,
             Relatorio relatorio
     );
+
+    InfoVersaoRelatorioResponseDto atualizar(AtualizaVersaoRelatorioRequestDto dto);
 }

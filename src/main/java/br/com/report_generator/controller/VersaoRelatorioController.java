@@ -1,5 +1,6 @@
 package br.com.report_generator.controller;
 
+import br.com.report_generator.dto.versaorelatorio.AtualizaVersaoRelatorioRequestDto;
 import br.com.report_generator.dto.versaorelatorio.CadastraVersaoRelatorioRequestDto;
 import br.com.report_generator.dto.versaorelatorio.VersaoRelatorioResponseDto;
 import br.com.report_generator.infra.exception.RegistroNaoEncontradoException;
@@ -49,7 +50,7 @@ public class VersaoRelatorioController {
     }
 
     @GetMapping
-    public ResponseEntity<?> buscarTodasVersaoRelatorio() {
+    public ResponseEntity<List<VersaoRelatorioResponseDto>> buscarTodasVersaoRelatorio() {
 
         List<VersaoRelatorioResponseDto> listDTO = this.versaoRelatorioService
                 .findAll()
@@ -61,7 +62,7 @@ public class VersaoRelatorioController {
     }
 
     @DeleteMapping({"/{id}"})
-    public ResponseEntity<?> deletarVersaoRelatorio(@PathVariable UUID id) {
+    public ResponseEntity<UUID> deletarVersaoRelatorio(@PathVariable UUID id) {
         return ResponseEntity.ok(
                 new DeletaVersaoRelatorioUseCase(
                         this.relatorioService,
@@ -69,4 +70,8 @@ public class VersaoRelatorioController {
                 ).executar(id));
     }
 
+    @PutMapping
+    public ResponseEntity<?> atualizarVersaoRelatorio(AtualizaVersaoRelatorioRequestDto dto) {
+        return ResponseEntity.ok(this.versaoRelatorioService.atualizar(dto));
+    }
 }

@@ -1,8 +1,11 @@
 package br.com.report_generator.service;
 
 import br.com.report_generator.dto.IdentificadorArquivoPrincipalEnum;
+import br.com.report_generator.dto.versaorelatorio.AtualizaVersaoRelatorioRequestDto;
 import br.com.report_generator.dto.versaorelatorio.CadastraVersaoRelatorioRequestDto;
+import br.com.report_generator.dto.versaorelatorio.InfoVersaoRelatorioResponseDto;
 import br.com.report_generator.dto.versaorelatorio.VersaoRelatorioResponseDto;
+import br.com.report_generator.infra.exception.RegistroNaoEncontradoException;
 import br.com.report_generator.infra.factor.VersaoRelatorioFactor;
 import br.com.report_generator.model.ArquivoSubreport;
 import br.com.report_generator.model.Relatorio;
@@ -84,5 +87,18 @@ public class VersaoRelatorioServiceImpl extends GenericServiceImpl<VersaoRelator
 
         relatorio.setNumeroUltimaVersao(novaVersaoRelatorio.getNumeroVersao());
         return new VersaoRelatorioResponseDto(this.save(novaVersaoRelatorio));
+    }
+
+    @Override
+    public InfoVersaoRelatorioResponseDto atualizar(AtualizaVersaoRelatorioRequestDto dto) {
+
+        if(!this.repository.existsById(dto.id())) throw new RegistroNaoEncontradoException(
+                "Não foi encontrada VersaoRelatorio para o id " + dto.id());
+
+        VersaoRelatorio versaoRelatorio = this.repository.findById(dto.id()).get();
+        versaoRelatorio.setNome(dto.nome());
+        versaoRelatorio.setDescricaoVersao(dto.descricao());
+
+        return new InfoVersaoRelatorioResponseDto(this.repository.save(versaoRelatorio));
     }
 }
