@@ -3,7 +3,9 @@ package br.com.report_generator.controller.protegido;
 import br.com.report_generator.dto.SistemaRequestDto;
 import br.com.report_generator.dto.SistemaResponseDto;
 import br.com.report_generator.model.Sistema;
+import br.com.report_generator.service.api.ApiKeyService;
 import br.com.report_generator.service.api.SistemaService;
+import br.com.report_generator.usecase.CadastraSistemaUseCase;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,17 +17,23 @@ import org.springframework.web.bind.annotation.RestController;
 public class CadastraSistemaController {
 
     private final SistemaService sistemaService;
+    private final ApiKeyService apiKeyService;
 
-    public CadastraSistemaController(SistemaService sistemaService) {
+    public CadastraSistemaController(
+            SistemaService sistemaService,
+            ApiKeyService apiKeyService) {
         this.sistemaService = sistemaService;
+        this.apiKeyService = apiKeyService;
     }
 
     @PostMapping
     public ResponseEntity<String> cadastra(@RequestBody SistemaRequestDto sistemaRequest) {
-        Sistema sistema = new Sistema();
-        sistema.setNome(sistemaRequest.nome());
-        sistema.setDescricao(sistemaRequest.descricao());
-        new SistemaResponseDto(this.sistemaService.save(sistema));
-        return ResponseEntity.ok(null);
+
+        return ResponseEntity.ok(
+            new CadastraSistemaUseCase(
+                    this.sistemaService,
+                    this.apiKeyService
+            ).executar(sistemaRequest)
+        );
     }
 }

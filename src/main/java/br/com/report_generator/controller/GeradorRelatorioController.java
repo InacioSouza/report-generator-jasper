@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/gerador-relatorio")
+@RequestMapping("/api/gerador-relatorio")
 public class GeradorRelatorioController {
 
     private final RelatorioService relatorioService;

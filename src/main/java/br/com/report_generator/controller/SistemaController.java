@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/sistema")
+@RequestMapping("/api/sistema")
 public class SistemaController {
 
     private final SistemaService service;
