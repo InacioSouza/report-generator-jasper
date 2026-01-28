@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/versao-relatorio")
+@RequestMapping("/api-r/versao-relatorio")
 public class VersaoRelatorioController {
 
     private final RelatorioService relatorioService;

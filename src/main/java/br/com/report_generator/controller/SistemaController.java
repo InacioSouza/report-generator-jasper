@@ -1,8 +1,7 @@
 package br.com.report_generator.controller;
 
-import br.com.report_generator.dto.SistemaResponseDto;
 import br.com.report_generator.dto.SistemaRequestDto;
-import br.com.report_generator.model.Sistema;
+import br.com.report_generator.dto.SistemaResponseDto;
 import br.com.report_generator.service.api.SistemaService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/sistema")
+@RequestMapping("/api-r/sistema")
 public class SistemaController {
 
     private final SistemaService service;

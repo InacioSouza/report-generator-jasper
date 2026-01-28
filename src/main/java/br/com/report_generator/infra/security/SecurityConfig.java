@@ -1,6 +1,10 @@
 package br.com.report_generator.infra.security;
 
 import br.com.report_generator.infra.security.filter.ApiKeyFilter;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -12,6 +16,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -42,7 +47,9 @@ public class SecurityConfig {
                                 .hasRole("ADMIN")
                 )
                 .csrf(AbstractHttpConfigurer::disable)
-                .httpBasic(Customizer.withDefaults());
+                .httpBasic( httpBasic -> httpBasic
+                        .authenticationEntryPoint(desabilitaPopupEmBasicAuth())
+                );
 
         return http.build();
     }
@@ -51,10 +58,21 @@ public class SecurityConfig {
     @Order(2)
     public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
         http.securityMatcher("/api/**")
-                .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**")
+                        .permitAll()
+                        .anyRequest()
+                        .authenticated())
                 .csrf(AbstractHttpConfigurer::disable)
                 .addFilterBefore(new ApiKeyFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
+    }
+
+    @Bean
+    public AuthenticationEntryPoint desabilitaPopupEmBasicAuth() {
+        return (request, response, auth) -> {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+        };
     }
 }

@@ -35,10 +35,15 @@ public class ApiKeyFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
 
-        if(request.getRequestURI().contains("/api")
-        && SecurityContextHolder.getContext().getAuthentication() == null) {
+        if(request.getRequestURI().contains("/api-r")
+                && !this.ehSwagger(request.getRequestURI())
+                && SecurityContextHolder.getContext().getAuthentication() == null
+        ) {
 
             String chaveAPIEnviada = request.getHeader(API_KEY_HEADER);
+
+            if (chaveAPIEnviada == null || chaveAPIEnviada.isEmpty()) throw new IllegalArgumentException(
+                    "A chave de API deve ser enviada no cabeçalho da requisição!");
 
             PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             ApiKey apiKey = this.apiKeyRepository.findByHash(passwordEncoder.encode(chaveAPIEnviada));
@@ -61,5 +66,9 @@ public class ApiKeyFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
+    }
+
+    private boolean ehSwagger(String uri) {
+        return uri.contains("swagger");
     }
 }
