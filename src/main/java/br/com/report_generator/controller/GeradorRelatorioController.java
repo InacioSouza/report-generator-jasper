@@ -6,6 +6,7 @@ import br.com.report_generator.service.api.GeradorRelatorioService;
 import br.com.report_generator.service.api.RelatorioService;
 import br.com.report_generator.service.api.VersaoRelatorioService;
 import br.com.report_generator.usecase.GeraRelatorioUseCase;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api-r/gerador-relatorio")
+@SecurityRequirement(name = "apiKeyAuth")
 public class GeradorRelatorioController {
 
     private final RelatorioService relatorioService;

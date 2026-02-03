@@ -12,6 +12,7 @@ import br.com.report_generator.usecase.CadastrarRelatorioUseCase;
 import br.com.report_generator.usecase.DeletaRelatorioUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -27,6 +28,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api-r/relatorio")
+@SecurityRequirement(name = "apiKeyAuth")
 public class RelatorioController {
 
     private final RelatorioService relatorioService;

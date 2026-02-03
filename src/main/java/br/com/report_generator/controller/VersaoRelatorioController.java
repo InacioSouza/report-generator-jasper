@@ -8,6 +8,7 @@ import br.com.report_generator.model.Relatorio;
 import br.com.report_generator.service.api.RelatorioService;
 import br.com.report_generator.service.api.VersaoRelatorioService;
 import br.com.report_generator.usecase.DeletaVersaoRelatorioUseCase;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,6 +21,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api-r/versao-relatorio")
+@SecurityRequirement(name = "apiKeyAuth")
 public class VersaoRelatorioController {
 
     private final RelatorioService relatorioService;

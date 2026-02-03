@@ -13,7 +13,7 @@ public class VersaoRelatorioFactor {
 
     private VersaoRelatorio versaoRelatorio;
 
-    public VersaoRelatorioFactor constriBasico() {
+    public VersaoRelatorioFactor constroiBasico() {
         this.versaoRelatorio = new VersaoRelatorio();
         versaoRelatorio.setDataCriacao(new Date());
         versaoRelatorio.setUltimaAtualizacao(new Date());
@@ -25,7 +25,7 @@ public class VersaoRelatorioFactor {
     }
 
     public VersaoRelatorioFactor constroiPadraoComDescricaoViaDTO(CadastraRelatorioRequestDto dto) {
-        this.constriBasico();
+        this.constroiBasico();
         this.versaoRelatorio.setDescricaoVersao(dto.descricaoVersao());
         return this;
     }
@@ -33,7 +33,7 @@ public class VersaoRelatorioFactor {
     public VersaoRelatorioFactor constroiComCadastraVersaoRelatorioRequestDto(
             CadastraVersaoRelatorioRequestDto dto
     ) {
-        this.constriBasico();
+        this.constroiBasico();
         this.versaoRelatorio.setDescricaoVersao(dto.descricaoVersao());
         return this;
     }

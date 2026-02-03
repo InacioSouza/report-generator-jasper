@@ -1,8 +1,6 @@
 package br.com.report_generator.controller.protegido;
 
 import br.com.report_generator.dto.SistemaRequestDto;
-import br.com.report_generator.dto.SistemaResponseDto;
-import br.com.report_generator.model.Sistema;
 import br.com.report_generator.service.api.ApiKeyService;
 import br.com.report_generator.service.api.SistemaService;
 import br.com.report_generator.usecase.CadastraSistemaUseCase;
