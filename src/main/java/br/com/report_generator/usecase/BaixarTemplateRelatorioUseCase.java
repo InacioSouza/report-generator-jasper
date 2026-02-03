@@ -49,6 +49,9 @@ public class BaixarTemplateRelatorioUseCase {
         Relatorio relatorioEncontrado = this.relatorioService.findById(dto.idRelatorio());
         if (relatorioEncontrado == null) throw new RegistroNaoEncontradoException("Não foi encontrado relatório para o id: " + dto.idRelatorio());
 
+        this.relatorioService
+                .verificaAutorizacaoSistemaParaAlterarRelatorio(relatorioEncontrado);
+
         VersaoRelatorio versaoRelatorioEncontrada;
         if(dto.numeroVersao() == null) {
             versaoRelatorioEncontrada = this.versaoRelatorioService.buscaVersaoRelatorioMaisRecentePara(dto.idRelatorio());

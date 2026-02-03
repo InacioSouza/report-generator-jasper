@@ -33,6 +33,9 @@ public class GeraRelatorioUseCase {
 
         Relatorio relatorio = this.relatorioService.findById(pedidoDTO.idRelatorio());
 
+        this.relatorioService
+                .verificaAutorizacaoSistemaParaAlterarRelatorio(relatorio);
+
         if(pedidoDTO.dataSource().isEmpty()) {
             throw new IllegalArgumentException("O dataSource não pode estar vazio!");
         }

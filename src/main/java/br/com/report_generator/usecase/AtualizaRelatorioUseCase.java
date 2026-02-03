@@ -2,6 +2,7 @@ package br.com.report_generator.usecase;
 
 import br.com.report_generator.dto.relatorio.AtualizaRelatorioRequestDto;
 import br.com.report_generator.dto.relatorio.InfoRelatorioResponseDto;
+import br.com.report_generator.infra.exception.RegistroNaoEncontradoException;
 import br.com.report_generator.model.Sistema;
 import br.com.report_generator.service.api.RelatorioService;
 import br.com.report_generator.service.api.SistemaService;

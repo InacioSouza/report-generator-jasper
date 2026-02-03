@@ -45,4 +45,6 @@ public interface RelatorioService extends GenericService<Relatorio, UUID> {
     InfoRelatorioResponseDto atualizarRelatorio(AtualizaRelatorioRequestDto dto,Sistema sistema);
 
     UUID deletarPorId(UUID idRelatorio);
+
+    public void verificaAutorizacaoSistemaParaAlterarRelatorio(Relatorio relatorio);
 }

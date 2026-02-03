@@ -1,6 +1,7 @@
 package br.com.report_generator.usecase;
 
 import br.com.report_generator.infra.exception.RegistroNaoEncontradoException;
+import br.com.report_generator.model.Relatorio;
 import br.com.report_generator.service.api.RelatorioService;
 import org.springframework.stereotype.Component;
 
@@ -17,8 +18,14 @@ public class DeletaRelatorioUseCase {
 
     public UUID executar(UUID idRelatorio) {
 
-        if (!this.relatorioService.existeRegistroParaId(idRelatorio)) throw new RegistroNaoEncontradoException(
+        Relatorio relatorioEncontrado = this.relatorioService.findById(idRelatorio);
+
+        if (relatorioEncontrado == null) throw new RegistroNaoEncontradoException(
                 "Não foi encontrado relatório para o id " + idRelatorio);
+
+        this.relatorioService
+                .verificaAutorizacaoSistemaParaAlterarRelatorio(relatorioEncontrado);
+
         return this.relatorioService.deletarPorId(idRelatorio);
     }
 }

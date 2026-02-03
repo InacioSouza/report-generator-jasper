@@ -84,7 +84,7 @@ public class ApiKeyFilter extends OncePerRequestFilter {
                 List<GrantedAuthority> listAuthority = List.of(new SimpleGrantedAuthority("ROLE_USER"));
 
                 Authentication auth = new UsernamePasswordAuthenticationToken(
-                        "user",
+                        uuidSistema,
                         null,
                         listAuthority
                 );

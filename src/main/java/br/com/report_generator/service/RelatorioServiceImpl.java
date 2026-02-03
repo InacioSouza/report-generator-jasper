@@ -20,6 +20,7 @@ import br.com.report_generator.service.utils.JasperUtil;
 import br.com.report_generator.service.utils.TrataArquivoService;
 import br.com.report_generator.repository.specification.RelatorioSpecification;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -113,6 +114,19 @@ public class RelatorioServiceImpl extends GenericServiceImpl<Relatorio, UUID> im
     }
 
     @Override
+    public void verificaAutorizacaoSistemaParaAlterarRelatorio(Relatorio relatorio) {
+        UUID idSistemaConectado = (UUID) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal();
+
+        UUID idSistemaDonoRelatorio = relatorio.getSistema().getId();
+
+        if (idSistemaDonoRelatorio.equals(idSistemaConectado)) throw new IllegalArgumentException(
+                "Você não pode alterar um registro sem ser o dono dele!");
+    }
+
+    @Override
     public InfoRelatorioResponseDto atualizarRelatorio(
             AtualizaRelatorioRequestDto dto,
             Sistema sistema
@@ -122,6 +136,9 @@ public class RelatorioServiceImpl extends GenericServiceImpl<Relatorio, UUID> im
                 "Não foi encontrado relatório para o id " + dto.idRelatorio());
 
         Relatorio relatorio = this.repository.findById(dto.idRelatorio()).get();
+
+        this.verificaAutorizacaoSistemaParaAlterarRelatorio(relatorio);
+
         relatorio.setTituloPadrao(dto.tituloPadrao());
         relatorio.setSubtituloPadrao(dto.subtituloPadrao());
         relatorio.setNome(dto.nome());

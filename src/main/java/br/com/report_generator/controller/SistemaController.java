@@ -3,6 +3,7 @@ package br.com.report_generator.controller;
 import br.com.report_generator.dto.SistemaRequestDto;
 import br.com.report_generator.dto.SistemaResponseDto;
 import br.com.report_generator.service.api.SistemaService;
+import br.com.report_generator.usecase.AtualizaSistemaUseCase;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +38,6 @@ public class SistemaController {
             @PathVariable UUID id,
             @RequestBody SistemaRequestDto dto
     ) {
-        return ResponseEntity.ok(this.service.atualiza(id, dto));
+        return ResponseEntity.ok(new AtualizaSistemaUseCase(this.service).executar(id, dto));
     }
 }

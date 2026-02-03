@@ -32,6 +32,9 @@ public class DeletaVersaoRelatorioUseCase {
 
         Relatorio relatorio = versaoRelatorio.getRelatorio();
 
+        this.relatorioService
+                .verificaAutorizacaoSistemaParaAlterarRelatorio(relatorio);
+
         Integer qtdVersoesRelatorio = this.relatorioService.
                 qtdVersoesParaORelatorio(relatorio.getId());
 
