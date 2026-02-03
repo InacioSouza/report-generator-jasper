@@ -7,6 +7,7 @@ import br.com.report_generator.service.api.ApiKeyService;
 import br.com.report_generator.service.api.SistemaService;
 import br.com.report_generator.usecase.CadastraSistemaUseCase;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,11 +32,13 @@ public class CadastraSistemaController {
     @SecurityRequirement(name = "basicAuth")
     public ResponseEntity<String> cadastra(@RequestBody SistemaRequestDto sistemaRequest) {
 
-        return ResponseEntity.ok(
-            new CadastraSistemaUseCase(
-                    this.sistemaService,
-                    this.apiKeyService
-            ).executar(sistemaRequest)
-        );
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(
+                    new CadastraSistemaUseCase(
+                            this.sistemaService,
+                            this.apiKeyService
+                    ).executar(sistemaRequest)
+                );
     }
 }

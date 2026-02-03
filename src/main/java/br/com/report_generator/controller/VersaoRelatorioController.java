@@ -9,6 +9,7 @@ import br.com.report_generator.service.api.RelatorioService;
 import br.com.report_generator.service.api.VersaoRelatorioService;
 import br.com.report_generator.usecase.DeletaVersaoRelatorioUseCase;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,7 +47,12 @@ public class VersaoRelatorioController {
                 "Não foi encontrado relatório para o id: " + infos.idRelatorio()
         );
 
-        return ResponseEntity.ok(this.versaoRelatorioService.cadastraVersaoRelatorio(versaoZip, infos, relatorio));
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(
+                        this.versaoRelatorioService
+                                .cadastraVersaoRelatorio(versaoZip, infos, relatorio)
+                );
     }
 
     @GetMapping
