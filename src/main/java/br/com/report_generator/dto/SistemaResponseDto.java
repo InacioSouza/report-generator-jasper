@@ -13,5 +13,4 @@ public record SistemaResponseDto(
     public SistemaResponseDto(Sistema sistema) {
         this(sistema.getId(), sistema.getNome(), sistema.getDescricao());
     }
-
 }

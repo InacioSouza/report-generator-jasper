@@ -4,6 +4,7 @@ import br.com.report_generator.dto.SistemaRequestDto;
 import br.com.report_generator.dto.SistemaResponseDto;
 import br.com.report_generator.service.api.SistemaService;
 import br.com.report_generator.usecase.AtualizaSistemaUseCase;
+import br.com.report_generator.usecase.BuscaSistemaPorIdUseCase;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,14 +24,9 @@ public class SistemaController {
         this.service = sistemaService;
     }
 
-    @GetMapping
-    public ResponseEntity<List<SistemaResponseDto>> buscaTodos() {
-        return ResponseEntity.ok(this.service.findAll().stream().map(SistemaResponseDto::new).toList());
-    }
-
     @GetMapping("/{id}")
-    public ResponseEntity<SistemaResponseDto> buscaPorId(@PathVariable Long id) {
-        return ResponseEntity.ok(new SistemaResponseDto(this.service.findById(id)));
+    public ResponseEntity<SistemaResponseDto> buscaPorId(@PathVariable UUID id) {
+        return ResponseEntity.ok(new BuscaSistemaPorIdUseCase(this.service).executar(id));
     }
 
     @PutMapping("/{id}")

@@ -4,15 +4,41 @@ import br.com.report_generator.dto.filtros.RelatorioFiltroDto;
 import br.com.report_generator.model.Relatorio;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class RelatorioSpecification {
     public static Specification<Relatorio> filtro(RelatorioFiltroDto filtroDto) {
 
         return (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
+
+            boolean ehAdmin = SecurityContextHolder
+                    .getContext()
+                    .getAuthentication()
+                    .getAuthorities()
+                    .stream()
+                    .anyMatch(a -> a.getAuthority().endsWith("ROLE_ADMIN"));
+
+            if (ehAdmin && filtroDto.idSistema() != null) {
+                predicates.add(
+                        cb.equal(root.get("sistema").get("id"), filtroDto.idSistema())
+                );
+
+            } else {
+                // Um usuário (sistema) não ADMIN deve acessar somente as informações que pertencem a ele
+                UUID idSistemaAutenticado = (UUID) SecurityContextHolder
+                        .getContext()
+                        .getAuthentication()
+                        .getPrincipal();
+
+                predicates.add(
+                        cb.equal(root.get("sistema").get("id"), idSistemaAutenticado)
+                );
+            }
 
             if (filtroDto.idRelatorio() != null) {
                 predicates.add(
@@ -52,12 +78,6 @@ public class RelatorioSpecification {
                 String stringTratada = filtroDto.descricaoTecnica().replace(" ", "");
                 predicates.add(
                         cb.like(root.get("descricaoTecnica"), "%" + stringTratada + "%")
-                );
-            }
-
-            if (filtroDto.idSistema() != null) {
-                predicates.add(
-                  cb.equal(root.get("sistema").get("id"), filtroDto.idSistema())
                 );
             }
 
