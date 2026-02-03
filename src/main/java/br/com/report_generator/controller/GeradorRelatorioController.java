@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api-r/gerador-relatorio")
 @SecurityRequirement(name = "apiKeyAuth")
+@SecurityRequirement(name = "clientIdAuth")
 public class GeradorRelatorioController {
 
     private final RelatorioService relatorioService;

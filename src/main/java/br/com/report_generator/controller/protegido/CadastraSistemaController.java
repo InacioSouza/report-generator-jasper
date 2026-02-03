@@ -1,5 +1,6 @@
 package br.com.report_generator.controller.protegido;
 
+import br.com.report_generator.dto.SistemaCadastradoResponseDto;
 import br.com.report_generator.dto.SistemaRequestDto;
 import br.com.report_generator.service.api.ApiKeyService;
 import br.com.report_generator.service.api.SistemaService;
@@ -28,7 +29,7 @@ public class CadastraSistemaController {
 
     @PostMapping
     @SecurityRequirement(name = "basicAuth")
-    public ResponseEntity<String> cadastra(@RequestBody SistemaRequestDto sistemaRequest) {
+    public ResponseEntity<SistemaCadastradoResponseDto> cadastra(@RequestBody SistemaRequestDto sistemaRequest) {
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)

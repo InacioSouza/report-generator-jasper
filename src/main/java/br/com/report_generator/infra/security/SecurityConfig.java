@@ -1,15 +1,12 @@
 package br.com.report_generator.infra.security;
 
 import br.com.report_generator.infra.security.filter.ApiKeyFilter;
-import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.security.SecurityRequirement;
+import br.com.report_generator.service.api.ApiKeyService;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -23,6 +20,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    private final ApiKeyService apiKeyService;
+
+    public SecurityConfig(ApiKeyService apiKeyService) {
+        this.apiKeyService = apiKeyService;
+    }
 
     @Bean
     public AuthenticationManager authenticationManager(
@@ -57,7 +60,7 @@ public class SecurityConfig {
     @Bean
     @Order(2)
     public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
-        http.securityMatcher("/api/**")
+        http.securityMatcher("/api-r/**")
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/swagger-ui/**",
@@ -67,7 +70,7 @@ public class SecurityConfig {
                         .anyRequest()
                         .authenticated())
                 .csrf(AbstractHttpConfigurer::disable)
-                .addFilterBefore(new ApiKeyFilter(), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new ApiKeyFilter(apiKeyService), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

@@ -8,7 +8,6 @@ import br.com.report_generator.dto.relatorio.RelatorioCadastradoResponseDto;
 import br.com.report_generator.model.Relatorio;
 import br.com.report_generator.model.Sistema;
 import br.com.report_generator.service.api.generic.GenericService;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;

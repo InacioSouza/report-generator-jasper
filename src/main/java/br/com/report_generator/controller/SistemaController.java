@@ -8,10 +8,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api-r/sistema")
 @SecurityRequirement(name = "apiKeyAuth")
+@SecurityRequirement(name = "clientIdAuth")
 public class SistemaController {
 
     private final SistemaService service;
@@ -32,7 +34,7 @@ public class SistemaController {
 
     @PutMapping("/{id}")
     public ResponseEntity<SistemaResponseDto> atualiza(
-            @PathVariable Long id,
+            @PathVariable UUID id,
             @RequestBody SistemaRequestDto dto
     ) {
         return ResponseEntity.ok(this.service.atualiza(id, dto));

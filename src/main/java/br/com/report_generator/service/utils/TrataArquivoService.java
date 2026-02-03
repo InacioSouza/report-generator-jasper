@@ -2,7 +2,7 @@ package br.com.report_generator.service.utils;
 
 import br.com.report_generator.dto.IdentificadorArquivoPrincipalEnum;
 import br.com.report_generator.infra.exception.FalhaAoSalvarRelatorioException;
-import br.com.report_generator.infra.exception.FormatoArquivoInvalidoException;
+import br.com.report_generator.infra.exception.FormatoInvalidoException;
 import br.com.report_generator.infra.exception.IdentificadorArquivoPrincipalInvalidoException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,15 +23,15 @@ public class TrataArquivoService {
     public Map<String, byte[]> validaEDevolveArquivosDoZip(MultipartFile arquivo) {
 
         if(arquivo.isEmpty()) {
-            throw new FormatoArquivoInvalidoException("O arquivo enviado está vazio!");
+            throw new FormatoInvalidoException("O arquivo enviado está vazio!");
         }
 
         if(arquivo.getOriginalFilename() == null || arquivo.getOriginalFilename().isEmpty()) {
-            throw new FormatoArquivoInvalidoException("O arquivo enviado não possui nome!");
+            throw new FormatoInvalidoException("O arquivo enviado não possui nome!");
         }
 
         if(!ZipUtil.assinaturaDoArquivoCorrespondeZIP(arquivo)) {
-            throw new FormatoArquivoInvalidoException("O arquivo deve ser do tipo zip !");
+            throw new FormatoInvalidoException("O arquivo deve ser do tipo zip !");
         }
 
         Map<String, byte[]> mapArquivos = ZipUtil.extrairArquivosDoZip(arquivo);

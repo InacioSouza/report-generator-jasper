@@ -9,6 +9,6 @@ public record AtualizaRelatorioRequestDto(
         String nome,
         String informacao,
         String descricaoTecnica,
-        Long idSistema
+        UUID idSistema
 ) {
 }

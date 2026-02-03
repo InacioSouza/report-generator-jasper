@@ -6,6 +6,9 @@ import br.com.report_generator.service.api.ApiKeyService;
 import br.com.report_generator.service.generic.GenericServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.UUID;
+
 @Service("br.com.report_generator.service.ApiKeyServiceImpl")
 public class ApiKeyServiceImpl extends GenericServiceImpl<ApiKey, Long> implements ApiKeyService {
 
@@ -16,4 +19,8 @@ public class ApiKeyServiceImpl extends GenericServiceImpl<ApiKey, Long> implemen
         this.repository = repository;
     }
 
+    @Override
+    public List<ApiKey> buscaChavesPorIdSistema(UUID idSistema) {
+        return this.repository.buscaChavesPorIdSistema(idSistema);
+    }
 }

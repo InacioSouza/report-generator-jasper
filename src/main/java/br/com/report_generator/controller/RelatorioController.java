@@ -29,6 +29,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api-r/relatorio")
 @SecurityRequirement(name = "apiKeyAuth")
+@SecurityRequirement(name = "clientIdAuth")
 public class RelatorioController {
 
     private final RelatorioService relatorioService;

@@ -9,6 +9,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class CadastraAdminStartupRunner implements CommandLineRunner {
 
@@ -23,14 +25,23 @@ public class CadastraAdminStartupRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        Usuario usuario = new Usuario();
-        usuario.setNome(login);
 
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        usuario.setSenha(passwordEncoder.encode(senha));
+        Optional<Usuario> usuarioOptional = this.usuarioRepository.findByNome(login);
+        Usuario usuarioAdmin = null;
 
-        usuario.setPermisao("ADMIN");
+        if (usuarioOptional.isPresent()) {
+            usuarioAdmin = usuarioOptional.get();
+            usuarioAdmin.setSenha(new BCryptPasswordEncoder().encode(senha));
 
-        this.usuarioRepository.save(usuario);
+        } else {
+            usuarioAdmin = new Usuario();
+            usuarioAdmin.setNome(login);
+
+            PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            usuarioAdmin.setSenha(passwordEncoder.encode(senha));
+
+            usuarioAdmin.setPermisao("ADMIN");
+        }
+        this.usuarioRepository.save(usuarioAdmin);
     }
 }

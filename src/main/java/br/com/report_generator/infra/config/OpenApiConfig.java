@@ -32,12 +32,15 @@ public class OpenApiConfig {
                 .components(new Components()
                         .addSecuritySchemes("basicAuth", new SecurityScheme()
                                 .type(SecurityScheme.Type.HTTP)
-                                .scheme("basic")
-                        )
+                                .scheme("basic"))
                         .addSecuritySchemes("apiKeyAuth", new SecurityScheme()
                                 .type(SecurityScheme.Type.APIKEY)
                                 .in(SecurityScheme.In.HEADER)
                                 .name("X-API-KEY"))
+                        .addSecuritySchemes("clientIdAuth", new SecurityScheme()
+                                .type(SecurityScheme.Type.APIKEY)
+                                .in(SecurityScheme.In.HEADER)
+                                .name("X-CLIENT-ID"))
                 );
     }
 }

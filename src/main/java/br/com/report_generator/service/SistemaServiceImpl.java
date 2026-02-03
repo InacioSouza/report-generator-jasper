@@ -9,8 +9,10 @@ import br.com.report_generator.service.api.SistemaService;
 import br.com.report_generator.service.generic.GenericServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service("br.com.report_generator.service.SistemaServiceImpl")
-public class SistemaServiceImpl extends GenericServiceImpl<Sistema, Long> implements SistemaService {
+public class SistemaServiceImpl extends GenericServiceImpl<Sistema, UUID> implements SistemaService {
 
     private final SistemaRepository repository;
 
@@ -20,7 +22,7 @@ public class SistemaServiceImpl extends GenericServiceImpl<Sistema, Long> implem
     }
 
     @Override
-    public SistemaResponseDto atualiza(Long id, SistemaRequestDto dto) {
+    public SistemaResponseDto atualiza(UUID id, SistemaRequestDto dto) {
 
         if (!this.repository.existsById(id)) throw new RegistroNaoEncontradoException(
                 "Não foi encontrado sistema para o id " + id);

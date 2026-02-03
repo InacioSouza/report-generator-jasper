@@ -5,6 +5,8 @@ import br.com.report_generator.dto.SistemaResponseDto;
 import br.com.report_generator.model.Sistema;
 import br.com.report_generator.service.api.generic.GenericService;
 
-public interface SistemaService extends GenericService<Sistema, Long> {
-    SistemaResponseDto atualiza(Long id, SistemaRequestDto dto);
+import java.util.UUID;
+
+public interface SistemaService extends GenericService<Sistema, UUID> {
+    SistemaResponseDto atualiza(UUID id, SistemaRequestDto dto);
 }

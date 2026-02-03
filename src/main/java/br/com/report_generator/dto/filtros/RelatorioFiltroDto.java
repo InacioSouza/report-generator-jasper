@@ -10,7 +10,7 @@ public record RelatorioFiltroDto (
         String subtituloPadrao,
         String informacao,
         String descricaoTecnica,
-        Integer idSistema,
+        UUID idSistema,
         Integer numeroUltimaVersao,
         Date dataCriacaoInicio,
         Date dataCriacaoFim

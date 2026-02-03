@@ -1,5 +1,6 @@
 package br.com.report_generator.usecase;
 
+import br.com.report_generator.dto.SistemaCadastradoResponseDto;
 import br.com.report_generator.dto.SistemaRequestDto;
 import br.com.report_generator.model.ApiKey;
 import br.com.report_generator.model.Sistema;
@@ -26,7 +27,7 @@ public class CadastraSistemaUseCase {
         this.apiKeyService = apiKeyService;
     }
 
-    public String executar(SistemaRequestDto dto) {
+    public SistemaCadastradoResponseDto executar(SistemaRequestDto dto) {
         Sistema sistema = new Sistema();
         sistema.setNome(dto.nome());
         sistema.setDescricao(dto.descricao());
@@ -43,6 +44,6 @@ public class CadastraSistemaUseCase {
         apiKey.setCriadaEm(LocalDateTime.now());
         this.apiKeyService.save(apiKey);
 
-        return apiKeyGerada;
+        return new SistemaCadastradoResponseDto(sistema.getId(), apiKeyGerada);
     }
 }

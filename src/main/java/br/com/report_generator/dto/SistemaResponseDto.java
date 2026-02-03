@@ -2,8 +2,10 @@ package br.com.report_generator.dto;
 
 import br.com.report_generator.model.Sistema;
 
+import java.util.UUID;
+
 public record SistemaResponseDto(
-        Long id,
+        UUID id,
         String nome,
         String descricao
 ) {

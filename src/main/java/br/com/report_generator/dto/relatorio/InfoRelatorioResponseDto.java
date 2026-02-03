@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public record InfoRelatorioResponseDto(
     UUID idRelatorio,
-    Long idSistema,
+    UUID idSistema,
     Date dataCriacao,
     Date ultimaAtualizacao,
     String tituloPadrao,

@@ -19,8 +19,8 @@ public class GerenciadorException {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exception.getMessage());
     }
 
-    @ExceptionHandler(FormatoArquivoInvalidoException.class)
-    public ResponseEntity<?> formatoArquivoinvalido(FormatoArquivoInvalidoException exception) {
+    @ExceptionHandler(FormatoInvalidoException.class)
+    public ResponseEntity<?> formatoinvalido(FormatoInvalidoException exception) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
     }
 
@@ -32,5 +32,10 @@ public class GerenciadorException {
     @ExceptionHandler(RegistroCorrompidoException.class)
     public ResponseEntity<?> registroCorrompido(RegistroCorrompidoException exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+    }
+
+    @ExceptionHandler(FalhaAutenticacaoException.class)
+    public ResponseEntity<?> falhaAutenticacao(FalhaAutenticacaoException exception) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(exception.getMessage());
     }
 }

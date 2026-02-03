@@ -22,6 +22,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api-r/versao-relatorio")
 @SecurityRequirement(name = "apiKeyAuth")
+@SecurityRequirement(name = "clientIdAuth")
 public class VersaoRelatorioController {
 
     private final RelatorioService relatorioService;
