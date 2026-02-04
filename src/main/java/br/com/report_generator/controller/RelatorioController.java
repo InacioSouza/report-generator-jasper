@@ -2,6 +2,7 @@ package br.com.report_generator.controller;
 
 import br.com.report_generator.dto.filtros.RelatorioFiltroDto;
 import br.com.report_generator.dto.relatorio.*;
+import br.com.report_generator.infra.config.EndpointPrefix;
 import br.com.report_generator.service.api.ArquivoSubreportService;
 import br.com.report_generator.service.api.VersaoRelatorioService;
 import br.com.report_generator.service.api.RelatorioService;
@@ -27,7 +28,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api-r/relatorio")
+@RequestMapping(EndpointPrefix.API + "/relatorio")
 @SecurityRequirement(name = "apiKeyAuth")
 @SecurityRequirement(name = "clientIdAuth")
 public class RelatorioController {
@@ -50,7 +51,7 @@ public class RelatorioController {
     }
 
     @Operation(
-            summary = "End-point para realizar o cadastro de relatórios",
+            summary = "Realiza o cadastro de relatórios",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     content = @Content(
                             mediaType = MediaType.MULTIPART_FORM_DATA_VALUE
@@ -75,6 +76,9 @@ public class RelatorioController {
         );
     }
 
+    @Operation(
+            summary = "Baixa o template de uma versão específica do relatório (baixa todos os arquivos relacionados a versão em um zip)"
+    )
     @PostMapping("/download")
     public void baixarRelatorio(@RequestBody BaixarRelatorioRequestDto dto,
                                 HttpServletResponse response) {
@@ -86,6 +90,9 @@ public class RelatorioController {
         ).executar(dto, response);
     }
 
+    @Operation(
+            summary = "Busca informações textuais de um relatório incluindo informações sobre suas versões"
+    )
     @PostMapping("/informacoes-relatorio")
     public ResponseEntity<List<InfoRelatorioResponseDto>> buscaInformacoesDosRelatorios(
             @RequestBody RelatorioFiltroDto filtro) {

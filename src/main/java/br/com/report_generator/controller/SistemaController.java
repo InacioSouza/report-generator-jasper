@@ -2,6 +2,7 @@ package br.com.report_generator.controller;
 
 import br.com.report_generator.dto.SistemaRequestDto;
 import br.com.report_generator.dto.SistemaResponseDto;
+import br.com.report_generator.infra.config.EndpointPrefix;
 import br.com.report_generator.service.api.SistemaService;
 import br.com.report_generator.usecase.AtualizaSistemaUseCase;
 import br.com.report_generator.usecase.BuscaSistemaPorIdUseCase;
@@ -13,7 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api-r/sistema")
+@RequestMapping(EndpointPrefix.API + "/sistema")
 @SecurityRequirement(name = "apiKeyAuth")
 @SecurityRequirement(name = "clientIdAuth")
 public class SistemaController {

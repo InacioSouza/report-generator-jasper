@@ -1,5 +1,6 @@
 package br.com.report_generator.infra.security;
 
+import br.com.report_generator.infra.config.EndpointPrefix;
 import br.com.report_generator.infra.security.filter.ApiKeyFilter;
 import br.com.report_generator.service.api.ApiKeyService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -43,10 +44,10 @@ public class SecurityConfig {
     @Order(1)
     public SecurityFilterChain adminFilterChain(HttpSecurity http) throws Exception {
 
-        http.securityMatcher("/admin/**")
+        http.securityMatcher(EndpointPrefix.ADMIN +"/**")
                 .authorizeHttpRequests(
                         auth -> auth
-                                .requestMatchers("/admin/**")
+                                .requestMatchers(EndpointPrefix.ADMIN +"/**")
                                 .hasRole("ADMIN")
                 )
                 .csrf(AbstractHttpConfigurer::disable)
@@ -60,7 +61,7 @@ public class SecurityConfig {
     @Bean
     @Order(2)
     public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
-        http.securityMatcher("/api-r/**")
+        http.securityMatcher(EndpointPrefix.API +"/**")
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/swagger-ui/**",

@@ -14,13 +14,13 @@ import br.com.report_generator.model.Relatorio;
 import br.com.report_generator.model.Sistema;
 import br.com.report_generator.model.VersaoRelatorio;
 import br.com.report_generator.repository.RelatorioRepository;
+import br.com.report_generator.repository.specification.RelatorioSpecification;
 import br.com.report_generator.service.api.RelatorioService;
 import br.com.report_generator.service.generic.GenericServiceImpl;
 import br.com.report_generator.service.utils.JasperUtil;
+import br.com.report_generator.service.utils.SecurityUtil;
 import br.com.report_generator.service.utils.TrataArquivoService;
-import br.com.report_generator.repository.specification.RelatorioSpecification;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -115,10 +115,7 @@ public class RelatorioServiceImpl extends GenericServiceImpl<Relatorio, UUID> im
 
     @Override
     public void verificaAutorizacaoSistemaParaAlterarRelatorio(Relatorio relatorio) {
-        UUID idSistemaConectado = (UUID) SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal();
+        UUID idSistemaConectado = SecurityUtil.buscaIdSistemaAutenticado();
 
         UUID idSistemaDonoRelatorio = relatorio.getSistema().getId();
 

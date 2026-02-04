@@ -18,7 +18,9 @@ import br.com.report_generator.service.utils.TrataArquivoService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.*;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service("br.com.report_generator.service.VersaoRelatorioServiceImpl")
 public class VersaoRelatorioServiceImpl extends GenericServiceImpl<VersaoRelatorio, UUID> implements VersaoRelatorioService {

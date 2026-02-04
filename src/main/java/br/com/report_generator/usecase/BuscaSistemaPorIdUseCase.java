@@ -2,7 +2,7 @@ package br.com.report_generator.usecase;
 
 import br.com.report_generator.dto.SistemaResponseDto;
 import br.com.report_generator.service.api.SistemaService;
-import org.springframework.security.core.context.SecurityContextHolder;
+import br.com.report_generator.service.utils.SecurityUtil;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
@@ -18,10 +18,7 @@ public class BuscaSistemaPorIdUseCase {
 
     public SistemaResponseDto executar(UUID idSistema) {
 
-        UUID idSistemaAutenticado = (UUID) SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal();
+        UUID idSistemaAutenticado = SecurityUtil.buscaIdSistemaAutenticado();
 
         if (!idSistema.equals(idSistemaAutenticado)) throw new IllegalArgumentException(
                 "Você não pode alterar um registro sem ser o dono dele!");

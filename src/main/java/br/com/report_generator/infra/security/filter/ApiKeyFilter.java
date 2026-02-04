@@ -1,5 +1,6 @@
 package br.com.report_generator.infra.security.filter;
 
+import br.com.report_generator.infra.config.EndpointPrefix;
 import br.com.report_generator.infra.exception.FalhaAutenticacaoException;
 import br.com.report_generator.infra.exception.FormatoInvalidoException;
 import br.com.report_generator.model.ApiKey;
@@ -41,7 +42,7 @@ public class ApiKeyFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
 
-        if(request.getRequestURI().contains("/api-r")
+        if(request.getRequestURI().contains(EndpointPrefix.API)
                 && !this.ehSwagger(request.getRequestURI())
                 && SecurityContextHolder.getContext().getAuthentication() == null
         ) {

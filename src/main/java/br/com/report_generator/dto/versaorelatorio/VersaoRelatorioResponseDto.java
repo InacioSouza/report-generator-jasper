@@ -4,8 +4,21 @@ import br.com.report_generator.model.VersaoRelatorio;
 
 import java.util.UUID;
 
-public record VersaoRelatorioResponseDto(UUID idVersao, UUID idRelatorio, Integer numeroVersao ) {
+public record VersaoRelatorioResponseDto(
+        UUID idVersao,
+        String nomeVersao,
+        UUID idRelatorio,
+        String descricaoVersao,
+        Integer numeroVersao
+) {
+
     public VersaoRelatorioResponseDto(VersaoRelatorio versaoRelatorio) {
-        this(versaoRelatorio.getId(), versaoRelatorio.getRelatorio().getId(), versaoRelatorio.getNumeroVersao());
+        this(
+                versaoRelatorio.getId(),
+                versaoRelatorio.getNome(),
+                versaoRelatorio.getRelatorio().getId(),
+                versaoRelatorio.getDescricaoVersao(),
+                versaoRelatorio.getNumeroVersao()
+        );
     }
 }

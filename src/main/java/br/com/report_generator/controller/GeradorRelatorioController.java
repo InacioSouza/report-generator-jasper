@@ -2,6 +2,7 @@ package br.com.report_generator.controller;
 
 import br.com.report_generator.dto.PdfGeradoDto;
 import br.com.report_generator.dto.relatorio.GeraRelatorioRequestDto;
+import br.com.report_generator.infra.config.EndpointPrefix;
 import br.com.report_generator.service.api.GeradorRelatorioService;
 import br.com.report_generator.service.api.RelatorioService;
 import br.com.report_generator.service.api.VersaoRelatorioService;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api-r/gerador-relatorio")
+@RequestMapping(EndpointPrefix.API + "/gerador-relatorio")
 @SecurityRequirement(name = "apiKeyAuth")
 @SecurityRequirement(name = "clientIdAuth")
 public class GeradorRelatorioController {

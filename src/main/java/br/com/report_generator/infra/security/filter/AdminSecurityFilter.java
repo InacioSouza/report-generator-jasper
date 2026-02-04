@@ -1,5 +1,6 @@
 package br.com.report_generator.infra.security.filter;
 
+import br.com.report_generator.infra.config.EndpointPrefix;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,7 +30,7 @@ public class AdminSecurityFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
 
-        if(request.getRequestURI().contains("/admin")
+        if(request.getRequestURI().contains(EndpointPrefix.ADMIN)
                 && request.getRemoteAddr().equals(ipAdmin)
                 && SecurityContextHolder.getContext().getAuthentication() == null
         ) {

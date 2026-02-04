@@ -2,6 +2,7 @@ package br.com.report_generator.repository.specification;
 
 import br.com.report_generator.dto.filtros.RelatorioFiltroDto;
 import br.com.report_generator.model.Relatorio;
+import br.com.report_generator.service.utils.SecurityUtil;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,24 +17,14 @@ public class RelatorioSpecification {
         return (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
 
-            boolean ehAdmin = SecurityContextHolder
-                    .getContext()
-                    .getAuthentication()
-                    .getAuthorities()
-                    .stream()
-                    .anyMatch(a -> a.getAuthority().endsWith("ROLE_ADMIN"));
-
-            if (ehAdmin && filtroDto.idSistema() != null) {
+            if (SecurityUtil.usuarioAutenticaEhAdmin() && filtroDto.idSistema() != null) {
                 predicates.add(
                         cb.equal(root.get("sistema").get("id"), filtroDto.idSistema())
                 );
 
             } else {
                 // Um usuário (sistema) não ADMIN deve acessar somente as informações que pertencem a ele
-                UUID idSistemaAutenticado = (UUID) SecurityContextHolder
-                        .getContext()
-                        .getAuthentication()
-                        .getPrincipal();
+                UUID idSistemaAutenticado = SecurityUtil.buscaIdSistemaAutenticado();
 
                 predicates.add(
                         cb.equal(root.get("sistema").get("id"), idSistemaAutenticado)
@@ -88,33 +79,34 @@ public class RelatorioSpecification {
             }
 
             // Filtros de data
-            if (filtroDto.dataCriacaoInicio() != null &&
-                    filtroDto.dataCriacaoFim() != null) {
+            if (filtroDto.dataCriacaoInicio() != null ){
 
+                if (filtroDto.dataCriacaoFim() != null) {
+                    predicates.add(
+                            cb.between(
+                                    root.get("dataCriacao"),
+                                    filtroDto.dataCriacaoInicio(),
+                                    filtroDto.dataCriacaoFim()
+                            )
+                    );
+
+                } else {
+                    predicates.add(
+                            cb.greaterThanOrEqualTo(
+                                    root.get("dataCriacao"),
+                                    filtroDto.dataCriacaoInicio())
+                    );
+                }
+
+
+            }  else if (filtroDto.dataCriacaoFim() != null) {
                 predicates.add(
-                        cb.between(
+                        cb.lessThanOrEqualTo(
                                 root.get("dataCriacao"),
-                                filtroDto.dataCriacaoInicio(),
                                 filtroDto.dataCriacaoFim()
                         )
                 );
-
-            } else if (filtroDto.dataCriacaoInicio() != null) {
-                predicates.add(
-                        cb.greaterThanOrEqualTo(
-                                root.get("dataCriacao"),
-                                filtroDto.dataCriacaoInicio())
-                );
-
-            } else if (filtroDto.dataCriacaoFim() != null) {
-                predicates.add(
-                  cb.lessThanOrEqualTo(
-                          root.get("dataCriacao"),
-                          filtroDto.dataCriacaoFim()
-                  )
-                );
             }
-
 
             return cb.and(predicates.toArray(new Predicate[0]));
         };
