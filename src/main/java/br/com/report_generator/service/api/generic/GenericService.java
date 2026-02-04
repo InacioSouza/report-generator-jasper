@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface GenericService <E, I> {
     E save(E entity);
+    List<E> saveAll(List<E> entities);
     E update(E entity);
     void delete(E entity);
     E findById(Object id);

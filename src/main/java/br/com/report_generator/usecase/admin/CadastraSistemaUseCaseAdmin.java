@@ -1,4 +1,4 @@
-package br.com.report_generator.usecase;
+package br.com.report_generator.usecase.admin;
 
 import br.com.report_generator.dto.SistemaCadastradoResponseDto;
 import br.com.report_generator.dto.SistemaRequestDto;
@@ -14,12 +14,12 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 
 @Component
-public class CadastraSistemaUseCase {
+public class CadastraSistemaUseCaseAdmin {
 
     private final SistemaService sistemaService;
     private final ApiKeyService apiKeyService;
 
-    public CadastraSistemaUseCase(
+    public CadastraSistemaUseCaseAdmin(
             SistemaService sistemaService,
             ApiKeyService apiKeyService
     ) {

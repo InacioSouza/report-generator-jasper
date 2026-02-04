@@ -20,6 +20,11 @@ public class GenericServiceImpl<E, I> implements GenericService<E, I> {
     }
 
     @Override
+    public List<E> saveAll(List<E> entities) {
+        return this.repository.saveAll(entities);
+    }
+
+    @Override
     public E update(E entity) {
         return this.repository.save(entity);
     }
