@@ -1,7 +1,20 @@
 # Gerador de Relatórios Jasper
-Microsserviço destinado a criação de relatórios Jasper (PDF)
 
-## Requisitos
+## Descrição
+
+Este projeto fornece um serviço genérico de geração de relatórios para aplicações em uma arquitetura de microsserviços.
+
+O serviço permite o cadastro de templates de relatórios no formato JasperReports, que podem ser reutilizados posteriormente para a geração de relatórios dinâmicos. A geração do relatório ocorre a partir dos dados enviados na requisição, combinados com o template previamente cadastrado.
+
+Ao utilizar este serviço, aplicações consumidoras não precisam implementar a lógica de geração de relatórios internamente. Dessa forma, os desenvolvedores podem se concentrar exclusivamente no design dos templates Jasper e no envio dos dados necessários, reduzindo o esforço de desenvolvimento e promovendo reutilização e padronização.
+
+## Arquitetura
+Este sistema foi desenvolvido utilizando a arquitetura em camadas e o padrão de comunicação REST.
+Cada componente lógico do sistema está separado na sua respectiva camada.
+Boas práticas de código foram aplicadas, interfaces foram utilizadas de forma estratégica para evitar o acoplamento entre as partes.
+
+## Casos de Uso
+
 <ol>
   <li>
     <span>Genérico (independente de modelo)</span>
