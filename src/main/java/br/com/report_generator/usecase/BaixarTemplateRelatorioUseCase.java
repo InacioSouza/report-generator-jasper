@@ -70,7 +70,7 @@ public class BaixarTemplateRelatorioUseCase {
         mapArquivos.put(versaoRelatorioEncontrada.getNomeArquivo(), versaoRelatorioEncontrada.getArquivoOriginal());
 
         for(ArquivoSubreport arquivoSubreport : listSubreports) {
-            mapArquivos.put(arquivoSubreport.getNomeParametro(), arquivoSubreport.getArquivoOriginal());
+            mapArquivos.put(arquivoSubreport.getNomeParametro() + ".jrxml", arquivoSubreport.getArquivoOriginal());
         }
 
         byte[] zipArquivos = ZipUtil.gerarZip(mapArquivos);

@@ -94,9 +94,7 @@ public class RelatorioServiceImpl extends GenericServiceImpl<Relatorio, UUID> im
 
         relatorio.getListVersoes().add(versaoRelatorio);
 
-        Relatorio relatorioSalvo = this.save(relatorio);
-
-        return new RelatorioCadastradoResponseDto(relatorioSalvo, versaoRelatorio);
+        return new RelatorioCadastradoResponseDto(this.save(relatorio), versaoRelatorio);
     }
 
     @Override
@@ -119,7 +117,7 @@ public class RelatorioServiceImpl extends GenericServiceImpl<Relatorio, UUID> im
 
         UUID idSistemaDonoRelatorio = relatorio.getSistema().getId();
 
-        if (idSistemaDonoRelatorio.equals(idSistemaConectado)) throw new IllegalArgumentException(
+        if (!idSistemaDonoRelatorio.equals(idSistemaConectado)) throw new IllegalArgumentException(
                 "Você não pode alterar um registro sem ser o dono dele!");
     }
 

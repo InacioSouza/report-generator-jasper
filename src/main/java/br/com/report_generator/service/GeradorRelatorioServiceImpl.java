@@ -36,6 +36,10 @@ public class GeradorRelatorioServiceImpl implements GeradorRelatorioService {
         JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(pedidoDTO.dataSource());
 
         Map<String, Object> parametros = new HashMap<>();
+        /* Caso o título e subtítulo não sejam passados na requisição
+         * os valores padrão do relatório serão utilizados */
+        parametros.put("TITULO_PADRAO", versaoRelatorio.getRelatorio().getTituloPadrao());
+        parametros.put("SUBTITULO_PADRAO", versaoRelatorio.getRelatorio().getSubtituloPadrao());
         pedidoDTO.parametros().forEach(parametroInformado -> {
             parametros.put(parametroInformado.nome(), parametroInformado.valor());
         });

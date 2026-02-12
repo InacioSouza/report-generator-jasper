@@ -64,14 +64,15 @@ public class TrataArquivoService {
                     "Nome de arquivo inválido ( " + nomeArquivo + " )" + " possui mais de um caractere '.'"
             );
 
-            if (nomeArquivo.contains(IdentificadorArquivoPrincipalEnum.MAIN.toString())) {
+            var nomeArquivoUpper = nomeArquivo.toUpperCase().split("\\.")[0] + ".jrxml";
+            if (nomeArquivoUpper.contains(IdentificadorArquivoPrincipalEnum.MAIN.toString())) {
                 qtdArquivosMAIN++;
-                mapArquivosNomesSubreportSemExtensao.put(nomeArquivo, mapArquivos.get(nomeArquivo));
+                mapArquivosNomesSubreportSemExtensao.put(nomeArquivoUpper, mapArquivos.get(nomeArquivo));
                 continue;
             }
 
             //NOTE: Para arquivos de Subreport o nome da extenxão não deve ser considerado no nome do parâmetro
-            String nomeParametro = nomeArquivo.split("\\.")[0];
+            String nomeParametro = nomeArquivo.split("\\.")[0].toUpperCase();
             mapArquivosNomesSubreportSemExtensao.put(nomeParametro, mapArquivos.get(nomeArquivo));
         }
 
