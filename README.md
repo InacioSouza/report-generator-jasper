@@ -13,30 +13,24 @@ Este sistema foi desenvolvido utilizando a arquitetura em camadas e o padrão de
 Cada componente lógico do sistema está separado na sua respectiva camada.
 Boas práticas de código foram aplicadas, interfaces foram utilizadas de forma estratégica para evitar o acoplamento entre as partes.
 
-## Casos de Uso
+## Principais Casos de Uso
 
-<ol>
-  <li>
-    <span>Genérico (independente de modelo)</span>
-    <ul>
-      <li>
-        Deve atender a requisições de diferentes sistemas com seus respectivos modelos
-      </li>
-    </ul>
-  </li>
-
-  <li>
-    <span>Deve haver um end-point para cadastro dos templates de relatório Jasper</span>
-    <ul>
-      <li>
-        O usuário criará templetes para os seus relatórios considerando os dados que deseja mostrar e subimeterá o template ao microsserviço, o qual o usará para gerar o relatório
-      </li>
-    </ul>
-  </li>
-</ol>
-
-### Outras funcionalidades interessantes
 <ul>
-    <li>Versionamento de templates (Usuário pode cadastrar várias versões para um mesmo template)</li>
-    <li>Adição de sub-relatórios (envio de template por pacote '.zip')</li>
+    <li>Cadastrar relatório (template jasper)</li>
+    <li>Cadastrar versão de relatório</li>
+    <li>Gerar relatório (PDF)</li>
 </ul>
+
+## Instruções
+
+### Criação de templates jrxml
+
+Quando precisar de um field com casas decimais, utilize o wrapper Float do java.
+No momento, quando utilizamos a classe BigDecimal no template recebemos erro ao tentar gerar o relatório.
+Isso será corrigido em versões posteriores da API;
+
+O nome de um parâmetro sempre deve estar em maiúsculo;
+
+Um subrereport deve ser passado como parâmetro para o template do relatório principal. 
+Crie novo parâmetro no template principal e nas propriedades do subreport adicione-o ao campo "Expression";
+
