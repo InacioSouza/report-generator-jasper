@@ -21,7 +21,7 @@ Boas práticas de código foram aplicadas, interfaces foram utilizadas de forma 
  - Cadastrar versão de relatório
  - Gerar relatório (PDF)
 
-## ☑️ Instruções
+## ☑️ Considerações / Instruções
 
 ### Criação de templates jrxml
 
@@ -44,6 +44,8 @@ Crie o novo parâmetro no template principal e nas propriedades do subreport adi
 - Ao cadastrar um relatório na API, todos os arquivos jrxml relacionados - o template principal e seus subreports - devem, obrigatoriamente serem compactados no formato zip;
 - Ainda que o relatório seja formado por um único arquivo jrxml este deve ser compactado no formato zip;
 
+### Sobre a geração dos relatórios
+ - Uma limitação do projeto é que os relatórios só podem ser gerados no formato PDF. 
 
 ## ☑️ Especificações Técnicas
 
