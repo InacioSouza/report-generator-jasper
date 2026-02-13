@@ -1,4 +1,10 @@
-# Gerador de Relatórios Jasper
+<h1 align="center" style="font-weight: bold;">Gerador de Relatórios Jasper 💻📋</h1>
+
+<p>Autor: Inácio Souza Rocha</p>
+<a href="https://www.linkedin.com/in/inacio-souza/" target="_blank">
+  <img src="https://img.shields.io/badge/-LinkedIn-0077B5?logo=linkedin&logoColor=white&style=flat-square"/>
+</a>
+
 
 ## ☑️ Descrição do Projeto
 
