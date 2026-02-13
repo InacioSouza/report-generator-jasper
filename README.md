@@ -1,6 +1,6 @@
 # Gerador de Relatórios Jasper
 
-## Descrição
+## ☑️ Descrição do Projeto
 
 Este projeto fornece um serviço genérico de geração de relatórios para aplicações em uma arquitetura de microsserviços.
 
@@ -8,29 +8,48 @@ O serviço permite o cadastro de templates de relatórios no formato JasperRepor
 
 Ao utilizar este serviço, aplicações consumidoras não precisam implementar a lógica de geração de relatórios internamente. Dessa forma, os desenvolvedores podem se concentrar exclusivamente no design dos templates Jasper e no envio dos dados necessários, reduzindo o esforço de desenvolvimento e promovendo reutilização e padronização.
 
-## Arquitetura
+
+
+## ☑️ Arquitetura
 Este sistema foi desenvolvido utilizando a arquitetura em camadas e o padrão de comunicação REST.
 Cada componente lógico do sistema está separado na sua respectiva camada.
 Boas práticas de código foram aplicadas, interfaces foram utilizadas de forma estratégica para evitar o acoplamento entre as partes.
 
-## Principais Casos de Uso
+## ☑️ Principais Casos de Uso
 
-<ul>
-    <li>Cadastrar relatório (template jasper)</li>
-    <li>Cadastrar versão de relatório</li>
-    <li>Gerar relatório (PDF)</li>
-</ul>
+ - Cadastrar relatório (template jasper)
+ - Cadastrar versão de relatório
+ - Gerar relatório (PDF)
 
-## Instruções
+## ☑️ Instruções
 
 ### Criação de templates jrxml
 
-Quando precisar de um field com casas decimais, utilize o wrapper Float do java.
+ - Quando precisar de um field com casas decimais, utilize o wrapper Float do java.
 No momento, quando utilizamos a classe BigDecimal no template recebemos erro ao tentar gerar o relatório.
 Isso será corrigido em versões posteriores da API;
 
-O nome de um parâmetro sempre deve estar em maiúsculo;
+ - O nome de um parâmetro sempre deve estar em maiúsculo;
 
-Um subrereport deve ser passado como parâmetro para o template do relatório principal. 
-Crie novo parâmetro no template principal e nas propriedades do subreport adicione-o ao campo "Expression";
+ - Ao utilizar subrereports, estes devem ser passado como parâmetro para o template do relatório principal. 
+Crie o novo parâmetro no template principal e nas propriedades do subreport adicione-o ao campo "Expression";
 
+ - O nome do arquivo correspondente ao subreport deve ser igual ao nome do parâmetro no relatório principal;
+
+ - O arquivo principal deve conter a palavra "main" no nome;
+
+ - Sempre utilize atributos planos, wrappers do java, nos fields. Nunca adicione uma classe referente ao seu modelo de negócio nos fields do template.
+
+### Submissão dos templates jrxml
+- Ao cadastrar um relatório na API, todos os arquivos jrxml relacionados - o template principal e seus subreports - devem, obrigatoriamente serem compactados no formato zip;
+- Ainda que o relatório seja formado por um único arquivo jrxml este deve ser compactado no formato zip;
+
+
+## ☑️ Especificações Técnicas
+
+### Linguagens e Tecnologias Utilizadas
+
+- Java 17
+- Spring Boot 3.5.9
+- PostgreSQL
+- JasperReport
