@@ -1,6 +1,7 @@
 package br.com.report_generator.usecase;
 
 import br.com.report_generator.dto.SistemaResponseDto;
+import br.com.report_generator.infra.exception.AutorizationException;
 import br.com.report_generator.service.api.SistemaService;
 import br.com.report_generator.service.utils.SecurityUtil;
 import org.springframework.stereotype.Component;
@@ -20,8 +21,7 @@ public class BuscaSistemaPorIdUseCase {
 
         UUID idSistemaAutenticado = SecurityUtil.buscaIdSistemaAutenticado();
 
-        if (!idSistema.equals(idSistemaAutenticado)) throw new IllegalArgumentException(
-                "Você não pode alterar um registro sem ser o dono dele!");
+        if (!idSistema.equals(idSistemaAutenticado)) throw new AutorizationException();
 
         return new SistemaResponseDto(this.sistemaService.findById(idSistema));
     }
