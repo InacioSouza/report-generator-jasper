@@ -1,5 +1,6 @@
 package br.com.report_generator.service.utils;
 
+import br.com.report_generator.infra.exception.FalhaCompilacaoJasperException;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperReport;
@@ -23,7 +24,7 @@ public class JasperUtil {
             return baos.toByteArray();
 
         } catch (JRException e) {
-            throw new RuntimeException(e);
+            throw new FalhaCompilacaoJasperException("Falha ao compilar template jasper!");
         }
     }
 }

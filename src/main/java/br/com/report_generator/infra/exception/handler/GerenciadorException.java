@@ -59,4 +59,12 @@ public class GerenciadorException {
                 new ExceptionMessage(new Date(), 401, exception.getMessage())
         );
     }
+
+    @ExceptionHandler(FalhaCompilacaoJasperException.class)
+    public ResponseEntity<ExceptionMessage> falhaCompilacaoJasperException(
+            FalhaCompilacaoJasperException exception) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                new ExceptionMessage(new Date(), 400, exception.getMessage())
+        );
+    }
 }
