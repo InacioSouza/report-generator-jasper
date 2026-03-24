@@ -28,4 +28,9 @@ public class Sistema {
 
     @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "sistema")
     List<Relatorio> relatorios;
+
+    public Sistema(String nome, String descricao) {
+        this.nome = nome;
+        this.descricao = descricao;
+    }
 }
