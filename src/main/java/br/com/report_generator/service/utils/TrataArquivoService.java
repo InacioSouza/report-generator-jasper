@@ -1,9 +1,7 @@
 package br.com.report_generator.service.utils;
 
 import br.com.report_generator.dto.IdentificadorArquivoPrincipalEnum;
-import br.com.report_generator.infra.exception.FalhaAoSalvarRelatorioException;
-import br.com.report_generator.infra.exception.FormatoInvalidoException;
-import br.com.report_generator.infra.exception.IdentificadorArquivoPrincipalInvalidoException;
+import br.com.report_generator.infra.exception.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,11 +21,11 @@ public class TrataArquivoService {
     public Map<String, byte[]> validaEDevolveArquivosDoZip(MultipartFile arquivo) {
 
         if(arquivo.isEmpty()) {
-            throw new FormatoInvalidoException("O arquivo enviado está vazio!");
+            throw new ArquivoVazioException();
         }
 
         if(arquivo.getOriginalFilename() == null || arquivo.getOriginalFilename().isEmpty()) {
-            throw new FormatoInvalidoException("O arquivo enviado não possui nome!");
+            throw new NomenclaturaArquivoInvalidaException("O arquivo enviado não possui nome!");
         }
 
         if(!ZipUtil.assinaturaDoArquivoCorrespondeZIP(arquivo)) {
@@ -36,12 +34,12 @@ public class TrataArquivoService {
 
         Map<String, byte[]> mapArquivos = ZipUtil.extrairArquivosDoZip(arquivo);
 
-        if(mapArquivos.isEmpty()) throw new FalhaAoSalvarRelatorioException("Nenhum arquivo foi extraído do zip");
+        if(mapArquivos.isEmpty()) throw new ZipVazioException("Nenhum arquivo foi extraído do zip");
 
         long qtdArquivosComExtensaoCorreta = mapArquivos.keySet()
                 .stream().filter(chave -> chave.endsWith(".jrxml"))
                 .count();
-        if (qtdArquivosComExtensaoCorreta != mapArquivos.size()) throw new IllegalArgumentException(
+        if (qtdArquivosComExtensaoCorreta != mapArquivos.size()) throw new FormatoInvalidoException(
                 "Todos os arquivos dentro do zip devem ter a extensão .jrxml!"
         );
 
@@ -50,17 +48,13 @@ public class TrataArquivoService {
         int qtdArquivosMAIN = 0;
         for(String nomeArquivo : mapArquivos.keySet().stream().toList()) {
 
-            if (nomeArquivo == null || nomeArquivo.isEmpty()) {
-                throw new IllegalArgumentException("Um arquivo presente no zip não possui nome!");
-            }
-
             int qtdPontosNoNomeArquivo = 0;
             for(char c : nomeArquivo.toCharArray()) {
                 if (c == '.') {
                     qtdPontosNoNomeArquivo ++;
                 }
             }
-            if (qtdPontosNoNomeArquivo > 1) throw new IllegalArgumentException(
+            if (qtdPontosNoNomeArquivo > 1) throw new NomenclaturaArquivoInvalidaException(
                     "Nome de arquivo inválido ( " + nomeArquivo + " )" + " possui mais de um caractere '.'"
             );
 
