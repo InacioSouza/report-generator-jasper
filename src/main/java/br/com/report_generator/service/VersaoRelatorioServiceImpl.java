@@ -38,7 +38,8 @@ public class VersaoRelatorioServiceImpl extends GenericServiceImpl<VersaoRelator
 
     @Override
     public VersaoRelatorio buscaVersaoRelatorioPorIdRelatorio(UUID idRelatorio, Integer numeroVersao) {
-        Optional<VersaoRelatorio> versaoRelatorioOptional = this.repository.buscaVersaoRelatorioPorIdRelatorio(idRelatorio, numeroVersao);
+        Optional<VersaoRelatorio> versaoRelatorioOptional = this.repository
+                .buscaVersaoRelatorioPorIdRelatorioENumeroVersao(idRelatorio, numeroVersao);
         return versaoRelatorioOptional.orElse(null);
     }
 

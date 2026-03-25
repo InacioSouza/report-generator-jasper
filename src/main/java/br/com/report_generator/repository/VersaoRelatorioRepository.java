@@ -20,7 +20,7 @@ public interface VersaoRelatorioRepository extends GenericRepository<VersaoRelat
                     WHERE v.relatorio.id = :idRelatorio AND v.numeroVersao = :numeroVersao
                     """
     )
-    Optional<VersaoRelatorio> buscaVersaoRelatorioPorIdRelatorio(UUID idRelatorio, Integer numeroVersao);
+    Optional<VersaoRelatorio> buscaVersaoRelatorioPorIdRelatorioENumeroVersao(UUID idRelatorio, Integer numeroVersao);
 
     @Query(
             value = """

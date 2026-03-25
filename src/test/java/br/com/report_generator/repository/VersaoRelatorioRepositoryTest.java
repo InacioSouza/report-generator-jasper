@@ -29,13 +29,13 @@ class VersaoRelatorioRepositoryTest extends IntegrationTestContext {
     private SistemaRepository sistemaRepository;
 
     private Relatorio relatorio;
+    private VersaoRelatorio versao0;
     private VersaoRelatorio versao1;
 
     @BeforeEach
     void setup() throws Exception {
 
         Sistema sistema;
-        VersaoRelatorio versao0;
 
         sistema = new Sistema("RH", "Recursos Humanos");
 
@@ -56,17 +56,17 @@ class VersaoRelatorioRepositoryTest extends IntegrationTestContext {
                 .getInputStream().readAllBytes();
 
 
-        versao0 = new VersaoRelatorio();
-        versao0.setNomeArquivo("relatorio-veiculos-pessoa-main.jrxml");
-        versao0.setRelatorio(this.relatorio);
-        versao0.setNumeroVersao(1);
-        versao0.setTipoArquivo(TipoArquivoEnum.JRXML);
-        versao0.setTipoFinalRelatorio(TipoArquivoEnum.PDF);
-        versao0.setArquivoOriginal(templateJRXML);
-        versao0.setDataCriacao(new Date());
-        versao0.setUltimaAtualizacao(new Date());
+        this.versao0 = new VersaoRelatorio();
+        this.versao0.setNomeArquivo("relatorio-veiculos-pessoa-main.jrxml");
+        this.versao0.setRelatorio(this.relatorio);
+        this.versao0.setNumeroVersao(1);
+        this.versao0.setTipoArquivo(TipoArquivoEnum.JRXML);
+        this.versao0.setTipoFinalRelatorio(TipoArquivoEnum.PDF);
+        this.versao0.setArquivoOriginal(templateJRXML);
+        this.versao0.setDataCriacao(new Date());
+        this.versao0.setUltimaAtualizacao(new Date());
 
-        this.versaoRelatorioRepository.save(versao0);
+        this.versaoRelatorioRepository.save(this.versao0);
 
         this.versao1 = new VersaoRelatorio();
         this.versao1.setNomeArquivo("relatorio-veiculos-pessoa-main.jrxml");
@@ -94,6 +94,18 @@ class VersaoRelatorioRepositoryTest extends IntegrationTestContext {
         VersaoRelatorio ultimaVersao = optionalVersaoRelatorio.get();
 
         assertEquals(this.versao1.getId(), ultimaVersao.getId());
+    }
+
+    @DisplayName("Teste Busca Versão Relatório Por Id Relatório E Número Versão")
+    @Test
+    void testBuscaVersaoRelatorioPorIdRelatorioENumeroVersao() {
+        Optional<VersaoRelatorio> optionalVersaoRelatorio = this.versaoRelatorioRepository
+                .buscaVersaoRelatorioPorIdRelatorioENumeroVersao(
+                        this.relatorio.getId(),
+                        this.versao0.getNumeroVersao());
+
+        assertTrue(optionalVersaoRelatorio.isPresent());
+        assertEquals(this.versao0.getId(), optionalVersaoRelatorio.get().getId());
     }
 
 }
