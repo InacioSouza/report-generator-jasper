@@ -47,30 +47,39 @@ public class BaixarTemplateRelatorioUseCase {
     ) {
 
         Relatorio relatorioEncontrado = this.relatorioService.findById(dto.idRelatorio());
-        if (relatorioEncontrado == null) throw new RegistroNaoEncontradoException("Não foi encontrado relatório para o id: " + dto.idRelatorio());
-
+        if (relatorioEncontrado == null) {
+            throw new RegistroNaoEncontradoException(
+                    "Não foi encontrado relatório para o id: " + dto.idRelatorio());
+        }
         this.relatorioService
                 .verificaAutorizacaoSistemaParaAlterarRelatorio(relatorioEncontrado);
 
         VersaoRelatorio versaoRelatorioEncontrada;
         if(dto.numeroVersao() == null) {
-            versaoRelatorioEncontrada = this.versaoRelatorioService.buscaVersaoRelatorioMaisRecentePara(dto.idRelatorio());
+            versaoRelatorioEncontrada = this.versaoRelatorioService
+                    .buscaVersaoRelatorioMaisRecentePara(dto.idRelatorio());
         } else {
-            versaoRelatorioEncontrada = this.versaoRelatorioService.buscaVersaoRelatorioPorIdRelatorio(dto.idRelatorio(), dto.numeroVersao());
+            versaoRelatorioEncontrada = this.versaoRelatorioService
+                    .buscaVersaoRelatorioPorIdRelatorio(dto.idRelatorio(), dto.numeroVersao());
         }
 
-        if (versaoRelatorioEncontrada == null) throw new RegistroNaoEncontradoException("Não foi encontrado versão de relatório para o número: " + dto.numeroVersao());
-
+        if (versaoRelatorioEncontrada == null) {
+            throw new RegistroNaoEncontradoException(
+                    "Não foi encontrado versão de relatório para o número: " + dto.numeroVersao());
+        }
 
         List<ArquivoSubreport> listSubreports = this.arquivoSubreportService
                 .buscarSubreportsPorVersao(versaoRelatorioEncontrada.getId());
 
-
         Map<String, byte[]> mapArquivos = new HashMap<>();
-        mapArquivos.put(versaoRelatorioEncontrada.getNomeArquivo(), versaoRelatorioEncontrada.getArquivoOriginal());
+        mapArquivos.put(
+                versaoRelatorioEncontrada.getNomeArquivo(),
+                versaoRelatorioEncontrada.getArquivoOriginal());
 
         for(ArquivoSubreport arquivoSubreport : listSubreports) {
-            mapArquivos.put(arquivoSubreport.getNomeParametro() + ".jrxml", arquivoSubreport.getArquivoOriginal());
+            mapArquivos.put(
+                    arquivoSubreport.getNomeParametro() + ".jrxml",
+                    arquivoSubreport.getArquivoOriginal());
         }
 
         byte[] zipArquivos = ZipUtil.gerarZip(mapArquivos);
@@ -85,7 +94,9 @@ public class BaixarTemplateRelatorioUseCase {
 
         httpResponse.setStatus(HttpServletResponse.SC_OK);
         httpResponse.setContentType("application/zip");
-        httpResponse.setHeader("Content-Disposition", dto.exibicao().getExibicao() + "; filename=\"" + nomeZip + "\"");
+        httpResponse.setHeader(
+                "Content-Disposition",
+                dto.exibicao().getExibicao() + "; filename=\"" + nomeZip + "\"");
 
     }
 }
