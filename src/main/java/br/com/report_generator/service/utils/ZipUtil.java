@@ -14,7 +14,15 @@ import java.util.zip.ZipOutputStream;
 
 public class ZipUtil {
 
+    private static void validaMultipartFile(MultipartFile multipartFile) {
+        if(multipartFile == null || multipartFile.isEmpty()) {
+            throw new IllegalArgumentException("MultipartFile null ou vazio");
+        }
+    }
+
     public static boolean assinaturaDoArquivoCorrespondeZIP(MultipartFile file) {
+
+        validaMultipartFile(file);
 
         try (ZipInputStream zis = new ZipInputStream(file.getInputStream())) {
             return zis.getNextEntry() != null;
@@ -27,6 +35,8 @@ public class ZipUtil {
     }
 
     public static Map<String, byte[]> extrairArquivosDoZip(MultipartFile arquivo) {
+
+        validaMultipartFile(arquivo);
 
         Map<String, byte[]> map = new HashMap<>();
 
