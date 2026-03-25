@@ -29,23 +29,34 @@ public class GeradorRelatorioServiceImpl implements GeradorRelatorioService {
     ) {
 
         byte[] templateCompilado = versaoRelatorio.getArquivoCompilado() != null ?
-                versaoRelatorio.getArquivoCompilado() : JasperUtil.compilaJRXML(versaoRelatorio.getArquivoOriginal());
+                versaoRelatorio.getArquivoCompilado() :
+                JasperUtil.compilaJRXML(versaoRelatorio.getArquivoOriginal());
 
-        InputStream inputStreamRelatorio = new ByteArrayInputStream(templateCompilado);
+        InputStream inputStreamRelatorio = new ByteArrayInputStream(
+                templateCompilado);
 
-        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(pedidoDTO.dataSource());
+        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(
+                pedidoDTO.dataSource());
 
         Map<String, Object> parametros = new HashMap<>();
         /* Caso o título e subtítulo não sejam passados na requisição
          * os valores padrão do relatório serão utilizados */
-        parametros.put("TITULO_PADRAO", versaoRelatorio.getRelatorio().getTituloPadrao());
-        parametros.put("SUBTITULO_PADRAO", versaoRelatorio.getRelatorio().getSubtituloPadrao());
+        parametros.put(
+                "TITULO_PADRAO",
+                versaoRelatorio.getRelatorio().getTituloPadrao()
+        );
+        parametros.put(
+                "SUBTITULO_PADRAO",
+                versaoRelatorio.getRelatorio().getSubtituloPadrao()
+        );
         pedidoDTO.parametros().forEach(parametroInformado -> {
             parametros.put(parametroInformado.nome(), parametroInformado.valor());
         });
 
         // Parâmetro padrão exigido quando não há SQL
-        parametros.putIfAbsent(JRParameter.REPORT_DATA_SOURCE, dataSource);
+        parametros.putIfAbsent(
+                JRParameter.REPORT_DATA_SOURCE,
+                dataSource);
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
@@ -53,13 +64,19 @@ public class GeradorRelatorioServiceImpl implements GeradorRelatorioService {
 
             for(ArquivoSubreport arquivoSubreport : versaoRelatorio.getListSubreport()) {
                 byte[] templateSubrelatorioCompilado = arquivoSubreport.getArquivoCompilado() != null ?
-                        arquivoSubreport.getArquivoCompilado() : JasperUtil.compilaJRXML(arquivoSubreport.getArquivoOriginal());
+                        arquivoSubreport.getArquivoCompilado() :
+                        JasperUtil.compilaJRXML(arquivoSubreport.getArquivoOriginal());
 
-                parametros.put(arquivoSubreport.getNomeParametro(), JRLoader.loadObject(new ByteArrayInputStream(templateSubrelatorioCompilado)));
+                parametros.put(
+                        arquivoSubreport.getNomeParametro(),
+                        JRLoader.loadObject(new ByteArrayInputStream(templateSubrelatorioCompilado))
+                );
             }
 
-            JasperPrint jasperPrint = JasperFillManager.fillReport(inputStreamRelatorio, parametros, dataSource);
-            JasperExportManager.exportReportToPdfStream(jasperPrint, out);
+            JasperPrint jasperPrint = JasperFillManager
+                    .fillReport(inputStreamRelatorio, parametros, dataSource);
+            JasperExportManager
+                    .exportReportToPdfStream(jasperPrint, out);
 
         } catch (JRException e) {
             e.printStackTrace();
