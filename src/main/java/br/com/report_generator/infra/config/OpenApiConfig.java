@@ -40,10 +40,6 @@ public class OpenApiConfig {
                                 .type(SecurityScheme.Type.APIKEY)
                                 .in(SecurityScheme.In.HEADER)
                                 .name("X-API-KEY"))
-                        .addSecuritySchemes("clientIdAuth", new SecurityScheme()
-                                .type(SecurityScheme.Type.APIKEY)
-                                .in(SecurityScheme.In.HEADER)
-                                .name("X-CLIENT-ID"))
                 ).tags(
                         List.of(
                                 new Tag()

@@ -51,8 +51,11 @@ public class ApiKeyFilter extends OncePerRequestFilter {
             String chaveAPIEnviada = request.getHeader(API_KEY_HEADER);
 
             if (chaveAPIEnviada == null || chaveAPIEnviada.isEmpty()) {
-                throw new FalhaAutenticacaoException(
-                        "A chave de API deve ser enviada no cabeçalho da requisição!");
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.setContentType("application/json");
+                response.getWriter().write(
+                        "{\"erro\": \"A chave de API deve ser enviada no cabeçalho da requisição!\"}");
+                return;
             }
 
             String idClienteParam = "";
@@ -63,8 +66,11 @@ public class ApiKeyFilter extends OncePerRequestFilter {
             }
 
             if (idClienteParam.isEmpty()) {
-                throw new FalhaAutenticacaoException(
-                        "Chave incorreta! Erro na autenticação do cliente!");
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.setContentType("application/json");
+                response.getWriter().write(
+                        "{\"erro\": \"Chave incorreta! Erro na autenticacao do cliente!\"}");
+                return;
             }
 
             PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -73,16 +79,23 @@ public class ApiKeyFilter extends OncePerRequestFilter {
             try {
                 uuidCliente = UUID.fromString(idClienteParam);
             } catch (IllegalArgumentException e) {
-                throw new FalhaAutenticacaoException(
-                        "A chave está fora de padrão!");
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.setContentType("application/json");
+                response.getWriter().write(
+                        "{\"erro\": \"A chave está fora de padrão\"}");
+                return;
             }
 
             List<ApiKey> listApiKey = this.apiKeyService
                     .buscaChavesPorIdCliente(uuidCliente);
 
-            if (listApiKey.isEmpty()) throw new FalhaAutenticacaoException(
-                    "O cliente que está tentando acessar o sistema não possui uma chave ou não está cadastrado "
-            );
+            if (listApiKey.isEmpty()) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.setContentType("application/json");
+                response.getWriter().write(
+                        "{\"erro\": \"O cliente que está tentando acessar o sistema não possui uma chave ou não está cadastrado\"}");
+                return;
+            }
 
             boolean chaveValida = false;
 
@@ -105,7 +118,11 @@ public class ApiKeyFilter extends OncePerRequestFilter {
 
                 SecurityContextHolder.getContext().setAuthentication(auth);
             } else {
-                throw new FalhaAutenticacaoException("A chave informada não é válida!");
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.setContentType("application/json");
+                response.getWriter().write(
+                        "{\"erro\": \"A chave informada não é válida!\"}");
+                return;
             }
         }
 
