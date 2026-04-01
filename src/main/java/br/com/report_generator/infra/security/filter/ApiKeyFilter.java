@@ -28,7 +28,6 @@ import java.util.UUID;
 public class ApiKeyFilter extends OncePerRequestFilter {
 
     private static final String API_KEY_HEADER = "X-API-KEY";
-    private static final String CLIENT_ID_HEADER = "X-CLIENT-ID";
 
     private final ApiKeyService apiKeyService;
 
@@ -46,7 +45,7 @@ public class ApiKeyFilter extends OncePerRequestFilter {
 
         if(request.getRequestURI().contains(EndpointPrefix.API)
                 && !this.ehSwagger(request.getRequestURI())
-                && SecurityContextHolder.getContext().getAuthentication() == null
+               && SecurityContextHolder.getContext().getAuthentication() == null
         ) {
 
             String chaveAPIEnviada = request.getHeader(API_KEY_HEADER);
@@ -56,29 +55,33 @@ public class ApiKeyFilter extends OncePerRequestFilter {
                         "A chave de API deve ser enviada no cabeçalho da requisição!");
             }
 
-            String clientIdHeader = request.getHeader(CLIENT_ID_HEADER);
+            String idClienteParam = "";
 
-            if (clientIdHeader == null) {
+            String[] partesChave = chaveAPIEnviada.split("\\.");
+            if (partesChave.length == 2) {
+                idClienteParam = partesChave[1];
+            }
+
+            if (idClienteParam.isEmpty()) {
                 throw new FalhaAutenticacaoException(
-                        "O id do cliente que está fazendo a requisição deve ser informado pelo atributo X-CLIENT-ID !");
+                        "Chave incorreta! Erro na autenticação do cliente!");
             }
 
             PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
             UUID uuidCliente = null;
             try {
-                uuidCliente = UUID.fromString(clientIdHeader);
+                uuidCliente = UUID.fromString(idClienteParam);
             } catch (IllegalArgumentException e) {
-                throw new FormatoInvalidoException(
-                        "O id do cliente informado não está no padrão correto (UUID)!");
+                throw new FalhaAutenticacaoException(
+                        "A chave está fora de padrão!");
             }
 
             List<ApiKey> listApiKey = this.apiKeyService
                     .buscaChavesPorIdCliente(uuidCliente);
 
             if (listApiKey.isEmpty()) throw new FalhaAutenticacaoException(
-                    "Não foi encontrada chave cadastrada para o cliente de id: "
-                            + clientIdHeader + " o cliente não possui uma chave ou ele sequer existe "
+                    "O cliente que está tentando acessar o sistema não possui uma chave ou não está cadastrado "
             );
 
             boolean chaveValida = false;

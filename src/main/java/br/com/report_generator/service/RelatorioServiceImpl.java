@@ -6,7 +6,7 @@ import br.com.report_generator.dto.relatorio.AtualizaRelatorioRequestDto;
 import br.com.report_generator.dto.relatorio.CadastraRelatorioRequestDto;
 import br.com.report_generator.dto.relatorio.InfoRelatorioResponseDto;
 import br.com.report_generator.dto.relatorio.RelatorioCadastradoResponseDto;
-import br.com.report_generator.infra.exception.FalhaAutenticacaoException;
+import br.com.report_generator.infra.exception.AutorizationException;
 import br.com.report_generator.infra.exception.RegistroNaoEncontradoException;
 import br.com.report_generator.infra.factor.RelatorioFactor;
 import br.com.report_generator.infra.factor.VersaoRelatorioFactor;
@@ -107,7 +107,7 @@ public class RelatorioServiceImpl extends GenericServiceImpl<Relatorio, UUID> im
         listRelatorio.forEach(relatorio -> {
             if (!relatorio.getCliente().getId()
                     .equals(idCliente)) {
-                throw new FalhaAutenticacaoException(
+                throw new AutorizationException(
                         "Não é permitido que um cliente busque informações de relatórios que não pertencem a ele!");
             }
         });
@@ -143,7 +143,7 @@ public class RelatorioServiceImpl extends GenericServiceImpl<Relatorio, UUID> im
 
         if (!relatorio.getCliente().getId()
                 .equals(SecurityUtil.buscaIdClienteAutenticado())) {
-            throw new FalhaAutenticacaoException(
+            throw new AutorizationException(
                     "Não é permitido que um cliente altere um relatórios que não pertence a ele!");
         }
 

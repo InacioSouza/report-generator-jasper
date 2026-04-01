@@ -35,7 +35,7 @@ public class CadastraClienteUseCaseAdmin {
         ApiKey apiKey = new ApiKey();
         apiKey.setCliente(cliente);
         apiKey.setAtiva(true);
-        String apiKeyGerada = ApiKeyGenerator.gerar();
+        String apiKeyGerada = ApiKeyGenerator.gerar(cliente.getId());
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         apiKey.setHash(
                 passwordEncoder.encode(apiKeyGerada)

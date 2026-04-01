@@ -2,7 +2,7 @@ package br.com.report_generator.usecase.relatorio;
 
 import br.com.report_generator.dto.relatorio.CadastraRelatorioRequestDto;
 import br.com.report_generator.dto.relatorio.RelatorioCadastradoResponseDto;
-import br.com.report_generator.infra.exception.FalhaAutenticacaoException;
+import br.com.report_generator.infra.exception.AutorizationException;
 import br.com.report_generator.infra.exception.RegistroNaoEncontradoException;
 import br.com.report_generator.model.Cliente;
 import br.com.report_generator.model.Sistema;
@@ -36,7 +36,7 @@ public class CadastrarRelatorioUseCase {
     ) {
 
         if (!infos.idCliente().equals(SecurityUtil.buscaIdClienteAutenticado())) {
-            throw new FalhaAutenticacaoException(
+            throw new AutorizationException(
                     "Não é permitido que um cliente cadastre um relatório com o id de outro cliente!");
         }
 

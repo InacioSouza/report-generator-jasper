@@ -1,6 +1,6 @@
 package br.com.report_generator.usecase.relatorio;
 
-import br.com.report_generator.infra.exception.FalhaAutenticacaoException;
+import br.com.report_generator.infra.exception.AutorizationException;
 import br.com.report_generator.infra.exception.RegistroNaoEncontradoException;
 import br.com.report_generator.model.Relatorio;
 import br.com.report_generator.service.api.RelatorioService;
@@ -27,7 +27,7 @@ public class DeletaRelatorioUseCase {
 
         if (!relatorioEncontrado.getCliente().getId()
                 .equals(SecurityUtil.buscaIdClienteAutenticado())) {
-            throw new FalhaAutenticacaoException(
+            throw new AutorizationException(
                     "Não é permitido que um cliente delete um relatório que não pertence a ele!");
         }
 

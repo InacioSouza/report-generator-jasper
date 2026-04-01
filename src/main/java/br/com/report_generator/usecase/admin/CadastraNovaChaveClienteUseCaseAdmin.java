@@ -48,7 +48,7 @@ public class CadastraNovaChaveClienteUseCaseAdmin {
         novaApiKey.setAtiva(Boolean.TRUE);
 
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String novaChave = ApiKeyGenerator.gerar();
+        String novaChave = ApiKeyGenerator.gerar(idCliente);
         novaApiKey.setHash(passwordEncoder.encode(novaChave));
 
         this.apiKeyService.save(novaApiKey);
