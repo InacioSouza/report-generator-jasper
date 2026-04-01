@@ -3,14 +3,14 @@ package br.com.report_generator.controller;
 import br.com.report_generator.dto.SistemaRequestDto;
 import br.com.report_generator.dto.SistemaResponseDto;
 import br.com.report_generator.infra.config.EndpointPrefix;
+import br.com.report_generator.model.Sistema;
 import br.com.report_generator.service.api.SistemaService;
-import br.com.report_generator.usecase.AtualizaSistemaUseCase;
-import br.com.report_generator.usecase.BuscaSistemaPorIdUseCase;
+import br.com.report_generator.usecase.sistema.AtualizaSistemaUseCase;
+import br.com.report_generator.usecase.sistema.BuscaSistemaPorIdUseCase;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -28,6 +28,18 @@ public class SistemaController {
     @GetMapping("/{id}")
     public ResponseEntity<SistemaResponseDto> buscaPorId(@PathVariable UUID id) {
         return ResponseEntity.ok(new BuscaSistemaPorIdUseCase(this.service).executar(id));
+    }
+
+    @PostMapping("/")
+    public ResponseEntity<SistemaResponseDto> cadastrar(
+            @RequestBody SistemaRequestDto dto) {
+        return ResponseEntity.ok(
+                new SistemaResponseDto(
+                    this.service.save(
+                            new Sistema(dto.nome(), dto.descricao())
+                    )
+                )
+        );
     }
 
     @PutMapping("/{id}")

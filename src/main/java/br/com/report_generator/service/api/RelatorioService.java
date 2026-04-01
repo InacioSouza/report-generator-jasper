@@ -5,6 +5,7 @@ import br.com.report_generator.dto.relatorio.AtualizaRelatorioRequestDto;
 import br.com.report_generator.dto.relatorio.CadastraRelatorioRequestDto;
 import br.com.report_generator.dto.relatorio.InfoRelatorioResponseDto;
 import br.com.report_generator.dto.relatorio.RelatorioCadastradoResponseDto;
+import br.com.report_generator.model.Cliente;
 import br.com.report_generator.model.Relatorio;
 import br.com.report_generator.model.Sistema;
 import br.com.report_generator.service.api.generic.GenericService;
@@ -29,7 +30,8 @@ public interface RelatorioService extends GenericService<Relatorio, UUID> {
     RelatorioCadastradoResponseDto uploadRelatorio(
             MultipartFile arquivo,
             CadastraRelatorioRequestDto relatorioUploadDto,
-            Sistema sistemaDoRelatorio);
+            Sistema sistemaDoRelatorio,
+            Cliente clienteDoRelatorio);
 
     /**
      * Busca registros de Relatorio de acordo com os campos preenchidos no filtro,
@@ -46,5 +48,5 @@ public interface RelatorioService extends GenericService<Relatorio, UUID> {
 
     UUID deletarPorId(UUID idRelatorio);
 
-    public void verificaAutorizacaoSistemaParaAlterarRelatorio(Relatorio relatorio);
+    void verificaAutorizacaoClienteParaAlterarRelatorio(Relatorio relatorio);
 }

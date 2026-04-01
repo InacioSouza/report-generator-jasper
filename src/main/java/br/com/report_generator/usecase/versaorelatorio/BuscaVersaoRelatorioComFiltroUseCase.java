@@ -1,4 +1,4 @@
-package br.com.report_generator.usecase;
+package br.com.report_generator.usecase.versaorelatorio;
 
 import br.com.report_generator.dto.filtros.VersaoRelatorioFiltroDto;
 import br.com.report_generator.dto.versaorelatorio.VersaoRelatorioResponseDto;

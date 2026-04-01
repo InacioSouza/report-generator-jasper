@@ -6,7 +6,7 @@ import br.com.report_generator.infra.config.EndpointPrefix;
 import br.com.report_generator.service.api.GeradorRelatorioService;
 import br.com.report_generator.service.api.RelatorioService;
 import br.com.report_generator.service.api.VersaoRelatorioService;
-import br.com.report_generator.usecase.GeraRelatorioUseCase;
+import br.com.report_generator.usecase.relatorio.GeraRelatorioUseCase;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;

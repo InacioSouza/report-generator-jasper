@@ -23,10 +23,10 @@ public class RelatorioSpecification {
 
             } else {
                 // Um usuário (sistema) não ADMIN deve acessar somente as informações que pertencem a ele
-                UUID idSistemaAutenticado = SecurityUtil.buscaIdSistemaAutenticado();
+                UUID idClienteAutenticado = SecurityUtil.buscaIdClienteAutenticado();
 
                 predicates.add(
-                        cb.equal(root.get("sistema").get("id"), idSistemaAutenticado)
+                        cb.equal(root.get("cliente").get("id"), idClienteAutenticado)
                 );
             }
 

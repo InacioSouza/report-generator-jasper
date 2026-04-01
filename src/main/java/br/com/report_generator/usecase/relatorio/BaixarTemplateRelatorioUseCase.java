@@ -1,4 +1,4 @@
-package br.com.report_generator.usecase;
+package br.com.report_generator.usecase.relatorio;
 
 import br.com.report_generator.model.ArquivoSubreport;
 import br.com.report_generator.service.api.ArquivoSubreportService;
@@ -52,7 +52,7 @@ public class BaixarTemplateRelatorioUseCase {
                     "Não foi encontrado relatório para o id: " + dto.idRelatorio());
         }
         this.relatorioService
-                .verificaAutorizacaoSistemaParaAlterarRelatorio(relatorioEncontrado);
+                .verificaAutorizacaoClienteParaAlterarRelatorio(relatorioEncontrado);
 
         VersaoRelatorio versaoRelatorioEncontrada;
         if(dto.numeroVersao() == null) {

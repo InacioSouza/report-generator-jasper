@@ -2,8 +2,8 @@ package br.com.report_generator.controller.protegido;
 
 import br.com.report_generator.infra.config.EndpointPrefix;
 import br.com.report_generator.service.api.ApiKeyService;
-import br.com.report_generator.service.api.SistemaService;
-import br.com.report_generator.usecase.admin.CadastraNovaChaveSistemaUseCaseAdmin;
+import br.com.report_generator.service.api.ClienteService;
+import br.com.report_generator.usecase.admin.CadastraNovaChaveClienteUseCaseAdmin;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -22,20 +22,23 @@ import java.util.UUID;
 public class AdminApiKey {
 
     private final ApiKeyService apiKeyService;
-    private final SistemaService sistemaService;
+    private final ClienteService clienteService;
 
     public AdminApiKey(
             ApiKeyService apiKeyService,
-            SistemaService sistemaService
+            ClienteService clienteService
     ) {
-        this.sistemaService = sistemaService;
+        this.clienteService = clienteService;
         this.apiKeyService = apiKeyService;
     }
 
-    @Operation(summary = "Cadastra uma nova chave para um sistema, desativa todas as outras")
-    @PostMapping("/{idSistema}")
-    public ResponseEntity<?> cadastraNovaChaveParaSistema(@PathVariable UUID idSistema) {
-        return ResponseEntity.ok(new CadastraNovaChaveSistemaUseCaseAdmin(
-                this.apiKeyService, this.sistemaService).executar(idSistema));
+    @Operation(summary = "Cadastra uma nova chave para um cliente, desativa todas as outras chaves do cliente")
+    @PostMapping("/{idCliente}")
+    public ResponseEntity<?> cadastraNovaChaveParaCliente(@PathVariable UUID idCliente) {
+        return ResponseEntity.ok(
+                new CadastraNovaChaveClienteUseCaseAdmin(
+                        this.apiKeyService,
+                        this.clienteService
+                ).executar(idCliente));
     }
 }

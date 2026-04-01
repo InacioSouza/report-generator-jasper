@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public class SecurityUtil {
 
-    public static UUID buscaIdSistemaAutenticado() {
+    public static UUID buscaIdClienteAutenticado() {
         return (UUID) SecurityContextHolder
                 .getContext()
                 .getAuthentication()

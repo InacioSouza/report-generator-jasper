@@ -99,6 +99,7 @@ public class VersaoRelatorioServiceImpl extends GenericServiceImpl<VersaoRelator
                 "Não foi encontrada VersaoRelatorio para o id " + dto.id());
 
         VersaoRelatorio versaoRelatorio = this.repository.findById(dto.id()).get();
+
         versaoRelatorio.setNome(dto.nome());
         versaoRelatorio.setDescricaoVersao(dto.descricao());
 

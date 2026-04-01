@@ -1,4 +1,4 @@
-package br.com.report_generator.usecase;
+package br.com.report_generator.usecase.relatorio;
 
 import br.com.report_generator.dto.PdfGeradoDto;
 import br.com.report_generator.dto.relatorio.GeraRelatorioRequestDto;
@@ -31,23 +31,26 @@ public class GeraRelatorioUseCase {
             GeraRelatorioRequestDto pedidoDTO
     ) {
 
-        Relatorio relatorio = this.relatorioService.findById(pedidoDTO.idRelatorio());
+        Relatorio relatorio = this.relatorioService
+                .findById(pedidoDTO.idRelatorio());
 
         this.relatorioService
-                .verificaAutorizacaoSistemaParaAlterarRelatorio(relatorio);
+                .verificaAutorizacaoClienteParaAlterarRelatorio(relatorio);
 
         if(pedidoDTO.dataSource().isEmpty()) {
             throw new IllegalArgumentException("O dataSource não pode estar vazio!");
         }
 
         if(relatorio == null) {
-            throw new RegistroNaoEncontradoException("Não existe relatório para o id : " + pedidoDTO.idRelatorio());
+            throw new RegistroNaoEncontradoException(
+                    "Não existe relatório para o id : " + pedidoDTO.idRelatorio());
         }
 
         VersaoRelatorio versaoRelatorio =  this.versaoRelatorioService.findById(pedidoDTO.idVersao());
 
         if(versaoRelatorio == null) {
-            throw new RegistroNaoEncontradoException("Não existe versão de relatório para o id : " + pedidoDTO.idVersao());
+            throw new RegistroNaoEncontradoException(
+                    "Não existe versão de relatório para o id : " + pedidoDTO.idVersao());
         }
 
         String nomeRelatorioPDF = relatorio.getNome() + "-v-" + versaoRelatorio.getNumeroVersao() + ".pdf";

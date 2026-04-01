@@ -8,5 +8,5 @@ import java.util.UUID;
 
 public interface ApiKeyService extends GenericService<ApiKey, Long> {
 
-    List<ApiKey> buscaChavesPorIdSistema(UUID idSistema);
+    List<ApiKey> buscaChavesPorIdCliente(UUID idSistema);
 }

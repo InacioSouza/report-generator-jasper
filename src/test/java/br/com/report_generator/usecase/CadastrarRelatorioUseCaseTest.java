@@ -3,6 +3,7 @@ package br.com.report_generator.usecase;
 import br.com.report_generator.contexto.IntegrationTestContext;
 import br.com.report_generator.dto.relatorio.CadastraRelatorioRequestDto;
 import br.com.report_generator.infra.exception.RegistroNaoEncontradoException;
+import br.com.report_generator.usecase.relatorio.CadastrarRelatorioUseCase;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

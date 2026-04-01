@@ -5,13 +5,12 @@ import br.com.report_generator.dto.versaorelatorio.AtualizaVersaoRelatorioReques
 import br.com.report_generator.dto.versaorelatorio.CadastraVersaoRelatorioRequestDto;
 import br.com.report_generator.dto.versaorelatorio.VersaoRelatorioResponseDto;
 import br.com.report_generator.infra.config.EndpointPrefix;
-import br.com.report_generator.infra.exception.RegistroNaoEncontradoException;
-import br.com.report_generator.model.Relatorio;
 import br.com.report_generator.repository.VersaoRelatorioRepository;
 import br.com.report_generator.service.api.RelatorioService;
 import br.com.report_generator.service.api.VersaoRelatorioService;
-import br.com.report_generator.usecase.BuscaVersaoRelatorioComFiltroUseCase;
-import br.com.report_generator.usecase.DeletaVersaoRelatorioUseCase;
+import br.com.report_generator.usecase.versaorelatorio.BuscaVersaoRelatorioComFiltroUseCase;
+import br.com.report_generator.usecase.versaorelatorio.CadastraNovaVersaoRelatorioUseCase;
+import br.com.report_generator.usecase.versaorelatorio.DeletaVersaoRelatorioUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -45,21 +44,20 @@ public class VersaoRelatorioController {
             path = "/nova-versao",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE
     )
-    public ResponseEntity<?> cadastrarNovaVersaoRelatorio(@RequestPart("versaoZip") MultipartFile versaoZip,
-                                                          @RequestPart("infos")
-                                                          @Valid
-                                                          CadastraVersaoRelatorioRequestDto infos) {
-
-        Relatorio relatorio = this.relatorioService.findById(infos.idRelatorio());
-        if (relatorio == null) throw new RegistroNaoEncontradoException(
-                "Não foi encontrado relatório para o id: " + infos.idRelatorio()
-        );
+    public ResponseEntity<VersaoRelatorioResponseDto> cadastrarNovaVersaoRelatorio(
+            @RequestPart("versaoZip") MultipartFile versaoZip,
+            @RequestPart("infos")
+            @Valid
+            CadastraVersaoRelatorioRequestDto infos
+    ) {
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(
-                        this.versaoRelatorioService
-                                .cadastraVersaoRelatorio(versaoZip, infos, relatorio)
+                    new CadastraNovaVersaoRelatorioUseCase(
+                            this.relatorioService,
+                            this.versaoRelatorioService
+                    ).executar(versaoZip, infos)
                 );
     }
 

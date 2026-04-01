@@ -24,9 +24,9 @@ public class ApiKey {
 
     private boolean ativa;
 
-    @JoinColumn(name = "sistema_id")
+    @JoinColumn(name = "cliente_id")
     @OneToOne()
-    private Sistema sistema;
+    private Cliente cliente;
 
     @Column(name = "criada_em")
     private LocalDateTime criadaEm;

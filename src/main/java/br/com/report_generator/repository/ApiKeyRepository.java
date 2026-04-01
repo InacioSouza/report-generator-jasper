@@ -14,8 +14,8 @@ public interface ApiKeyRepository extends GenericRepository<ApiKey, Long> {
     @Query(value = """
                    SELECT a
                    FROM ApiKey a
-                   WHERE a.sistema.id = :sistemaId
+                   WHERE a.cliente.id = :clienteId
                    """
     )
-    List<ApiKey> buscaChavesPorIdSistema(UUID sistemaId);
+    List<ApiKey> buscaChavesPorIdCliente(UUID clienteId);
 }

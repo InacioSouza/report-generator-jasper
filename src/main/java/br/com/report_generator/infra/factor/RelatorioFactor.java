@@ -1,6 +1,7 @@
 package br.com.report_generator.infra.factor;
 
 import br.com.report_generator.dto.relatorio.CadastraRelatorioRequestDto;
+import br.com.report_generator.model.Cliente;
 import br.com.report_generator.model.Sistema;
 import br.com.report_generator.model.Relatorio;
 
@@ -27,6 +28,13 @@ public class RelatorioFactor {
     public RelatorioFactor addSistema(Sistema sistema) {
         if (this.relatorio != null) {
             this.relatorio.setSistema(sistema);
+        }
+        return this;
+    }
+
+    public RelatorioFactor addCliente(Cliente cliente) {
+        if (this.relatorio != null) {
+            this.relatorio.setCliente(cliente);
         }
         return this;
     }

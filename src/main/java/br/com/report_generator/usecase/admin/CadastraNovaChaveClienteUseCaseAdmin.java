@@ -2,9 +2,8 @@ package br.com.report_generator.usecase.admin;
 
 import br.com.report_generator.infra.exception.RegistroNaoEncontradoException;
 import br.com.report_generator.model.ApiKey;
-import br.com.report_generator.model.Sistema;
 import br.com.report_generator.service.api.ApiKeyService;
-import br.com.report_generator.service.api.SistemaService;
+import br.com.report_generator.service.api.ClienteService;
 import br.com.report_generator.service.utils.ApiKeyGenerator;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,33 +14,35 @@ import java.util.List;
 import java.util.UUID;
 
 @Component
-public class CadastraNovaChaveSistemaUseCaseAdmin {
+public class CadastraNovaChaveClienteUseCaseAdmin {
 
     private final ApiKeyService apiKeyService;
-    private final SistemaService sistemaService;
+    private final ClienteService clienteService;
 
-    public CadastraNovaChaveSistemaUseCaseAdmin(
+    public CadastraNovaChaveClienteUseCaseAdmin(
             ApiKeyService apiKeyService,
-            SistemaService sistemaService
+            ClienteService clienteService
     ) {
         this.apiKeyService = apiKeyService;
-        this.sistemaService = sistemaService;
+        this.clienteService = clienteService;
     }
 
-    public String executar(UUID idSistema) {
+    public String executar(UUID idCliente) {
 
-        if(!this.sistemaService.existeRegistroParaId(idSistema)) throw new RegistroNaoEncontradoException(
-                "Não foi encontrado sistema para o id: " + idSistema);
+        if(!this.clienteService.existeRegistroParaId(idCliente)) {
+            throw new RegistroNaoEncontradoException(
+                    "Não foi encontrado cliente para o id: " + idCliente);
+        }
 
         List<ApiKey> listApiKeySistema = this.apiKeyService
-                .buscaChavesPorIdSistema(idSistema);
+                .buscaChavesPorIdCliente(idCliente);
 
         listApiKeySistema.forEach(apiKey -> {
             apiKey.setAtiva(Boolean.FALSE);
         });
 
         ApiKey novaApiKey = new ApiKey();
-        novaApiKey.setSistema(this.sistemaService.findById(idSistema));
+        novaApiKey.setCliente(this.clienteService.findById(idCliente));
 
         novaApiKey.setCriadaEm(LocalDateTime.now());
         novaApiKey.setAtiva(Boolean.TRUE);

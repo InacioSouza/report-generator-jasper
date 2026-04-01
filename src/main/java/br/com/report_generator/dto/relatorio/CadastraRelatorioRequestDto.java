@@ -14,6 +14,8 @@ public record CadastraRelatorioRequestDto(
         String descricaoTecnica,
         String descricaoVersao,
         @NotNull
-        UUID idSistema
+        UUID idSistema,
+        @NotNull
+        UUID idCliente
 ) {
 }

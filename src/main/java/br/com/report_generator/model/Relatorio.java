@@ -41,6 +41,10 @@ public class Relatorio {
     @JoinColumn(name = "sistema_id")
     private Sistema sistema;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cliente_id")
+    private Cliente cliente;
+
     @Column(name = "data_criacao")
     private Date dataCriacao;
 

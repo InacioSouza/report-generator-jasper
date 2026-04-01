@@ -1,4 +1,4 @@
-package br.com.report_generator.usecase;
+package br.com.report_generator.usecase.relatorio;
 
 import br.com.report_generator.dto.relatorio.AtualizaRelatorioRequestDto;
 import br.com.report_generator.dto.relatorio.InfoRelatorioResponseDto;

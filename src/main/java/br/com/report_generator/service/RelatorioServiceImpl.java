@@ -6,13 +6,11 @@ import br.com.report_generator.dto.relatorio.AtualizaRelatorioRequestDto;
 import br.com.report_generator.dto.relatorio.CadastraRelatorioRequestDto;
 import br.com.report_generator.dto.relatorio.InfoRelatorioResponseDto;
 import br.com.report_generator.dto.relatorio.RelatorioCadastradoResponseDto;
+import br.com.report_generator.infra.exception.FalhaAutenticacaoException;
 import br.com.report_generator.infra.exception.RegistroNaoEncontradoException;
 import br.com.report_generator.infra.factor.RelatorioFactor;
 import br.com.report_generator.infra.factor.VersaoRelatorioFactor;
-import br.com.report_generator.model.ArquivoSubreport;
-import br.com.report_generator.model.Relatorio;
-import br.com.report_generator.model.Sistema;
-import br.com.report_generator.model.VersaoRelatorio;
+import br.com.report_generator.model.*;
 import br.com.report_generator.repository.RelatorioRepository;
 import br.com.report_generator.repository.specification.RelatorioSpecification;
 import br.com.report_generator.service.api.RelatorioService;
@@ -45,7 +43,8 @@ public class RelatorioServiceImpl extends GenericServiceImpl<Relatorio, UUID> im
     public RelatorioCadastradoResponseDto uploadRelatorio(
             MultipartFile arquivo,
             CadastraRelatorioRequestDto relatorioUploadDto,
-            Sistema sistemaDoRelatorio
+            Sistema sistemaDoRelatorio,
+            Cliente cliente
     ) {
 
         Map<String, byte[]> mapArquivos = this.trataArquivoService.validaEDevolveArquivosDoZip(arquivo);
@@ -53,6 +52,7 @@ public class RelatorioServiceImpl extends GenericServiceImpl<Relatorio, UUID> im
         Relatorio relatorio = new RelatorioFactor()
                 .constroiRelatorioUtilizandoDto(relatorioUploadDto)
                 .addSistema(sistemaDoRelatorio)
+                .addCliente(cliente)
                 .build();
 
         VersaoRelatorio versaoRelatorio = new VersaoRelatorioFactor()
@@ -102,8 +102,17 @@ public class RelatorioServiceImpl extends GenericServiceImpl<Relatorio, UUID> im
 
         Specification<Relatorio> spec = RelatorioSpecification.filtro(filtro);
         List<Relatorio> listRelatorio = this.repository.findAll(spec);
-        return listRelatorio.stream().map(InfoRelatorioResponseDto::new).toList();
 
+        UUID idCliente = SecurityUtil.buscaIdClienteAutenticado();
+        listRelatorio.forEach(relatorio -> {
+            if (!relatorio.getCliente().getId()
+                    .equals(idCliente)) {
+                throw new FalhaAutenticacaoException(
+                        "Não é permitido que um cliente busque informações de relatórios que não pertencem a ele!");
+            }
+        });
+
+        return listRelatorio.stream().map(InfoRelatorioResponseDto::new).toList();
     }
 
     @Override
@@ -112,13 +121,13 @@ public class RelatorioServiceImpl extends GenericServiceImpl<Relatorio, UUID> im
     }
 
     @Override
-    public void verificaAutorizacaoSistemaParaAlterarRelatorio(Relatorio relatorio) {
-        UUID idSistemaConectado = SecurityUtil.buscaIdSistemaAutenticado();
+    public void verificaAutorizacaoClienteParaAlterarRelatorio(Relatorio relatorio) {
+        UUID idClienteConectado = SecurityUtil.buscaIdClienteAutenticado();
 
-        UUID idSistemaDonoRelatorio = relatorio.getSistema().getId();
+        UUID idClienteDonoRelatorio = relatorio.getCliente().getId();
 
-        if (!idSistemaDonoRelatorio.equals(idSistemaConectado)) throw new IllegalArgumentException(
-                "Você não pode alterar um registro sem ser o dono dele!");
+        if (!idClienteDonoRelatorio.equals(idClienteConectado)) throw new IllegalArgumentException(
+                "Um cliente não pode alterar um registro sem ser o dono dele!");
     }
 
     @Override
@@ -132,7 +141,13 @@ public class RelatorioServiceImpl extends GenericServiceImpl<Relatorio, UUID> im
 
         Relatorio relatorio = this.repository.findById(dto.idRelatorio()).get();
 
-        this.verificaAutorizacaoSistemaParaAlterarRelatorio(relatorio);
+        if (!relatorio.getCliente().getId()
+                .equals(SecurityUtil.buscaIdClienteAutenticado())) {
+            throw new FalhaAutenticacaoException(
+                    "Não é permitido que um cliente altere um relatórios que não pertence a ele!");
+        }
+
+        this.verificaAutorizacaoClienteParaAlterarRelatorio(relatorio);
 
         relatorio.setTituloPadrao(dto.tituloPadrao());
         relatorio.setSubtituloPadrao(dto.subtituloPadrao());

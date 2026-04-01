@@ -1,5 +1,10 @@
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
+CREATE TABLE cliente(
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    nome VARCHAR(250) NOT NULL
+);
+
 CREATE TABLE sistema (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     nome VARCHAR(250) NOT NULL,
@@ -15,12 +20,14 @@ CREATE TABLE relatorio (
     descricao_tecnica TEXT,
     informacao TEXT,
     sistema_id UUID,
+    cliente_id UUID,
     numero_ultima_versao BIGINT NOT NULL,
     data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     ultima_atualizacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     versao BIGINT NOT NULL,
 
-    FOREIGN KEY (sistema_id) REFERENCES sistema(id)
+    FOREIGN KEY (sistema_id) REFERENCES sistema(id),
+    FOREIGN KEY (cliente_id) REFERENCES cliente(id)
 );
 
 CREATE TABLE versao_relatorio(
@@ -63,8 +70,8 @@ CREATE TABLE api_key(
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     hash VARCHAR(450) NOT NULL,
     ativa BOOLEAN NOT NULL,
-    sistema_id UUID NOT NULL,
+    cliente_id UUID NOT NULL,
     criada_em TIMESTAMP NOT NULL,
 
-    FOREIGN KEY (sistema_id) REFERENCES sistema(id)
+    FOREIGN KEY (cliente_id) REFERENCES cliente(id)
 );

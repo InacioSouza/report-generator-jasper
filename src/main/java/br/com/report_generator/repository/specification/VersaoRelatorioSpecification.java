@@ -31,9 +31,9 @@ public class VersaoRelatorioSpecification {
                 listPredicate.add(
                         cb.equal(
                                 root.get("relatorio")
-                                        .get("sistema")
+                                        .get("cliente")
                                         .get("id")
-                                , SecurityUtil.buscaIdSistemaAutenticado()
+                                , SecurityUtil.buscaIdClienteAutenticado()
                         )
                 );
             }

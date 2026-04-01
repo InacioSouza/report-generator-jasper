@@ -5,6 +5,7 @@ import br.com.report_generator.infra.exception.RegistroNaoEncontradoException;
 import br.com.report_generator.model.Relatorio;
 import br.com.report_generator.service.api.RelatorioService;
 import br.com.report_generator.service.api.VersaoRelatorioService;
+import br.com.report_generator.usecase.relatorio.BaixarTemplateRelatorioUseCase;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -39,7 +40,7 @@ class BaixarTemplateRelatorioUseCaseTest  {
                 .thenReturn(new Relatorio());
 
         doNothing().when(relatorioService)
-                .verificaAutorizacaoSistemaParaAlterarRelatorio(any());
+                .verificaAutorizacaoClienteParaAlterarRelatorio(any());
 
         when(versaoRelatorioService
                 .buscaVersaoRelatorioMaisRecentePara(any(UUID.class)))

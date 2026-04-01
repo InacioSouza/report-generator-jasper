@@ -1,4 +1,4 @@
-package br.com.report_generator.usecase;
+package br.com.report_generator.usecase.versaorelatorio;
 
 import br.com.report_generator.infra.exception.RegistroNaoEncontradoException;
 import br.com.report_generator.model.Relatorio;
@@ -29,11 +29,10 @@ public class DeletaVersaoRelatorioUseCase {
         );
 
         VersaoRelatorio versaoRelatorio = this.versaoRelatorioService.findById(id);
-
         Relatorio relatorio = versaoRelatorio.getRelatorio();
 
         this.relatorioService
-                .verificaAutorizacaoSistemaParaAlterarRelatorio(relatorio);
+                .verificaAutorizacaoClienteParaAlterarRelatorio(relatorio);
 
         Integer qtdVersoesRelatorio = this.relatorioService.
                 qtdVersoesParaORelatorio(relatorio.getId());

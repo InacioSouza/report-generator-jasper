@@ -3,14 +3,11 @@ package br.com.report_generator.controller;
 import br.com.report_generator.dto.filtros.RelatorioFiltroDto;
 import br.com.report_generator.dto.relatorio.*;
 import br.com.report_generator.infra.config.EndpointPrefix;
-import br.com.report_generator.service.api.ArquivoSubreportService;
-import br.com.report_generator.service.api.VersaoRelatorioService;
-import br.com.report_generator.service.api.RelatorioService;
-import br.com.report_generator.service.api.SistemaService;
-import br.com.report_generator.usecase.AtualizaRelatorioUseCase;
-import br.com.report_generator.usecase.BaixarTemplateRelatorioUseCase;
-import br.com.report_generator.usecase.CadastrarRelatorioUseCase;
-import br.com.report_generator.usecase.DeletaRelatorioUseCase;
+import br.com.report_generator.service.api.*;
+import br.com.report_generator.usecase.relatorio.AtualizaRelatorioUseCase;
+import br.com.report_generator.usecase.relatorio.BaixarTemplateRelatorioUseCase;
+import br.com.report_generator.usecase.relatorio.CadastrarRelatorioUseCase;
+import br.com.report_generator.usecase.relatorio.DeletaRelatorioUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -18,7 +15,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,17 +33,20 @@ public class RelatorioController {
     private final VersaoRelatorioService versaoRelatorioService;
     private final ArquivoSubreportService arquivoSubreportService;
     private final SistemaService sistemaService;
+    private final ClienteService clienteService;
 
     public RelatorioController(
             RelatorioService relatorioService,
             VersaoRelatorioService versaoRelatorioService,
             ArquivoSubreportService arquivoSubreportService,
-            SistemaService sistemaService
+            SistemaService sistemaService,
+            ClienteService clienteService
     ) {
         this.relatorioService = relatorioService;
         this.versaoRelatorioService = versaoRelatorioService;
         this.arquivoSubreportService = arquivoSubreportService;
         this.sistemaService = sistemaService;
+        this.clienteService = clienteService;
     }
 
     @Operation(
@@ -71,8 +70,11 @@ public class RelatorioController {
             CadastraRelatorioRequestDto infos) {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(
-                new CadastrarRelatorioUseCase(sistemaService, relatorioService)
-                        .executar(file, infos)
+                new CadastrarRelatorioUseCase(
+                        this.sistemaService,
+                        this.relatorioService,
+                        this.clienteService
+                ).executar(file, infos)
         );
     }
 
