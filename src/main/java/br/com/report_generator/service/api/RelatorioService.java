@@ -44,7 +44,8 @@ public interface RelatorioService extends GenericService<Relatorio, UUID> {
 
     Integer qtdVersoesParaORelatorio(UUID idRelatorio);
 
-    InfoRelatorioResponseDto atualizarRelatorio(AtualizaRelatorioRequestDto dto,Sistema sistema);
+    InfoRelatorioResponseDto atualizarRelatorio(
+            UUID idRelatorio, AtualizaRelatorioRequestDto dto,Sistema sistema);
 
     UUID deletarPorId(UUID idRelatorio);
 

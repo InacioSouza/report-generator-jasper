@@ -7,6 +7,8 @@ import br.com.report_generator.service.api.RelatorioService;
 import br.com.report_generator.service.api.SistemaService;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @Component
 public class AtualizaRelatorioUseCase {
 
@@ -21,14 +23,15 @@ public class AtualizaRelatorioUseCase {
         this.relatorioService = relatorioService;
     }
 
-    public InfoRelatorioResponseDto executar(AtualizaRelatorioRequestDto dto) {
+    public InfoRelatorioResponseDto executar(
+            UUID idRelatorio, AtualizaRelatorioRequestDto dto) {
 
         Sistema sistema = null;
         if (dto.idSistema() != null) {
             sistema = this.sistemaService.findById(dto.idSistema());
         }
 
-        return this.relatorioService.atualizarRelatorio(dto, sistema);
+        return this.relatorioService.atualizarRelatorio(idRelatorio, dto, sistema);
     }
 
 }

@@ -1,6 +1,8 @@
 package br.com.report_generator.usecase.sistema;
 
 import br.com.report_generator.dto.SistemaResponseDto;
+import br.com.report_generator.infra.exception.RegistroNaoEncontradoException;
+import br.com.report_generator.model.Sistema;
 import br.com.report_generator.service.api.SistemaService;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +18,12 @@ public class BuscaSistemaPorIdUseCase {
     }
 
     public SistemaResponseDto executar(UUID idSistema) {
-        return new SistemaResponseDto(this.sistemaService.findById(idSistema));
+
+        Sistema sistema = this.sistemaService.findById(idSistema);
+        if (sistema == null) {
+            throw new RegistroNaoEncontradoException("Não foi encontrado sistema para o id:" + idSistema);
+        }
+
+        return new SistemaResponseDto(sistema);
     }
 }

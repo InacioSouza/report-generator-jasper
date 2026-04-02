@@ -7,6 +7,7 @@ import java.util.UUID;
 public record CadastraVersaoRelatorioRequestDto(
         @NotNull
         UUID idRelatorio,
+        String nomeVersao,
         String descricaoVersao
 ) {
 }

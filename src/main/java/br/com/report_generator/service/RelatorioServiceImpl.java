@@ -132,14 +132,15 @@ public class RelatorioServiceImpl extends GenericServiceImpl<Relatorio, UUID> im
 
     @Override
     public InfoRelatorioResponseDto atualizarRelatorio(
+            UUID idRelatorio,
             AtualizaRelatorioRequestDto dto,
             Sistema sistema
     ) {
 
-        if(!this.repository.existsById(dto.idRelatorio())) throw new RegistroNaoEncontradoException(
-                "Não foi encontrado relatório para o id " + dto.idRelatorio());
+        if(!this.repository.existsById(idRelatorio)) throw new RegistroNaoEncontradoException(
+                "Não foi encontrado relatório para o id " + idRelatorio);
 
-        Relatorio relatorio = this.repository.findById(dto.idRelatorio()).get();
+        Relatorio relatorio = this.repository.findById(idRelatorio).get();
 
         if (!relatorio.getCliente().getId()
                 .equals(SecurityUtil.buscaIdClienteAutenticado())) {

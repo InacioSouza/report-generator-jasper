@@ -101,11 +101,12 @@ public class RelatorioController {
         return ResponseEntity.ok(this.relatorioService.buscaRelatorios(filtro));
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     public ResponseEntity<InfoRelatorioResponseDto> atualizarRelatorio(
+            @PathVariable UUID id,
             @RequestBody AtualizaRelatorioRequestDto dto) {
         return ResponseEntity.ok(
-                new AtualizaRelatorioUseCase(sistemaService, relatorioService).executar(dto)
+                new AtualizaRelatorioUseCase(sistemaService, relatorioService).executar(id, dto)
         );
     }
 

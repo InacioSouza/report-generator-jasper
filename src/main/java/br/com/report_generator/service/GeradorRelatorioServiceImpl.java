@@ -49,9 +49,12 @@ public class GeradorRelatorioServiceImpl implements GeradorRelatorioService {
                 "SUBTITULO_PADRAO",
                 versaoRelatorio.getRelatorio().getSubtituloPadrao()
         );
-        pedidoDTO.parametros().forEach(parametroInformado -> {
-            parametros.put(parametroInformado.nome(), parametroInformado.valor());
-        });
+
+        if (pedidoDTO.parametros() != null) {
+            pedidoDTO.parametros().forEach(parametroInformado -> {
+                parametros.put(parametroInformado.nome(), parametroInformado.valor());
+            });
+        }
 
         // Parâmetro padrão exigido quando não há SQL
         parametros.putIfAbsent(

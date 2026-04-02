@@ -34,6 +34,7 @@ public class VersaoRelatorioFactor {
             CadastraVersaoRelatorioRequestDto dto
     ) {
         this.constroiBasico();
+        this.versaoRelatorio.setNome(dto.nomeVersao());
         this.versaoRelatorio.setDescricaoVersao(dto.descricaoVersao());
         return this;
     }
