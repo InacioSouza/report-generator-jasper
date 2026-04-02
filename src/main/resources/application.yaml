@@ -1,0 +1,15 @@
+sistema:
+  admin:
+    login: ${ADM_LOGIN:user}
+    senha: ${ADM_SENHA:123}
+
+spring:
+  application:
+    name: report-generator
+  datasource:
+    url: jdbc:postgresql://localhost:5432/generate-report
+    username: postgres
+    password: Abc#123
+  jpa:
+    hibernate:
+      ddl-auto: validate
