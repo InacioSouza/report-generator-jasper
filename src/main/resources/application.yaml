@@ -7,9 +7,9 @@ spring:
   application:
     name: report-generator
   datasource:
-    url: jdbc:postgresql://localhost:5432/generate-report
-    username: postgres
-    password: Abc#123
+    url: ${URL_DATABASE:jdbc:postgresql://localhost:5432/generate-report}
+    username: ${PROVEDOR_DATABASE:postgres}
+    password: ${SENHA_DATABASE:Abc#123}
   jpa:
     hibernate:
       ddl-auto: validate
